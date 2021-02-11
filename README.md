@@ -1,37 +1,41 @@
-## Welcome to GitHub Pages
+### transcriptaze
 
-You can use the [editor on GitHub](https://github.com/transcriptaze/transcriptaze.github.io/edit/main/README.md) to maintain and preview the content for your website in Markdown files.
+**IN DEVELOPMENT**
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+`transcriptaze` is the home of the Github Pages that host an experimental and somewhat _(?)_ oddball utility that estimates
+the beats of a piece of music from a file of the beats as _tapped_ on a keyboard. 
 
-### Markdown
+#### `taps2beats`
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+Implementation project for the estimation code:
 
-```markdown
-Syntax highlighted code block
+- [taps2beats](https://github.com/transcriptaze/taps2beats). 
 
-# Header 1
-## Header 2
-### Header 3
+#### Issues and Feature Requests
 
-- Bulleted
-- List
+Please create an issue in the [transcriptaze](https://github.com/transcriptaze/transcriptaze) _github_ repository.
 
-1. Numbered
-2. List
+#### License
 
-**Bold** and _Italic_ and `Code` text
+[MIT](https://github.com/twystd/taps2beats/blob/master/LICENSE)
 
-[Link](url) and ![Image](src)
-```
+#### References
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+1. Wang H, Song M (2011). _“Ckmeans.1d.dp: Optimal $k$-means clustering in one dimension by dynamic programming.”_ 
+The R Journal, 3(2), 29–33. doi: 10.32614/RJ-2011-015.
 
-### Jekyll Themes
+2. Song M, Zhong H (2020). _“Efficient weighted univariate clustering maps outstanding dysregulated genomic zones in human cancers.”_ Bioinformatics. doi: 10.1093/bioinformatics/btaa613, [Published online ahead of print, 2020 Jul 3].
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/transcriptaze/transcriptaze.github.io/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+3. Zhong H (2019). _Model-free Gene-to-zone Network Inference of Molecular Mechanisms in Biology._ Ph.D. thesis, Department of Computer Science, New Mexico State University, Las Cruces, NM, USA.  
 
-### Support or Contact
+4. [Ckmeans.1d.dp](https://cran.r-project.org/web/packages/Ckmeans.1d.dp/index.html)
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+5. [W3C multi-thumb slider](https://w3c.github.io/aria-practices/examples/slider/multithumb-slider.html)
+
+6. [AB Loop Player](https://agrahn.gitlab.io/ABLoopPlayer)
+
+#### Attributions
+
+1. Icons by [FontAwesome](https://fontawesome.com):
+   - _[FontAwesome](https://fontawesome.com/license)_
+
