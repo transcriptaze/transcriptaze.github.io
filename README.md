@@ -19,7 +19,7 @@ Please create an issue in the [transcriptaze](https://github.com/transcriptaze/t
 
 #### License
 
-[MIT](https://github.com/twystd/taps2beats/blob/master/LICENSE)
+[MIT](https://github.com/transcriptaze/taps2beats/blob/master/LICENSE)
 
 #### References
 
