@@ -39,40 +39,49 @@ body {
 header {
   grid-area: header;
   display: flex;
+  flex-flow: row nowrap;
   height: auto;
   overflow: hidden;
 }
 
-nav {
-  grid-area: left;
-  background: #e7dec3;
-  margin: 0px 8px 8px 8px;
-  border-radius: 2px;
+#logo {
+  width: 96px;
+  height: 96px;
+  padding: 12px;
 }
 
-nav ul {
-  margin-top: 8px;
-  margin-left: 16px;
-  list-style-type: none;
+#banner {
+  flex-grow: 1;
 }
 
-nav ul li {
-  color: #268bd2;
-  font-family: Sans-Serif;
-  font-size: 0.7em;
-  font-weight: lighter;
-  padding-top: 0.2em;
-  padding-bottom: 0.2em;
+#github {
+  padding-top: 16px;
+  padding-right: 32px;
 }
 
-nav ul li a {
-  color: #268bd2;
+#github a {
+  color: #444444;
+  font-size: 0.9em;
+  color: #444444;
   text-decoration: none;
 }
 
-nav ul li.selected {
-  font-size: 0.74em;
-  font-weight: bold;
+#github a:hover {
+  color: #444444;
+}
+
+#github a:visited {
+  color: #444444;
+}
+
+#github a:active {
+  color: #444444;
+}
+
+nav {
+  grid-area: left;
+  margin: 0px 8px 8px 8px;
+  border-radius: 2px;
 }
 
 main {
