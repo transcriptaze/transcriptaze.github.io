@@ -3,15 +3,171 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
     <meta charset="UTF-8">
-    <title>transcriptaze</title>
+    <title>taps2beats</title>
+    <link rel="icon"       href="images/favicon.png">
+    <link rel="stylesheet" href="css/transcriptaze.css" type="text/css">
+    <script src="./javascript/wasm_exec.js"></script>
   </head>
 
   <body> 
     <div id="content">
-      STUFF GOES HERE
-    </div>
 
+      <!-- HEADER -->
+      <header>
+        <img id="logo" src="images/logo.png"  />
+        <div id="banner" />
+      </header>
+
+      <!-- NAV -->
+
+      <nav>
+        <ul>
+          <li class="selected">T2B</li>
+        </ul>
+      </nav>
+
+      <!-- MAIN -->
+      <main>
+        <div>
+          <div id="container">
+
+            <div id="file" class="url panel">
+              <input id="url"  type="text" title="YouTube URL" placeholder="https://www.youtube.com/watch?v=CKI7MnfBYJA" value="https://www.youtube.com/watch?v=CKI7MnfBYJA" readonly />
+              <input id="load" type="button" value="Load" onclick="load(event)" disabled />
+            </div>
+
+            <div id="video" class="panel" style="position:relative;">
+              <div id="player" class="player" tabindex="-1"></div>
+              <div id="loading" class="overlay">
+                <img src="images/youtube-brands.svg" draggable="false" />
+              </div>
+            </div>
+
+            <div id="help" class="panel" tabindex="-1" data-state="idle">
+              <div class="help" tabindex="0">
+                <p class="cued" >
+                  Press 'SPACE' to start video. <br/><br/>While the video is playing, press 'SPACE' on each beat of the song
+                </p>
+                <p class="playing">
+                  Press 'SPACE' on each beat or:<br/><br/>&#8226;&nbsp;'P' to pause<br/>&#8226;&nbsp;'S' to stop
+                </p>
+              </div>
+            </div>
+
+            <!-- CONTROLS -->
+            <div id="controls" class="controls panel">
+              <div class="slider">
+                <div class="rail" style="width:640px;">
+                  <img id="start"
+                       src="images/min-arrow.svg"
+                       role="slider"
+                       tabindex="0"
+                       class="min thumb"
+                       aria-valuemin="0"
+                       aria-valuenow="0"
+                       aria-valuemax="100"
+                       draggable="false">
+                  <img id="end"
+                       src="images/max-arrow.svg"
+                       role="slider"
+                       tabindex="0"
+                       class="max thumb"
+                       aria-valuemin="0"
+                       aria-valuenow="100"
+                       aria-valuemax="100"
+                       draggable="false">
+                  <input id="from" type="text" readonly />
+                  <input id="to"   type="text" readonly />
+                </div>
+              </div>
+
+              <div id="looping">
+                <label id="loop">
+                  <input type="checkbox" onclick="onLoop(event)" />
+                  <img class="no"  src="images/redo-alt-solid.svg" draggable="false" />
+                  <img class="yes" src="images/redo-alt-solid.svg" draggable="false" />
+                </label>
+                <input id="delay" type="number" min="0" max="10" title="loop delay" placeholder="loop delay" value="1.0" />
+              </div>
+
+              <label id="quantize" class="checktext">
+                <input type="checkbox" onchange="quantize(event)" disabled/>
+                <span>QUANTIZE</span>
+              </label>
+
+              <label id="interpolate" class="checktext">
+                <input type="checkbox" onchange="interpolate(event)" disabled/>
+                <span>INTERPOLATE</span>
+              </label>
+              
+              <input id="offset" type="text" class="info" placeholder="offset" readonly />
+              <input id="bpm"    type="text" class="info" placeholder="BPM"    readonly />              
+            </div>
+
+            <!-- TAPS -->
+            <div id="taps" class="panel">
+              <div id="current">
+                <canvas class="taps all" width="640" height="8"></canvas>
+                <canvas class="taps zoomed" width="640" height="8"></canvas>
+              </div>
+              <div id="history">
+                <canvas class="taps all" width="640" height="8"></canvas>
+                <canvas class="taps zoomed" width="640" height="8"></canvas>
+              </div>
+              <div id="beats">
+                <canvas class="taps all" width="640" height="8"></canvas>
+                <canvas class="taps zoomed" width="640" height="8"></canvas>
+              </div>
+              <div id="message">
+                <p></p>
+              </div>
+            </div>
+
+            <!-- EXPORT -->
+            <div id="export" class="panel">
+              <button type="button" disabled>
+                <img src="images/file-export-solid.svg" />
+              </button>
+              <button type="button"  onclick="clearTaps(event)" >
+                <img src="images/trash-solid.svg" />
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </main>
+
+      <!-- FOOTER -->
+      <footer>
+      </footer>
+    </div>
   </body>
 
-</html>
+  <!-- SCRIPTS -->
+ 
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script src="javascript/transcriptaze.js"></script>
+  <script src="javascript/slider.js"></script>
+  <script type="text/javascript">
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('player', {
+        playerVars: {
+          fs: 0,
+          controls: 1,
+          disablekb: 1,
+          rel: 0,
+          autoplay: 0,
+          loop: 0,
+          modestbranding: 1,
+          iv_load_policy: 3,
+          enablejsapi: 1
+        },
+        events: {
+          'onReady': onPlayerReady,
+          'onStateChange': onPlayerStateChange
+        }
+      })
+    }
+  </script>
 
+</html>
