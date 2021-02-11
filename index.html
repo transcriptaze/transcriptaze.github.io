@@ -7,6 +7,20 @@
     <link rel="icon"       href="images/favicon.png">
     <link rel="stylesheet" href="css/transcriptaze.css" type="text/css">
     <script src="./javascript/wasm_exec.js"></script>
+    <script>
+      document.addEventListener('readystatechange', event => {
+        switch (event.target.readyState) {
+          case 'complete':           
+              const go = new Go();
+              WebAssembly
+                .instantiateStreaming(fetch("./wasm/transcriptaze.wasm"), go.importObject)
+                .then((result) => {
+                  go.run(result.instance);
+                });
+              break;
+        }
+      })
+    </script
   </head>
 
   <body> 
