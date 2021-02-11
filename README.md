@@ -3,7 +3,9 @@
 **IN DEVELOPMENT**
 
 `transcriptaze` is the home of the Github Pages that host an experimental and somewhat _(?)_ oddball utility that estimates
-the beats of a piece of music from a file of the beats as _tapped_ on a keyboard. 
+the beats of a piece of music from a file of the beats as _tapped_ on a keyboard:
+
+[transcriptaze](https://transcriptaze.github.io)
 
 #### `taps2beats`
 
