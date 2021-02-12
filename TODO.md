@@ -1,7 +1,11 @@
 ## IN PROGRESS
 
 - [ ] Export as JSON
+      - Enable/disable button
+      - Beats being exported as text ???
+
 - [ ] Zoom on slider adjust
+- [ ] Restore last URL (use NaomiSV if none)
 - [ ] Don't play if slider gap is 0 (< 1s?)
 - [ ] Insufficient data warning when tapping double time
 - [ ] Clear button
@@ -13,16 +17,14 @@
       - tooltips for bars
 - [ ] eslint
 - [ ] Fix logo
-- [ ] Remove navbar
-- [ ] Remove footer
-- [ ] Export as MIDI
 - [ ] Zoot up slider
 - [ ] Explanatory text
 - [ ] 'Loading' windmill
 - [ ] Fade out loading overlay
-- [ ] Load audio from file
 - [ ] Parse 'other' YouTube URL formats
 
+- [x] Remove navbar
+- [x] Remove footer
 - [x] Remove TAP pad
 - [x] SPACE, P,S,L from everywhere
 - [x] Clear on load
@@ -42,6 +44,9 @@
 - [x] Splashscreen
 
 ## TODO
+
+- [ ] Load audio from file
+- [ ] Export as MIDI
 
 ## NOTES
 

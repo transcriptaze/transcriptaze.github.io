@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 var player
 var loopTimer
@@ -10,7 +10,8 @@ var end
 var taps = {
   duration: 0,
   taps: [],
-  current: []
+  current: [],
+  beats: null
 }
 
 document.addEventListener('keydown', event => {
@@ -148,18 +149,55 @@ function onTap(event) {
   } 
 }
 
+function onQuantize () {
+  analyse()
+}
+
+function onInterpolate () {
+  analyse()
+}
+
+function onClear(event) {
+  clearTaps()
+}
+
+function onExport(event) {
+    let vid = getVideoID(player.getVideoUrl())
+    if (vid === "") {
+      vid = "transcriptaze"
+    }
+
+    const object = { 
+      url: player.getVideoUrl(),
+      duration: taps.duration,
+      taps: taps.taps
+    }
+
+    if (taps.beats != null) {
+      object.beats = taps.beats
+    }
+
+    const blob = new Blob([JSON.stringify(object, null, 2)], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const link = document.getElementById('download')
+
+    link.href = url
+    link.download = vid + '.json'
+    link.click()
+}
+
 function load(event) {
   const url = document.getElementById('url')    
   const vid = getVideoID(url.value)
 
-  clearTaps(event)
+  clearTaps()
   loaded = false
 
   document.getElementById('loading').style.visibility = 'visible'
   player.loadVideoById({ videoId: vid, startSeconds: 0, endSeconds: 0.1 })
 }
 
-function clearTaps(event) {
+function clearTaps() {
   document.getElementById('message').style.display = 'none'
   document.getElementById('beats').style.display = 'none'
 
@@ -224,6 +262,8 @@ function analyse () {
         }, taps.taps, taps.duration, quantize, interpolate)
       })
       .then(beats => { 
+        taps.beats = beats
+        
         if (beats == null) {
           document.getElementById('message').style.display = 'none'
           document.getElementById('beats').style.display = 'none'
@@ -264,14 +304,6 @@ function analyse () {
           document.getElementById('message').querySelector('p').innerText = err.toString().toUpperCase()
       })
   }
-}
-
-function quantize () {
-  analyse()
-}
-
-function interpolate () {
-  analyse()
 }
 
 function draw() {
@@ -324,7 +356,10 @@ function getVideoID(url) {
   let addr = new URL(url)
 
   try {
-    return addr.searchParams.get("v")
+    const vid = addr.searchParams.get("v")
+    if (vid != null) {
+      return vid
+    }
   } catch(err) {
     console.log(err)
   }
