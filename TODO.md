@@ -1,13 +1,9 @@
 ## IN PROGRESS
 
 - [ ] Zoom on slider adjust
-- [ ] Restore last URL (use NaomiSV if none)
 - [ ] Don't play if slider gap is 0 (< 1s?)
+- [ ] Restore last URL (use NaomiSV if none)
 - [ ] Insufficient data warning when tapping double time
-- [ ] Clear button
-      - disabled style
-      - focus style
-      - remove focused outline
 - [ ] Beats
       - only show 'zoomed' bar if sliders are set
       - tooltips for bars
@@ -19,6 +15,7 @@
 - [ ] Fade out loading overlay
 - [ ] Parse other YouTube URL formats
 
+- [x] Clear button
 - [x] Export as JSON
 - [x] Remove navbar
 - [x] Remove footer

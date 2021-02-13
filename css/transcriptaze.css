@@ -433,10 +433,19 @@ div#data button img {
   height: 28px;
   padding: 12px;
   outline: none;
+  filter: invert(31%) sepia(17%) saturate(1936%) hue-rotate(71deg) brightness(88%) contrast(90%);
 }
 
 div#data button:disabled img {
   filter: invert(93%) sepia(0%) saturate(5805%) hue-rotate(134deg) brightness(133%) contrast(51%);
+}
+
+div#data button:hover:enabled img {
+  filter: invert(23%) sepia(96%) saturate(1983%) hue-rotate(100deg) brightness(97%) contrast(107%);
+}
+
+div#data button:focus img {
+  filter: invert(23%) sepia(96%) saturate(1983%) hue-rotate(100deg) brightness(97%) contrast(107%);
 }
 
 footer {
