@@ -1,12 +1,12 @@
 ## IN PROGRESS
 
-- [ ] Zoom on slider adjust
-- [ ] Don't play if slider gap is 0 (< 1s?)
-- [ ] Restore last URL (use NaomiSV if none)
-- [ ] Insufficient data warning when tapping double time
 - [ ] Beats
       - only show 'zoomed' bar if sliders are set
       - tooltips for bars
+- [ ] Don't play if slider gap is 0 (< 1s?)
+
+- [ ] Restore last URL (use NaomiSV if none)
+- [ ] Insufficient data warning when tapping double time
 - [ ] eslint
 - [ ] Fix logo
 - [ ] Zoot up slider
@@ -15,6 +15,7 @@
 - [ ] Fade out loading overlay
 - [ ] Parse other YouTube URL formats
 
+- [x] Zoom on slider adjust
 - [x] Clear button
 - [x] Export as JSON
 - [x] Remove navbar

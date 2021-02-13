@@ -72,7 +72,6 @@ function onPlayerStateChange(event) {
 
       if (taps.current.length > 0)  {
           taps.taps.push(taps.current)
-          taps.current = []
           draw()
           analyse()
           react()
@@ -100,7 +99,11 @@ function onSetStart(t, released) {
       if (released && player.getCurrentTime() < t) {
           player.seekTo(t, true)                              
       }
-    }
+  }
+
+   if (released) {
+      react()
+   }
 }
 
 function onSetEnd(t, released) {
@@ -113,6 +116,8 @@ function onSetEnd(t, released) {
         cue(false)
         break
     }    
+
+    react()
   }
 }
 
@@ -128,6 +133,8 @@ function onTap(event) {
       switch (player.getPlayerState()) {
         case YT.PlayerState.CUED:
         case YT.PlayerState.PAUSED:
+          taps.current = []
+          react()
           player.playVideo()
           break
 
@@ -197,6 +204,16 @@ function react() {
   if (taps.taps.length > 0) {
     data.querySelector('#export').disabled = false
     data.querySelector('#clear').disabled = false
+
+    drawTaps(document.querySelector('#current canvas.all'), taps.current, 0, taps.duration)
+    drawTaps(document.querySelector('#history canvas.all'), taps.taps, 0, taps.duration)    
+
+    drawTaps(document.querySelector('#current canvas.zoomed'), taps.current, start.valueNow, end.valueNow - start.valueNow)
+    drawTaps(document.querySelector('#history canvas.zoomed'), taps.taps, start.valueNow, end.valueNow - start.valueNow)
+
+    if (taps.beats != null) {
+      drawBeats (taps.beats.beats)
+    } 
   }
 }
 
@@ -331,6 +348,7 @@ function draw() {
 }
 
 function drawBeats (beats) {
+  console.log('drawBeats', beats)
   if (beats != null) {
       document.getElementById('message').style.display = 'none'
       document.getElementById('beats').style.display = 'block'
