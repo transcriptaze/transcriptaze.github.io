@@ -65,9 +65,9 @@ function onPlayerStateChange(event) {
       document.getElementById('controls').style.visibility = 'visible'      
       document.getElementById('help').style.visibility = 'visible'      
       document.getElementById('taps').style.visibility = 'visible'      
-      document.getElementById('export').style.visibility = 'visible'      
       document.getElementById('help').dataset.state = 'cued'
       document.getElementById('help').focus()
+      react()
       player.unMute()
 
       if (taps.current.length > 0)  {
@@ -75,6 +75,7 @@ function onPlayerStateChange(event) {
           taps.current = []
           draw()
           analyse()
+          react()
       }
       break
   }
@@ -184,6 +185,19 @@ function onExport(event) {
     link.href = url
     link.download = vid + '.json'
     link.click()
+}
+
+function react() {
+  const data = document.getElementById('data')
+
+  if (player.getPlayerState() == YT.PlayerState.CUED) {
+    data.style.visibility = 'visible'
+  }
+
+  if (taps.taps.length > 0) {
+    data.querySelector('#export').disabled = false
+    data.querySelector('#clear').disabled = false
+  }
 }
 
 function load(event) {

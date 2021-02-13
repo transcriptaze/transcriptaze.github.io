@@ -101,7 +101,7 @@ main {
   display: grid;
   grid-template-columns: auto auto;
   grid-template-rows: auto auto auto auto;
-  grid-template-areas: "url unused1" "video help" "controls export" "taps export";
+  grid-template-areas: "url unused1" "video help" "controls data" "taps data";
   column-gap: 6px;
   row-gap: 4px;
 
@@ -132,8 +132,8 @@ div#controls {
   outline: none;
 }
 
-div#export {
-  grid-area: export;
+div#data {
+  grid-area: data;
   visibility: hidden;
 }
 
@@ -423,16 +423,20 @@ canvas.zoomed {
   background: lightgreen;
 }
 
-div#export button {
+div#data button {
   border: none;
   outline: none;
 }
 
-div#export button img {
+div#data button img {
   width: 28px;
   height: 28px;
   padding: 12px;
   outline: none;
+}
+
+div#data button:disabled img {
+  filter: invert(93%) sepia(0%) saturate(5805%) hue-rotate(134deg) brightness(133%) contrast(51%);
 }
 
 footer {

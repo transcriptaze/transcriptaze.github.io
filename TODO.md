@@ -1,9 +1,5 @@
 ## IN PROGRESS
 
-- [ ] Export as JSON
-      - Enable/disable button
-      - Beats being exported as text ???
-
 - [ ] Zoom on slider adjust
 - [ ] Restore last URL (use NaomiSV if none)
 - [ ] Don't play if slider gap is 0 (< 1s?)
@@ -21,8 +17,9 @@
 - [ ] Explanatory text
 - [ ] 'Loading' windmill
 - [ ] Fade out loading overlay
-- [ ] Parse 'other' YouTube URL formats
+- [ ] Parse other YouTube URL formats
 
+- [x] Export as JSON
 - [x] Remove navbar
 - [x] Remove footer
 - [x] Remove TAP pad
