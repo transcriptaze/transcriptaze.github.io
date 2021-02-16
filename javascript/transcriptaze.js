@@ -199,17 +199,37 @@ function onExport(event) {
 function react() {
   const data = document.getElementById('data')
 
-  if (player.getPlayerState() == YT.PlayerState.CUED) {
-    data.style.visibility = 'visible'
+  if (loaded && (player.getPlayerState() == YT.PlayerState.CUED)) {
+      data.style.visibility = 'visible'
+  }
+
+  if (taps.taps.length > 0) {
+    document.getElementById("history").style.display = "block"
+    document.getElementById("beats").style.display = "block"
+  } else {
+    document.getElementById("history").style.display = "none"    
+    document.getElementById("beats").style.display = "none"    
+  }
+
+  if (taps.beats != null) {
+    document.querySelector('#beats canvas.all').style.display = 'block'
+    document.querySelector('#beats canvas.zoomed').style.display = 'block'
+    document.getElementById('message').style.display = 'none'    
+  } else {
+    document.querySelector('#beats canvas.all').style.display = 'none'
+    document.querySelector('#beats canvas.zoomed').style.display = 'none'
+    document.getElementById('message').style.display = 'flex'    
   }
 
   if (taps.taps.length > 0) {
     data.querySelector('#export').disabled = false
     data.querySelector('#clear').disabled = false
+    
     draw()
-    if (taps.beats != null) {
+  }
+
+  if (taps.beats != null) {
       drawBeats (taps.beats.beats)
-    } 
   }
 }
 
@@ -225,13 +245,11 @@ function load(event) {
 }
 
 function clearTaps() {
-  document.getElementById('message').style.display = 'none'
-  document.getElementById('beats').style.display = 'none'
-
   taps.duration = 0
   taps.taps = []
   taps.current = []
 
+  react()
   draw()
 
   document.getElementById('bpm').value = ''
@@ -289,9 +307,6 @@ function analyse () {
         taps.beats = beats
         
         if (beats == null) {
-          document.getElementById('message').style.display = 'none'
-          document.getElementById('beats').style.display = 'none'
-
           document.getElementById('bpm').value = ''
           document.getElementById('offset').value = ''
           document.getElementById('quantize').style.visibility = 'hidden'
@@ -299,9 +314,6 @@ function analyse () {
           document.getElementById('interpolate').style.visibility = 'hidden'
           document.getElementById('interpolate').querySelector("input").disabled = true
         } else {
-          document.getElementById('message').style.display = 'none'
-          document.getElementById('beats').style.display = 'block'
-
           if (beats.BPM > 0) {
             document.getElementById('bpm').value = beats.BPM + ' BPM'
             document.getElementById('offset').value = Number.parseFloat(beats.offset).toFixed(2) + 's'
@@ -319,13 +331,11 @@ function analyse () {
           }
 
           drawBeats(beats.beats)
+          react()
         }
       })
       .catch(function (err) { 
         console.log(err)
-          document.getElementById('beats').style.display = 'none'
-          document.getElementById('message').style.display = 'block'
-          document.getElementById('message').querySelector('p').innerText = err.toString().toUpperCase()
       })
   }
 }
@@ -340,20 +350,13 @@ function draw() {
 
 function drawBeats (beats) {
   if (beats != null) {
-      document.getElementById('message').style.display = 'none'
-      document.getElementById('beats').style.display = 'block'
-
-      let t = []
+      let ticks = []
       
-      beats.forEach(b => { t.push(b.at) })
+      beats.forEach(b => { ticks.push(b.at) })
 
-      drawTaps(document.querySelector('#beats canvas.all'), t, 0, taps.duration)
-      drawTaps(document.querySelector('#beats canvas.zoomed'), t, start.valueNow, end.valueNow - start.valueNow)
-      return
+      drawTaps(document.querySelector('#beats canvas.all'), ticks, 0, taps.duration)
+      drawTaps(document.querySelector('#beats canvas.zoomed'), ticks, start.valueNow, end.valueNow - start.valueNow)
   }
-
-  document.getElementById('message').style.display = 'block'
-  document.getElementById('beats').style.display = 'none'
 }
 
 function drawTaps(canvas, taps, offset, duration) {

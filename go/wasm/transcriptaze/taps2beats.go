@@ -5,7 +5,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"syscall/js"
 
 	"github.com/transcriptaze/taps2beats/taps2beats"
@@ -59,7 +58,7 @@ func taps(this js.Value, inputs []js.Value) interface{} {
 			return
 		}
 
-		callback.Invoke(js.Null(), fmt.Errorf("insufficient data").Error())
+		callback.Invoke(js.Null(), js.Null())
 	}()
 
 	return nil

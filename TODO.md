@@ -1,16 +1,14 @@
 ## IN PROGRESS
 
-- [ ] Beats
-      - hide bars not in use
-      - tooltips for bars
-- [ ] Move 'insufficient data' warning back to JS
-
-- [ ] Colourize slider bar
 - [ ] Restore last URL (use NaomiSV if none)
+- [ ] Colourize slider bar
+- [ ] Zoot up slider
+- [ ] Move panel style to outer container
+- [ ] Encapsulate stuff in 'state' object
+
 - [ ] Not clustering properly when tapping double time
 - [ ] eslint
 - [ ] Fix logo
-- [ ] Zoot up slider
 - [ ] Explanatory text
 - [ ] 'Loading' windmill
 - [ ] Fade out loading overlay
@@ -18,6 +16,8 @@
 - [ ] https://codepen.io/ma_suwa/pen/eYdZVML
 - [ ] https://github.com/jvnaveenbabu/Neumorphism-Designs
 
+- [x] Beats
+- [x] Move 'insufficient data' warning back to JS
 - [x] Don't play if slider gap is 0 (< 1s?)
 - [x] Zoom on slider adjust
 - [x] Clear button
