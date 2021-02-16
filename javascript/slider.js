@@ -40,27 +40,27 @@ Slider.prototype.init = function (min, max, t) {
 
   this.railMin = min
   this.railMax = max
-  this.railWidth = parseInt(this.railDomNode.style.width.slice(0, -2));
+  this.railWidth = parseInt(this.railDomNode.style.width.slice(0, -2))
 
   if (this.domNode.previousElementSibling) {
-    this.minDomNode = this.domNode.previousElementSibling;
+    this.minDomNode = this.domNode.previousElementSibling
   }
 
   if (this.domNode.nextElementSibling) {
-    this.maxDomNode = this.domNode.nextElementSibling;
+    this.maxDomNode = this.domNode.nextElementSibling
   }
 
   if (this.domNode.tabIndex != 0) {
-    this.domNode.tabIndex = 0;
+    this.domNode.tabIndex = 0
   }
 
-  this.domNode.addEventListener('keydown', this.handleKeyDown.bind(this));
-  this.domNode.addEventListener('mousedown', this.handleMouseDown.bind(this));
-  this.domNode.addEventListener('focus', this.handleFocus.bind(this));
-  this.domNode.addEventListener('blur', this.handleBlur.bind(this));
+  this.domNode.addEventListener('keydown', this.handleKeyDown.bind(this))
+  this.domNode.addEventListener('mousedown', this.handleMouseDown.bind(this))
+  this.domNode.addEventListener('focus', this.handleFocus.bind(this))
+  this.domNode.addEventListener('blur', this.handleBlur.bind(this))
 
-  this.moveSliderTo(this.valueNow);
-};
+  this.moveSliderTo(this.valueNow)
+}
 
 Slider.prototype.moveSliderTo = function (value, released) {
   var valueMax = parseInt(this.domNode.getAttribute('aria-valuemax'));

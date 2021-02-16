@@ -16,7 +16,7 @@ var taps = {
 
 document.addEventListener('keydown', event => {
   if (loaded) {
-    onTap(event)
+    onKey(event)
   }
 })
 
@@ -72,7 +72,6 @@ function onPlayerStateChange(event) {
 
       if (taps.current.length > 0)  {
           taps.taps.push(taps.current)
-          draw()
           analyse()
           react()
       }
@@ -125,7 +124,7 @@ function onLoop(event) {
   looping = event.target.checked
 }
 
-function onTap(event) {
+function onKey(event) {
   if (event.code === 'Space') {
     event.preventDefault()
 
@@ -135,7 +134,10 @@ function onTap(event) {
         case YT.PlayerState.PAUSED:
           taps.current = []
           react()
-          player.playVideo()
+
+          if ((end.valueNow - start.valueNow) > 1) {
+            player.playVideo()
+          }
           break
 
         case YT.PlayerState.PLAYING:
@@ -204,13 +206,7 @@ function react() {
   if (taps.taps.length > 0) {
     data.querySelector('#export').disabled = false
     data.querySelector('#clear').disabled = false
-
-    drawTaps(document.querySelector('#current canvas.all'), taps.current, 0, taps.duration)
-    drawTaps(document.querySelector('#history canvas.all'), taps.taps, 0, taps.duration)    
-
-    drawTaps(document.querySelector('#current canvas.zoomed'), taps.current, start.valueNow, end.valueNow - start.valueNow)
-    drawTaps(document.querySelector('#history canvas.zoomed'), taps.taps, start.valueNow, end.valueNow - start.valueNow)
-
+    draw()
     if (taps.beats != null) {
       drawBeats (taps.beats.beats)
     } 
@@ -236,10 +232,7 @@ function clearTaps() {
   taps.taps = []
   taps.current = []
 
-  drawTaps(document.querySelector('#current canvas.all'), taps.current, 0, taps.duration)
-  drawTaps(document.querySelector('#current canvas.zoomed'), taps.current, start.valueNow, end.valueNow - start.valueNow)
-  drawTaps(document.querySelector('#history canvas.all'), taps.taps, 0, taps.duration)    
-  drawTaps(document.querySelector('#history canvas.zoomed'), taps.taps, start.valueNow, end.valueNow - start.valueNow)
+  draw()
 
   document.getElementById('bpm').value = ''
   document.getElementById('offset').value = ''
@@ -338,17 +331,14 @@ function analyse () {
 }
 
 function draw() {
-  if (player.getPlayerState() ===  YT.PlayerState.PLAYING) {
-      drawTaps(document.querySelector('#current canvas.all'), taps.current, 0, taps.duration)
-      drawTaps(document.querySelector('#current canvas.zoomed'), taps.current, start.valueNow, end.valueNow - start.valueNow)
-  } else {
-      drawTaps(document.querySelector('#history canvas.all'), taps.taps, 0, taps.duration)    
-      drawTaps(document.querySelector('#history canvas.zoomed'), taps.taps, start.valueNow, end.valueNow - start.valueNow)
-  }
+  drawTaps(document.querySelector('#current canvas.all'), taps.current, 0, taps.duration)
+  drawTaps(document.querySelector('#history canvas.all'), taps.taps, 0, taps.duration)    
+
+  drawTaps(document.querySelector('#current canvas.zoomed'), taps.current, start.valueNow, end.valueNow - start.valueNow)
+  drawTaps(document.querySelector('#history canvas.zoomed'), taps.taps, start.valueNow, end.valueNow - start.valueNow)
 }
 
 function drawBeats (beats) {
-  console.log('drawBeats', beats)
   if (beats != null) {
       document.getElementById('message').style.display = 'none'
       document.getElementById('beats').style.display = 'block'

@@ -1,12 +1,13 @@
 ## IN PROGRESS
 
 - [ ] Beats
-      - only show 'zoomed' bar if sliders are set
+      - hide bars not in use
       - tooltips for bars
-- [ ] Don't play if slider gap is 0 (< 1s?)
+- [ ] Move 'insufficient data' warning back to JS
 
+- [ ] Colourize slider bar
 - [ ] Restore last URL (use NaomiSV if none)
-- [ ] Insufficient data warning when tapping double time
+- [ ] Not clustering properly when tapping double time
 - [ ] eslint
 - [ ] Fix logo
 - [ ] Zoot up slider
@@ -14,7 +15,10 @@
 - [ ] 'Loading' windmill
 - [ ] Fade out loading overlay
 - [ ] Parse other YouTube URL formats
+- [ ] https://codepen.io/ma_suwa/pen/eYdZVML
+- [ ] https://github.com/jvnaveenbabu/Neumorphism-Designs
 
+- [x] Don't play if slider gap is 0 (< 1s?)
 - [x] Zoom on slider adjust
 - [x] Clear button
 - [x] Export as JSON
