@@ -147,7 +147,7 @@ div.url {
   flex-flow: row nowrap;
 }
 
-div.url input#url {
+div.url #url {
   flex-grow: 1;
   margin-right: 8px;
   padding-top: 4px;

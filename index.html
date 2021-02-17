@@ -11,12 +11,14 @@
       document.addEventListener('readystatechange', event => {
         switch (event.target.readyState) {
           case 'complete':           
-              const go = new Go();
+              const go = new Go()
               WebAssembly
                 .instantiateStreaming(fetch("./wasm/transcriptaze.wasm"), go.importObject)
                 .then((result) => {
-                  go.run(result.instance);
-                });
+                  go.run(result.instance)
+                })
+
+              initialise()
               break;
         }
       })
@@ -48,8 +50,11 @@
           <div id="container">
 
             <div id="file" class="url panel">
-              <input id="url"  type="text" title="YouTube URL" placeholder="https://www.youtube.com/watch?v=CKI7MnfBYJA" value="https://www.youtube.com/watch?v=CKI7MnfBYJA" readonly />
-              <input id="load" type="button" value="Load" onclick="load(event)" disabled />
+              <input id="url" type="text" list="favourites" title="YouTube URL" placeholder="https://www.youtube.com/watch?v=CKI7MnfBYJA" value="" readonly/>
+              <input id="load" type="button" value="Load" onclick="onLoad(event)" disabled />
+              <datalist id="favourites">
+                <option value=""></option>
+              </datalist>
             </div>
 
             <div id="video" class="panel" style="position:relative;">
@@ -163,8 +168,9 @@
   <!-- SCRIPTS -->
  
   <script src="https://www.youtube.com/iframe_api"></script>
-  <script src="javascript/transcriptaze.js"></script>
+  <script src="javascript/state.js"></script>
   <script src="javascript/slider.js"></script>
+  <script src="javascript/transcriptaze.js"></script>
   <script type="text/javascript">
     function onYouTubeIframeAPIReady() {
       player = new YT.Player('player', {
@@ -185,6 +191,10 @@
         }
       })
     }
+
+  function initialise() {
+    state.restore()
+  }
   </script>
 
 </html>

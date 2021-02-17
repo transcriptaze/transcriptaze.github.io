@@ -1,5 +1,6 @@
 'use strict'
 
+var state = new State()
 var player
 var loopTimer
 var delayTimer
@@ -41,6 +42,8 @@ function onPlayerStateChange(event) {
         start.init(0,duration,0)
         end.init(0,duration,duration)
         taps.duration = duration
+
+        state.addVideo(getPlayerVideoID())
         cue(false)
       }
       break
@@ -76,6 +79,18 @@ function onPlayerStateChange(event) {
           react()
       }
       break
+  }
+}
+
+function onLoad(event) {
+  const vid = getVideoID()
+
+  if (vid !== '') {
+    clearTaps()
+    loaded = false    
+
+    document.getElementById('loading').style.visibility = 'visible'
+    player.loadVideoById({ videoId: vid, startSeconds: 0, endSeconds: 0.1 })
   }
 }
 
@@ -172,7 +187,7 @@ function onClear(event) {
 }
 
 function onExport(event) {
-    let vid = getVideoID(player.getVideoUrl())
+    let vid = getPlayerVideoID()
     if (vid === "") {
       vid = "transcriptaze"
     }
@@ -233,16 +248,6 @@ function react() {
   }
 }
 
-function load(event) {
-  const url = document.getElementById('url')    
-  const vid = getVideoID(url.value)
-
-  clearTaps()
-  loaded = false
-
-  document.getElementById('loading').style.visibility = 'visible'
-  player.loadVideoById({ videoId: vid, startSeconds: 0, endSeconds: 0.1 })
-}
 
 function clearTaps() {
   taps.duration = 0
@@ -257,15 +262,17 @@ function clearTaps() {
 }
 
 function cue(play) {
-  const url = document.getElementById('url')    
-  const vid = getVideoID(url.value)
-  const start = document.getElementById('start').getAttribute('aria-valuenow')
+  const vid = getVideoID()
 
-  if (play) {
-    player.loadVideoById({ videoId: vid, startSeconds: start })
-  } else {
-    player.mute()
-    player.cueVideoById({ videoId: vid, startSeconds: start })
+  if (vid !== '') {
+    const start = document.getElementById('start').getAttribute('aria-valuenow')
+
+    if (play) {
+      player.loadVideoById({ videoId: vid, startSeconds: start })
+    } else {
+      player.mute()
+      player.cueVideoById({ videoId: vid, startSeconds: start })
+    }     
   }
 }
 
@@ -341,8 +348,8 @@ function analyse () {
 }
 
 function draw() {
-  drawTaps(document.querySelector('#current canvas.all'), taps.current, 0, taps.duration)
-  drawTaps(document.querySelector('#history canvas.all'), taps.taps, 0, taps.duration)    
+  drawTaps(document.querySelector('#current canvas.all'), taps.current, 0, Math.floor(taps.duration))
+  drawTaps(document.querySelector('#history canvas.all'), taps.taps, 0, Math.floor(taps.duration))
 
   drawTaps(document.querySelector('#current canvas.zoomed'), taps.current, start.valueNow, end.valueNow - start.valueNow)
   drawTaps(document.querySelector('#history canvas.zoomed'), taps.taps, start.valueNow, end.valueNow - start.valueNow)
@@ -354,7 +361,7 @@ function drawBeats (beats) {
       
       beats.forEach(b => { ticks.push(b.at) })
 
-      drawTaps(document.querySelector('#beats canvas.all'), ticks, 0, taps.duration)
+      drawTaps(document.querySelector('#beats canvas.all'), ticks, 0, Math.floor(taps.duration))
       drawTaps(document.querySelector('#beats canvas.zoomed'), ticks, start.valueNow, end.valueNow - start.valueNow)
   }
 }
@@ -377,11 +384,10 @@ function drawTaps(canvas, taps, offset, duration) {
   ctx.stroke()
 }
 
-function getVideoID(url) {
-  let addr = new URL(url)
-
+function getVideoID() {
   try {
-    const vid = addr.searchParams.get("v")
+    const url = new URL(document.getElementById('url').value)
+    const vid = url.searchParams.get("v")
     if (vid != null) {
       return vid
     }
@@ -392,3 +398,16 @@ function getVideoID(url) {
   return ""
 }
 
+function getPlayerVideoID() {
+  try {
+    const url = new URL(player.getVideoUrl())
+    const vid = url.searchParams.get("v")
+    if (vid != null) {
+      return vid
+    }
+  } catch(err) {
+    console.log(err)
+  }
+
+  return ""
+}

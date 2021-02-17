@@ -1,10 +1,15 @@
 ## IN PROGRESS
 
-- [ ] Restore last URL (use NaomiSV if none)
-- [ ] Colourize slider bar
-- [ ] Zoot up slider
+- [ ] Restore last URL
+      - Style datalist
+        https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist
+
+- [ ] Mute short videos (e.g. ">https://www.youtube.com/watch?v=ZPIMomJP4kY) while loading
 - [ ] Move panel style to outer container
 - [ ] Encapsulate stuff in 'state' object
+- [ ] Colorize slider bar
+- [ ] Zoot up slider
+- [ ] (optionally) discard beats with only 1 tap (?)
 
 - [ ] Not clustering properly when tapping double time
 - [ ] eslint
