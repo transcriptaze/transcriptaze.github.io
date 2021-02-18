@@ -4,7 +4,7 @@ var State = function () {
   this.restore = function() {
       const list = window.localStorage.getItem("history")
 
-      if (list === null) {
+      if ((list === null) || (list.length === 0)) {
         list.split(',').forEach(v => this.history.add('CKI7MnfBYJA'))
         list.split(',').forEach(v => this.history.add('ZPIMomJP4kY'))
       } else {

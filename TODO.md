@@ -1,7 +1,8 @@
 ## IN PROGRESS
 
+- [ ] Get YouTube video title for favourites list
+- [ ] Rework favourites lists as JSON
 - [ ] Move panel style to outer container
-- [ ] Get YouTube video title
 - [ ] Encapsulate stuff in 'state' object
 - [ ] Colorize slider bar
 - [ ] Zoot up slider
