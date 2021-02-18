@@ -3,8 +3,8 @@
 - [ ] Restore last URL
       - Style datalist
         https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist
+        https://stackoverflow.com/questions/47282202/youtube-iframe-player-api-getvideodata-is-removed-how-to-get-title
 
-- [ ] Mute short videos (e.g. ">https://www.youtube.com/watch?v=ZPIMomJP4kY) while loading
 - [ ] Move panel style to outer container
 - [ ] Encapsulate stuff in 'state' object
 - [ ] Colorize slider bar
@@ -21,6 +21,7 @@
 - [ ] https://codepen.io/ma_suwa/pen/eYdZVML
 - [ ] https://github.com/jvnaveenbabu/Neumorphism-Designs
 
+- [x] Mute videos while loading
 - [x] Beats
 - [x] Move 'insufficient data' warning back to JS
 - [x] Don't play if slider gap is 0 (< 1s?)

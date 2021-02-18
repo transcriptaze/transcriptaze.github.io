@@ -44,6 +44,7 @@ function onPlayerStateChange(event) {
         taps.duration = duration
 
         state.addVideo(getPlayerVideoID())
+
         cue(false)
       }
       break
@@ -90,6 +91,7 @@ function onLoad(event) {
     loaded = false    
 
     document.getElementById('loading').style.visibility = 'visible'
+    player.mute()
     player.loadVideoById({ videoId: vid, startSeconds: 0, endSeconds: 0.1 })
   }
 }
