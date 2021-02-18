@@ -147,6 +147,7 @@ div.url {
   flex-flow: row nowrap;
 }
 
+/*
 div.url #url {
   flex-grow: 1;
   margin-right: 8px;
@@ -159,6 +160,7 @@ div.url #url {
   outline: none;
   color: #444444;
 }
+*/
 
 div.url input#url::placeholder {
   color: gray;
@@ -182,6 +184,7 @@ div.url input#load {
   outline: none;
   color: #444444;
   font-size: 0.9em;
+  margin-left: 4px;
 }
 
 div.url input#load[disabled] {

@@ -12,10 +12,11 @@ var State = function () {
       }
 
       this.history.forEach(v => {
-        let option = document.createElement('option')
-        option.text = 'https://www.youtube.com/watch?v='+ v
-        option.value = 'https://www.youtube.com/watch?v='+ v
-        document.getElementById('favourites').appendChild(option)
+        let li = document.createElement('li')
+        li.id = v
+        li.setAttribute('role', 'option')
+        li.appendChild(document.createTextNode('https://www.youtube.com/watch?v='+ v));
+        document.getElementById('cb1-listbox').appendChild(li)
       })
   }
 
@@ -24,9 +25,9 @@ var State = function () {
       const list = new Set([ vid ])
 
       this.history.forEach(v => list.add(v))
-      this.history = list
+      this.history = new Set(Array.from(list).slice(0,6))
 
-      window.localStorage.setItem("history", Array.from(list).toString())      
+      window.localStorage.setItem("history", Array.from(history).toString())      
     }
   }
 }

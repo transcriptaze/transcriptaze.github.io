@@ -1,11 +1,7 @@
 ## IN PROGRESS
 
-- [ ] Restore last URL
-      - Style datalist
-        https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist
-        https://stackoverflow.com/questions/47282202/youtube-iframe-player-api-getvideodata-is-removed-how-to-get-title
-
 - [ ] Move panel style to outer container
+- [ ] Get YouTube video title
 - [ ] Encapsulate stuff in 'state' object
 - [ ] Colorize slider bar
 - [ ] Zoot up slider
@@ -20,7 +16,9 @@
 - [ ] Parse other YouTube URL formats
 - [ ] https://codepen.io/ma_suwa/pen/eYdZVML
 - [ ] https://github.com/jvnaveenbabu/Neumorphism-Designs
+- [ ] Cleanup combobox code/CSS
 
+- [x] Favourites
 - [x] Mute videos while loading
 - [x] Beats
 - [x] Move 'insufficient data' warning back to JS

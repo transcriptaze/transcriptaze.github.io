@@ -6,6 +6,7 @@
     <title>transcriptaze</title>
     <link rel="icon"       href="images/favicon.png">
     <link rel="stylesheet" href="css/transcriptaze.css" type="text/css">
+    <link rel="stylesheet" href="css/combobox.css" type="text/css">
     <script src="./javascript/wasm_exec.js"></script>
     <script>
       document.addEventListener('readystatechange', event => {
@@ -47,14 +48,32 @@
       <!-- MAIN -->
       <main>
         <div>
+
           <div id="container">
 
             <div id="file" class="url panel">
-              <input id="url" type="text" list="favourites" title="YouTube URL" placeholder="https://www.youtube.com/watch?v=CKI7MnfBYJA" value="" readonly/>
+
+              <div class="combobox combobox-list" style="z-index:5;">
+                <div class="group">
+                  <input id="url" class="cb_edit" type="text" role="combobox" 
+                         title="YouTube URL" placeholder="https://www.youtube.com/watch?v=CKI7MnfBYJA" value="" 
+                         aria-autocomplete="none" aria-expanded="false" aria-controls="cb1-listbox" 
+                         readonly />
+                  <button id="cb1-button" tabindex="-1" aria-label="States" aria-expanded="false" aria-controls="cb1-listbox">
+                    <span class="arrow">
+                      <svg width="18" height="16" aria-hidden="true" focusable="false">
+                        <polygon class="outline" points="1,4 17,4 9,15"></polygon>
+                        <polygon class="arrow" points="3,5 15,5 9,13"></polygon>
+                      </svg>
+                    </span>
+                  </button>
+                </div>
+                <ul id="cb1-listbox" role="listbox">
+                  <li id="none" role="option">&nbsp;</li>
+                </ul>
+              </div>
+
               <input id="load" type="button" value="Load" onclick="onLoad(event)" disabled />
-              <datalist id="favourites">
-                <option value=""></option>
-              </datalist>
             </div>
 
             <div id="video" class="panel" style="position:relative;">
@@ -169,8 +188,9 @@
  
   <script src="https://www.youtube.com/iframe_api"></script>
   <script src="javascript/state.js"></script>
-  <script src="javascript/slider.js"></script>
   <script src="javascript/transcriptaze.js"></script>
+  <script src="javascript/slider.js"></script>
+  <script src="javascript/combobox.js"></script>
   <script type="text/javascript">
     function onYouTubeIframeAPIReady() {
       player = new YT.Player('player', {

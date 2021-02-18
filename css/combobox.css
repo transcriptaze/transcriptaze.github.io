@@ -1,0 +1,122 @@
+.combobox {
+  flex-grow: 1;  
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.combobox-list {
+  position: relative;
+}
+
+.combobox .group {
+  flex-grow: 1;  
+  display: inline-flex;
+  border: 1px solid red;
+  border-radius: 2px;
+}
+
+.combobox input,
+.combobox button {
+  position: relative;
+  background-color: transparent;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  vertical-align: bottom;
+  border: none;
+  outline: none;
+}
+
+.combobox input {
+  flex-grow: 1;  
+  color: #444444;
+  font-size: 0.8em;
+  padding: 0.1em 0.3em;
+}
+
+.combobox button {
+  width: 1.25rem;
+}
+
+.combobox button[aria-expanded="true"] svg {
+  transform: rotate(180deg) translate(0, -1px);
+}
+
+.combobox .group.focus {
+  outline: none;
+}
+
+.combobox .group.focus input,
+.combobox .group.focus button {
+}
+
+.combobox button polygon.outline {
+  stroke: transparent;
+  fill: transparent;
+}
+
+.combobox button[aria-expanded="true"] polygon.outline,
+.combobox .group.focus polygon.outline {
+  stroke: transparent;
+  fill: transparent;
+}
+
+.combobox polygon.arrow {
+  fill: gray;
+  stroke: gray;
+}
+
+ul[role="listbox"] {
+  flex-grow: 1;  
+  width: 100%;
+
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  left: 0;
+  top: 1.75rem;
+  list-style: none;
+  background-color: #fdf6e3;
+  display: none;
+  box-sizing: border-box;
+  border: 1px solid red;
+  border-radius: 2px;
+  max-height: 11.4em;
+  overflow: scroll;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  font-size: 0.9em;
+
+}
+
+ul[role="listbox"] li[role="option"] {
+  display: block;
+  padding-left: 1em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin: 0;
+  text-align: left;
+}
+
+/* focus and hover styling */
+
+[role="listbox"].focus [role="option"][aria-selected="true"] {
+  background-color: #def;
+  padding-top: 0;
+  padding-bottom: 0;
+  border-top: 0.2em solid #8ccbf2;
+  border-bottom: 0.2em solid #8ccbf2;
+}
+
+@media (forced-colors: active), (-ms-high-contrast: active) {
+  [role="listbox"].focus [role="option"][aria-selected="true"] {
+    -ms-high-contrast-adjust: none; /* disable the backgrounds that Edge puts behind text */
+    background-color: highlight;
+    color: highlighttext;
+    border-color: currentColor;
+  }
+}
+
+[role="listbox"] li[role="option"]:hover {
+  background-color: #def;
+}
