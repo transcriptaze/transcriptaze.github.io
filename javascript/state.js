@@ -2,14 +2,24 @@ var State = function () {
   this.history = new Set()
 
   this.restore = function() {
-      const list = window.localStorage.getItem("history")
+      const list = []
+      const stored = window.localStorage.getItem("history")
 
-      if ((list === null) || (list.length === 0)) {
-        this.history.add('CKI7MnfBYJA')
-        this.history.add('ZPIMomJP4kY')
-      } else {
-        list.split(',').forEach(v => this.history.add(v))
+      if (stored !== null) {
+        stored.split(',').forEach(v => {
+          if (v.trim() !== '') {
+              list.push(v.trim())            
+          }
+        })
       }
+
+      if (list.length === 0) {
+        list.push('CKI7MnfBYJA')
+        list.push('ZPIMomJP4kY')
+        list.push('iFGhlOL4twQ')
+      }
+
+      this.history = new Set(list)      
 
       this.history.forEach(v => {
         let li = document.createElement('li')
@@ -21,13 +31,13 @@ var State = function () {
   }
 
   this.addVideo = function(vid) {
-    if (vid !== '') {
-      const list = new Set([ vid ])
+    if (vid.trim() !== '') {
+      const list = new Set([ vid.trim() ])
 
-      this.history.forEach(v => list.add(v))
+      this.history.forEach(v => list.add(v))      
       this.history = new Set(Array.from(list).slice(0,6))
 
-      window.localStorage.setItem("history", Array.from(history).toString())      
+      window.localStorage.setItem("history", Array.from(this.history).toString())      
     }
   }
 }

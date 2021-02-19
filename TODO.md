@@ -1,5 +1,7 @@
 ## IN PROGRESS
 
+- [ ] Make JSON file importable into taps2beats
+- [ ] Use theme for colours
 - [ ] Get YouTube video title for favourites list
 - [ ] Rework favourites lists as JSON
 - [ ] Move panel style to outer container
@@ -8,6 +10,7 @@
 - [ ] Zoot up slider
 - [ ] (optionally) discard beats with only 1 tap (?)
 
+- [ ] Load on list item selected
 - [ ] Not clustering properly when tapping double time
 - [ ] eslint
 - [ ] Fix logo
