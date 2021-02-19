@@ -1,3 +1,29 @@
+:root {  
+  --solarize-base03:  #002b36;
+  --solarize-base02:  #073642;
+  --solarize-base01:  #586e75;
+  --solarize-base00:  #657b83;
+  --solarize-base0:   #839496;
+  --solarize-base1:   #93a1a1;
+  --solarize-base2:   #eee8d5;
+  --solarize-base3:   #fdf6e3;
+  --solarize-yellow:  #b58900;
+  --solarize-orange:  #cb4b16;
+  --solarize-red:     #dc322f;
+  --solarize-magenta: #d33682;
+  --solarize-violet:  #6c71c4;
+  --solarize-blue:    #268bd2;
+  --solarize-cyan:    #2aa198;
+  --solarize-green:   #859900;
+
+  --background: var(--solarize-base3);
+  --panel:      var(--solarize-base2);
+  --text:       var(--solarize-base01);
+  --hint:       var(--solarize-base00);
+  --help:       var(--solarize-base00);
+  --border:     var(--solarize-red);
+}
+
 * {
   background: transparent;
   margin: 0;
@@ -5,19 +31,19 @@
 }
 
 html {
-  background: #fdf6e3;
+  background: var(--background);
   height: 100%;
 }
 
 body {
-  background: #fdf6e3;
+  background: var(--background);
   height: 100vh;
   padding: 0px;
 }
 
 .panel {
   padding: 4px;
-  background: #eee8d5;  
+  background: var(--panel);
   box-shadow: -1px -1px 2px 0 #fdf6e3, 1px 1px 4px 0 #93a1a1;
 }
 
@@ -57,7 +83,7 @@ header {
   align-items: center;
   font-family: sans-serif;
   font-size: 0.8em;
-  color: gray;
+  color: var(--hint);
 }
 
 #github {
@@ -66,22 +92,21 @@ header {
 }
 
 #github a {
-  color: #444444;
+  color: var(--text);
   font-size: 0.9em;
-  color: #444444;
   text-decoration: none;
 }
 
 #github a:hover {
-  color: #444444;
+  color: var(--text);
 }
 
 #github a:visited {
-  color: #444444;
+  color: var(--text);
 }
 
 #github a:active {
-  color: #444444;
+  color: var(--text);
 }
 
 nav {
@@ -147,29 +172,14 @@ div.url {
   flex-flow: row nowrap;
 }
 
-/*
-div.url #url {
-  flex-grow: 1;
-  margin-right: 8px;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 8px;
-  padding-right: 8px;
-  border: 1px solid red;
-  border-radius: 2px;
-  outline: none;
-  color: #444444;
-}
-*/
-
 div.url input#url::placeholder {
-  color: gray;
+  color: var(--hint);
   font-style: italic;
   font-size: 0.9em;
 }
 
 div.url input#url[readonly] {
-  color: lightgray;
+  color: var(--hint);
   font-style: italic;
 }
 
@@ -179,7 +189,7 @@ div.url input#load {
   padding-bottom: 4px;
   padding-left: 8px;
   padding-right: 8px;
-  border: 1px solid red;
+  border: 1px solid var(--border);
   border-radius: 2px;
   outline: none;
   color: #444444;
@@ -188,7 +198,7 @@ div.url input#load {
 }
 
 div.url input#load[disabled] {
-  color: lightgray;
+  color: var(--hint);
   font-style: italic;
 }
 
@@ -222,7 +232,7 @@ div.url input#load[disabled] {
 }
 
 .help p {  
-  color: gray;
+  color: var(--help);
   font-size: 0.8em;
   font-style: italic;  
   text-align: left;
@@ -258,14 +268,14 @@ div.controls {
 input.info {
   width: 4em;
   padding: 2px 4px 2px 4px;
-  border: 1px solid red;
+  border: 1px solid var(--border);
   border-radius: 2px;
   font-size: 0.7em;
   text-align: center;
 }
 
 input.info::placeholder {
-  color: gray;
+  color: var(--hint);
   font-style: italic;
 }
 
@@ -298,7 +308,7 @@ div#looping {
 }
 
 label.checktext {
-  border: 1px solid red;
+  border: 1px solid var(--border);
   border-radius: 2px;
   visibility: hidden;
 }
@@ -308,7 +318,7 @@ label.checktext input[type="checkbox"] {
 }
 
 label.checktext input[type="checkbox"] ~ span {
-  color: gray;
+  color: var(--hint);
   font-size: 0.65em;
   font-family: sans-serif;
   font-style: italic;
@@ -357,7 +367,7 @@ label#loop input[type="checkbox"]:checked ~ img.no {
 input#delay {
   width: 4em;
   padding: 2px 4px 2px 4px;
-  border: 1px solid red;
+  border: 1px solid var(--border);
   border-radius: 2px;
   text-align: center;
   margin-left: 4px;
@@ -365,7 +375,7 @@ input#delay {
 }
 
 input#delay::placeholder {
-  color: gray;
+  color: var(--hint);
   font-style: italic;
   font-size: 0.9em;
 }
@@ -414,7 +424,7 @@ div#message p {
   font-family: sans-serif;
   font-size: 0.6em;
   text-align: center;
-  color: gray;
+  color: var(--hint);
 }
 
 canvas.taps {

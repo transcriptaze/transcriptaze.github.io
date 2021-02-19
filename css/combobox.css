@@ -11,7 +11,7 @@
 .combobox .group {
   flex-grow: 1;  
   display: inline-flex;
-  border: 1px solid red;
+  border: 1px solid var(--border);
   border-radius: 2px;
 }
 
@@ -79,7 +79,7 @@ ul[role="listbox"] {
   background-color: #fdf6e3;
   display: none;
   box-sizing: border-box;
-  border: 1px solid red;
+  border: 1px solid var(--border);
   border-radius: 2px;
   max-height: 11.4em;
   overflow: scroll;

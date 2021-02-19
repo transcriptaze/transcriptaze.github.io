@@ -1,15 +1,14 @@
 ## IN PROGRESS
 
-- [ ] Rework favourites lists as JSON
-- [ ] Use theme for colours
 - [ ] Get YouTube video title for favourites list
+- [ ] Load on list item selected
+- [ ] GitHub logo
 - [ ] Move panel style to outer container
-- [ ] Encapsulate stuff in 'state' object
+- [ ] Encapsulate all the things in 'state' object
 - [ ] Colorize slider bar
 - [ ] Zoot up slider
 - [ ] (optionally) discard beats with only 1 tap (?)
 
-- [ ] Load on list item selected
 - [ ] Not clustering properly when tapping double time
 - [ ] eslint
 - [ ] Fix logo
@@ -21,6 +20,8 @@
 - [ ] https://github.com/jvnaveenbabu/Neumorphism-Designs
 - [ ] Cleanup combobox code/CSS
 
+- [x] Use solarize for colours
+- [x] Rework history as JSON
 - [x] Make JSON file importable into taps2beats
 - [x] Favourites
 - [x] Mute videos while loading
