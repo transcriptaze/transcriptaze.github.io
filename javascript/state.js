@@ -3,14 +3,10 @@ var State = function () {
 
   this.restore = function() {
       const list = []
-      const stored = window.localStorage.getItem("history")
+      const history = window.localStorage.getItem("history")
 
-      if (stored !== null) {
-        stored.split(',').forEach(v => {
-          if (v.trim() !== '') {
-              list.push(v.trim())            
-          }
-        })
+      if (history !== null) {
+        JSON.parse(history).forEach(v => list.push(v.vid))
       }
 
       if (list.length === 0) {
@@ -32,12 +28,19 @@ var State = function () {
 
   this.addVideo = function(vid) {
     if (vid.trim() !== '') {
-      const list = new Set([ vid.trim() ])
+      const set = new Set([ vid.trim() ])
+      const json = []
 
-      this.history.forEach(v => list.add(v))      
-      this.history = new Set(Array.from(list).slice(0,6))
+      this.history.forEach(v => set.add(v))      
+      this.history = new Set(Array.from(set).slice(0,6))
 
-      window.localStorage.setItem("history", Array.from(this.history).toString())      
+      this.history.forEach(v => {
+        json.push({
+          vid: v
+        })
+      })
+
+      window.localStorage.setItem("history", JSON.stringify(json))      
     }
   }
 }

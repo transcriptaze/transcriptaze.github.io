@@ -1,9 +1,8 @@
 ## IN PROGRESS
 
-- [ ] Make JSON file importable into taps2beats
+- [ ] Rework favourites lists as JSON
 - [ ] Use theme for colours
 - [ ] Get YouTube video title for favourites list
-- [ ] Rework favourites lists as JSON
 - [ ] Move panel style to outer container
 - [ ] Encapsulate stuff in 'state' object
 - [ ] Colorize slider bar
@@ -22,6 +21,7 @@
 - [ ] https://github.com/jvnaveenbabu/Neumorphism-Designs
 - [ ] Cleanup combobox code/CSS
 
+- [x] Make JSON file importable into taps2beats
 - [x] Favourites
 - [x] Mute videos while loading
 - [x] Beats
