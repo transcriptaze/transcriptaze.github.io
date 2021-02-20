@@ -539,6 +539,7 @@ class ComboboxAutocomplete {
 
   onOptionClick(event) {
     this.comboboxNode.value = event.target.textContent;
+    this.comboboxNode.value = event.target.dataset.url
     this.close(true);
   }
 

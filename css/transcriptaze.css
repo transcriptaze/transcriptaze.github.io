@@ -78,6 +78,7 @@ header {
 
 #banner {
   display: flex;
+  flex-flow: column nowrap;
   flex-grow: 1;
   justify-content: center;
   align-items: center;
@@ -87,8 +88,12 @@ header {
 }
 
 #github {
+  display: flex;
+  flex-flow: column nowrap;
   padding-top: 16px;
   padding-right: 32px;
+  justify-content: top;
+  align-items: right;
 }
 
 #github a {

@@ -1,6 +1,10 @@
 ## IN PROGRESS
 
 - [ ] Get YouTube video title for favourites list
+      - save/restore API key
+      - reinitialise list with titles
+      - seems to be losing title if API key is not present
+      
 - [ ] Load on list item selected
 - [ ] GitHub logo
 - [ ] Move panel style to outer container
@@ -9,6 +13,7 @@
 - [ ] Zoot up slider
 - [ ] (optionally) discard beats with only 1 tap (?)
 
+- [ ] Cleanup combobox code/CSS
 - [ ] Not clustering properly when tapping double time
 - [ ] eslint
 - [ ] Fix logo
@@ -18,7 +23,6 @@
 - [ ] Parse other YouTube URL formats
 - [ ] https://codepen.io/ma_suwa/pen/eYdZVML
 - [ ] https://github.com/jvnaveenbabu/Neumorphism-Designs
-- [ ] Cleanup combobox code/CSS
 
 - [x] Use solarize for colours
 - [x] Rework history as JSON
