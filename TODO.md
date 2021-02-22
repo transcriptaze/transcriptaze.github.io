@@ -2,9 +2,8 @@
 
 - [ ] Clear local storage button 
 - [ ] Get YouTube video title for favourites list
-      - reinitialise list with titles
+      - rework titles as LRU list
       - seems to be losing title if API key is not present
-      - split titles and history into separate items
 
 - [ ] Load on list item selected
 - [ ] GitHub logo

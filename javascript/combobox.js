@@ -554,17 +554,12 @@ class ComboboxAutocomplete {
   }
 }
 
-// Initialize comboboxes
+function recreateComboBox(id) {
+  const combobox = document.getElementById(id)
+  const comboboxNode = combobox.querySelector('input');
+  const buttonNode = combobox.querySelector('button');
+  const listboxNode = combobox.querySelector('[role="listbox"]');
+  const cba = new ComboboxAutocomplete(comboboxNode, buttonNode, listboxNode);
+// cba.init()
+}
 
-window.addEventListener('load', function () {
-  var comboboxes = document.querySelectorAll('.combobox-list');
-
-  for (var i = 0; i < comboboxes.length; i++) {
-    var combobox = comboboxes[i];
-    var comboboxNode = combobox.querySelector('input');
-    var buttonNode = combobox.querySelector('button');
-    var listboxNode = combobox.querySelector('[role="listbox"]');
-    var cba = new ComboboxAutocomplete(comboboxNode, buttonNode, listboxNode);
-//    cba.init();
-  }
-});

@@ -41,3 +41,7 @@ The R Journal, 3(2), 29–33. doi: 10.32614/RJ-2011-015.
 1. Icons by [FontAwesome](https://fontawesome.com):
    - _[FontAwesome](https://fontawesome.com/license)_
 
+2. Original source for slider.js and combobox.js:
+   - _[W3C](https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document)_
+
+
