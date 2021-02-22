@@ -67,10 +67,15 @@ function onPlayerStateChange(event) {
     case YT.PlayerState.CUED:
       document.getElementById('loading').style.visibility = 'hidden'
       document.getElementById('controls').style.visibility = 'visible'      
-      document.getElementById('help').style.visibility = 'visible'      
       document.getElementById('taps').style.visibility = 'visible'      
+
+      document.getElementById('help').style.display = 'block'      
+      document.getElementById('help').style.visibility = 'visible'      
       document.getElementById('help').dataset.state = 'cued'
       document.getElementById('help').focus()
+
+      document.getElementById('data').style.display = 'block'      
+
       react()
       player.unMute()
 
@@ -211,6 +216,17 @@ function onExport(event) {
     link.href = url
     link.download = vid + '.json'
     link.click()
+}
+
+function onDoubleClick(event) {
+  const apikey = document.getElementById('apikey')
+  const style = window.getComputedStyle(apikey)
+
+  if (style.display === 'none') {
+    apikey.style.display = 'block'
+  } else {
+    apikey.style.display = 'none'    
+  }
 }
 
 function react() {

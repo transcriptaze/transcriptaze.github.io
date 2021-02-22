@@ -1,11 +1,19 @@
 var State = function () {
   this.history = new Map()
+  this.apikey = ''
 
   this.restore = function() {
       this.history = new Map()      
+      this.apikey = ''
+
+      // Restore API key
+      let blob = window.localStorage.getItem("apikey")
+      if (blob !== null) {
+        this.apikey = blob.trim()
+      }
 
       // Restore history from local storage
-      const blob = window.localStorage.getItem("history")
+      blob = window.localStorage.getItem("history")
       if (blob !== null) {
         try {
           JSON.parse(blob).forEach(([k,v]) => {
@@ -74,10 +82,16 @@ var State = function () {
       }
     }
   }
+
+  this.setApiKey = function(key) {
+    this.apikey = key.trim()
+    
+    window.localStorage.setItem('apikey', this.apikey)
+  }
 }
 
 async function getVideoTitle(vid) {
-  const apikey = document.getElementById('apikey').value.trim()
+  const apikey = state.apikey
 
   if (apikey !== '' && vid.trim() !== '') {
     const url = 'https://www.googleapis.com/youtube/v3/videos?part=snippet&id=' + vid.trim() + '&fields=items(id,snippet)&key=' + apikey
@@ -101,4 +115,10 @@ async function getVideoTitle(vid) {
   }
 
   return null
+}
+
+function onApiKey(event) {
+  if (event.key === 'Enter') {
+    state.setApiKey(document.getElementById('apikey').value)
+  }
 }

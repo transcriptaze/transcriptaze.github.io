@@ -1,10 +1,11 @@
 ## IN PROGRESS
 
+- [ ] Clear local storage button 
 - [ ] Get YouTube video title for favourites list
-      - save/restore API key
       - reinitialise list with titles
       - seems to be losing title if API key is not present
-      
+      - split titles and history into separate items
+
 - [ ] Load on list item selected
 - [ ] GitHub logo
 - [ ] Move panel style to outer container
