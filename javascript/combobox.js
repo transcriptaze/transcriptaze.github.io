@@ -16,7 +16,7 @@ class ComboboxAutocomplete {
 
     this.hasHover = false;
 
-    this.isNone = false;
+    this.isNone = true
     this.isList = false;
     this.isBoth = false;
 
@@ -28,18 +28,6 @@ class ComboboxAutocomplete {
 
     this.filteredOptions = [];
     this.filter = '';
-
-    var autocomplete = this.comboboxNode.getAttribute('aria-autocomplete');
-
-    if (typeof autocomplete === 'string') {
-      autocomplete = autocomplete.toLowerCase();
-      this.isNone = autocomplete === 'none';
-      this.isList = autocomplete === 'list';
-      this.isBoth = autocomplete === 'both';
-    } else {
-      // default value of autocomplete
-      this.isNone = true;
-    }
 
     this.comboboxNode.addEventListener(
       'keydown',
@@ -92,6 +80,9 @@ class ComboboxAutocomplete {
     if (button && button.tagName === 'BUTTON') {
       button.addEventListener('click', this.onButtonClick.bind(this));
     }
+  }
+
+  init() {
   }
 
   getLowercaseContent(node) {
@@ -538,9 +529,11 @@ class ComboboxAutocomplete {
   // Listbox Option Events
 
   onOptionClick(event) {
-    this.comboboxNode.value = event.target.textContent;
+    this.comboboxNode.title = event.target.textContent
     this.comboboxNode.value = event.target.dataset.url
-    this.close(true);
+    this.close(true)
+
+    this.comboboxNode.dispatchEvent(new Event('change',{ bubbles:false, cancelable: true }))
   }
 
   onOptionMouseover() {
@@ -554,12 +547,13 @@ class ComboboxAutocomplete {
   }
 }
 
-function recreateComboBox(id) {
+function initialiseComboBox(id) {
   const combobox = document.getElementById(id)
   const comboboxNode = combobox.querySelector('input');
   const buttonNode = combobox.querySelector('button');
   const listboxNode = combobox.querySelector('[role="listbox"]');
   const cba = new ComboboxAutocomplete(comboboxNode, buttonNode, listboxNode);
-// cba.init()
+
+  cba.init()
 }
 

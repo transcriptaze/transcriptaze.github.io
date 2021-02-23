@@ -1,9 +1,7 @@
 ## IN PROGRESS
 
-- [ ] Check what happens with restricted YouTube API key
-- [ ] Load on list item selected
-
 - [ ] GitHub logo
+
 - [ ] Clear local storage button 
 - [ ] Move panel style to outer container
 - [ ] Encapsulate all the things in 'state' object
@@ -12,6 +10,7 @@
 - [ ] (optionally) discard beats with only 1 tap (?)
 
 - [ ] Cleanup combobox code/CSS
+- [ ] Cleanup slider code/CSS
 - [ ] Not clustering properly when tapping double time
 - [ ] eslint
 - [ ] Fix logo
@@ -22,6 +21,13 @@
 - [ ] https://codepen.io/ma_suwa/pen/eYdZVML
 - [ ] https://github.com/jvnaveenbabu/Neumorphism-Designs
 
+- [x] Display song title in input field hint
+- [x] Include '' in list of options
+- [x] Load video on list item selected
+- [x] Disable URL input autocomplete to avoid weird popup on URL input after e.g. paste
+- [x] Enable 'load' button when URL is not empty/invalid
+- [x] 'load' button hover style 
+- [x] Check what happens with restricted YouTube API key
 - [x] Get YouTube video title for favourites list
 - [x] Use solarize for colours
 - [x] Rework history as JSON

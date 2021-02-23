@@ -23,7 +23,7 @@ document.addEventListener('keydown', event => {
 
 function onPlayerReady(event) {
   document.getElementById('url').readOnly = false
-  document.getElementById('load').disabled = false
+  // document.getElementById('load').disabled = false
 
   start = new Slider('start', 'from', onSetStart)
   end = new Slider('end', 'to', onSetEnd)
@@ -85,6 +85,34 @@ function onPlayerStateChange(event) {
           react()
       }
       break
+  }
+}
+
+function onURL(event) {
+  const vid = getVideoID()
+
+  if (event.type === 'keydown') {
+    document.getElementById('url').title = 'YouTube URL'
+  }
+
+  if (vid !== '') {
+    document.getElementById('load').disabled = false
+  } else {
+    document.getElementById('load').disabled = true
+  }
+
+  if (vid !== '') {
+    switch (event.type) {
+      case 'change':
+        onLoad(event)
+        break;
+
+      case 'keydown':
+        if (event.key === 'Enter') {
+          onLoad(event)
+        }
+      break;
+    }
   }
 }
 
@@ -410,7 +438,7 @@ function getVideoID() {
       return vid
     }
   } catch(err) {
-    console.log(err)
+    // console.log(err)
   }
 
   return ""

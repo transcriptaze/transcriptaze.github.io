@@ -1,12 +1,11 @@
 var State = function () {
   this.history = new Set()
   this.titles = new Map()
-  this.apikey = ''
+  this.apikey = 'AIzaSyCmyt_fgo-FJRnYST53tdwE9K9Nn-UO-ZA'
 
   this.restore = function() {
     this.history.clear()
     this.titles.clear()
-    this.apikey = ''
 
     // Restore API key
     let blob = window.localStorage.getItem("apikey")
@@ -40,7 +39,7 @@ var State = function () {
       this.history.add('ZPIMomJP4kY')
       this.history.add('iFGhlOL4twQ')        
      
-      this.titles.set('CKI7MnfBYJA', 'Winter Song  |  Sara Bareilles & Ingrid Michaelson (Harp Cover)')
+      this.titles.set('CKI7MnfBYJA', 'Winter Song | Sara Bareilles & Ingrid Michaelson (Harp Cover)')
       this.titles.set('ZPIMomJP4kY', 'Happy Birthday - Bluesy Fingerstyle Guitar')
       this.titles.set('iFGhlOL4twQ', 'Chuck Loeb - Billy\'s song (cover)')        
     }
@@ -117,8 +116,13 @@ function onApiKey(event) {
 }
 
 function setPickList() {
-  const items = []
-
+  const none = document.createElement('li')
+  none.id = 'none'
+  none.setAttribute('role', 'option')
+  none.dataset.url = ''
+  none.appendChild(document.createTextNode('(none)'))
+        
+  const items = [ none ]
   state.history.forEach(vid => {
     let li = document.createElement('li')
     let title = 'https://www.youtube.com/watch?v='+ vid
@@ -140,5 +144,5 @@ function setPickList() {
 
   clone.replaceChildren(...items)
   list.replaceWith(clone)
-  recreateComboBox('picklist')
+  initialiseComboBox('picklist')
 }

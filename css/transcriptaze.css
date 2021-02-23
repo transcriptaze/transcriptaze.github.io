@@ -197,6 +197,10 @@ div.url {
   flex-flow: row nowrap;
 }
 
+div.url input#url {
+  background: transparent;
+}
+
 div.url input#url::placeholder {
   color: var(--hint);
   font-style: italic;
@@ -208,23 +212,30 @@ div.url input#url[readonly] {
   font-style: italic;
 }
 
-div.url input#load {
-  align-self: flex-end;
-  padding-top: 4px;
-  padding-bottom: 4px;
+div.url button#load {
+  padding-top: 1px;
+  padding-bottom: 1px;
   padding-left: 8px;
   padding-right: 8px;
+  margin-left: 4px;
   border: 1px solid var(--border);
   border-radius: 2px;
-  outline: none;
-  color: #444444;
-  font-size: 0.9em;
-  margin-left: 4px;
+  outline: none; 
 }
 
-div.url input#load[disabled] {
-  color: var(--hint);
-  font-style: italic;
+div.url button#load img {
+  width: 20px;
+  height: 20px;
+  outline: none;
+  filter: invert(31%) sepia(17%) saturate(1936%) hue-rotate(71deg) brightness(88%) contrast(90%);
+}
+
+div.url button#load:hover img {
+  filter: invert(14%) sepia(69%) saturate(7492%) hue-rotate(358deg) brightness(104%) contrast(117%);
+}
+
+div.url button#load[disabled] img {
+  filter: invert(93%) sepia(0%) saturate(5805%) hue-rotate(134deg) brightness(133%) contrast(51%);
 }
 
 #player {

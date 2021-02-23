@@ -61,8 +61,9 @@
               <div id="picklist" class="combobox combobox-list" style="z-index:5;">
                 <div class="group">
                   <input id="url" class="cb_edit" type="text" role="combobox" 
-                         title="YouTube URL" placeholder="https://www.youtube.com/watch?v=CKI7MnfBYJA" value="" 
-                         aria-autocomplete="none" aria-expanded="false" aria-controls="cb1-listbox" 
+                         autocomplete="off" title="YouTube URL" placeholder="https://www.youtube.com/watch?v=CKI7MnfBYJA" value="" 
+                         onchange="onURL(event)" onkeydown="onURL(event)"
+                         aria-expanded="false" aria-controls="cb1-listbox" 
                          readonly />
                   <button id="cb1-button" tabindex="-1" aria-label="States" aria-expanded="false" aria-controls="cb1-listbox">
                     <span class="arrow">
@@ -78,7 +79,10 @@
                 </ul>
               </div>
 
-              <input id="load" type="button" value="Load" onclick="onLoad(event)" disabled />
+              <button id="load" type="button" onclick="onLoad(event)" disabled>
+                <img src="images/cloud-download-alt-solid.svg" />
+              </button>
+
             </div>
 
             <div id="video" class="panel" style="position:relative;">
