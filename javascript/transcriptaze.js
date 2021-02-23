@@ -219,17 +219,14 @@ function onExport(event) {
 }
 
 function onDoubleClick(event) {
-  // const apikey = document.getElementById('apikey')
-  // const style = window.getComputedStyle(apikey)
+  const apikey = document.getElementById('apikey')
+  const style = window.getComputedStyle(apikey)
 
-  // if (style.display === 'none') {
-  //   apikey.style.display = 'block'
-  // } else {
-  //   apikey.style.display = 'none'    
-  // }
-
-        setPickList()
-
+  if (style.display === 'none') {
+    apikey.style.display = 'block'
+  } else {
+    apikey.style.display = 'none'    
+  }
 }
 
 function react() {
