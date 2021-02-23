@@ -120,6 +120,17 @@ div#banner input::placeholder {
   text-decoration: none;
 }
 
+#github a span {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+}
+
+#github a img {
+  width: 20px;
+  margin-right:8px;
+}
+
 #github a:hover {
   color: var(--text);
 }

@@ -1,7 +1,6 @@
 ## IN PROGRESS
 
-- [ ] GitHub logo
-
+- [ ] github.com/transcriptaze logo
 - [ ] Clear local storage button 
 - [ ] Move panel style to outer container
 - [ ] Encapsulate all the things in 'state' object
@@ -21,6 +20,7 @@
 - [ ] https://codepen.io/ma_suwa/pen/eYdZVML
 - [ ] https://github.com/jvnaveenbabu/Neumorphism-Designs
 
+- [x] GitHub logo
 - [x] Display song title in input field hint
 - [x] Include '' in list of options
 - [x] Load video on list item selected
