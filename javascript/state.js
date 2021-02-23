@@ -50,13 +50,11 @@ var State = function () {
 
   this.addVideo = function(vid) {
     if (vid.trim() !== '') {
-      const list = new Set([ vid.trim() ])
+      const lru = new Set([ vid.trim(), ...Array.from(this.history) ])
 
-      this.history.forEach(v => list.add(v))
-      this.history = new Set(Array.from(list).slice(0,6))
+      this.history = new Set(Array.from(lru).slice(0,8))
 
       window.localStorage.setItem('history', JSON.stringify(Array.from(this.history)))
-
       lookup(state.apikey, vid.trim())
     }
   }
@@ -69,7 +67,7 @@ var State = function () {
 }
 
 async function lookup(apikey, vid) {
-  if (apikey !== '' || vid !== '') {
+ if (apikey !== '' || vid !== '') {
     const url = 'https://www.googleapis.com/youtube/v3/videos?part=snippet&id=' + vid.trim() + '&fields=items(id,snippet)&key=' + apikey
     const request = new Request(url, { 
       method: 'GET', 
@@ -80,22 +78,33 @@ async function lookup(apikey, vid) {
       referrerPolicy: 'no-referrer'
     })
 
-    const promise = fetch(request)
-                        .then(response => response.json())
-                        .then(object => {
-                            if (object.items.length > 0) {
-                              return object.items[0].snippet.title
-                            }
+    const get = fetch(request)
+                  .then(response => {
+                    if (response.ok) {
+                      return response.json()
+                    } else if (response.statusText !== '') {
+                      throw new Error('YouTube video title request failed (' + response.status + ' ' + response.statusText + ')')
+                    } else {
+                      throw new Error('YouTube video title request failed (' + response.status + ')')
+                    }
+                  }).then(object => {
+                    if (object.items.length > 0) {
+                      return object.items[0].snippet.title
+                    }
 
-                            return ''
-                        })
-                        .catch(err => console.log(err))
+                    return ''
+                  }).catch(err => {
+                    console.log(err.toString())
+                    return ''
+                  })
 
-    const title = await promise
-
+    const title = await get
     if (title.trim() !== '') {
-      state.titles.set(vid.trim(), title.trim())
-      window.localStorage.setItem('titles', JSON.stringify(Array.from(state.titles.entries()).slice(0,20)))
+      const lru = new Map([[vid, title.trim()], ...Array.from(state.titles)])
+
+      state.titles = new Map(Array.from(lru).slice(0,25))
+
+      window.localStorage.setItem('titles', JSON.stringify(Array.from(state.titles.entries())))
       setPickList()
     }
   }

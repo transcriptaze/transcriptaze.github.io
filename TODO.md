@@ -1,12 +1,10 @@
 ## IN PROGRESS
 
-- [ ] Clear local storage button 
-- [ ] Get YouTube video title for favourites list
-      - rework titles as LRU list
-      - seems to be losing title if API key is not present
-
+- [ ] Check what happens with restricted YouTube API key
 - [ ] Load on list item selected
+
 - [ ] GitHub logo
+- [ ] Clear local storage button 
 - [ ] Move panel style to outer container
 - [ ] Encapsulate all the things in 'state' object
 - [ ] Colorize slider bar
@@ -24,6 +22,7 @@
 - [ ] https://codepen.io/ma_suwa/pen/eYdZVML
 - [ ] https://github.com/jvnaveenbabu/Neumorphism-Designs
 
+- [x] Get YouTube video title for favourites list
 - [x] Use solarize for colours
 - [x] Rework history as JSON
 - [x] Make JSON file importable into taps2beats
