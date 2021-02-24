@@ -1,6 +1,5 @@
 ## IN PROGRESS
 
-- [ ] Explanatory text
 - [ ] hover style for export/clear buttons
 - [ ] Rework using JS modules
 - [ ] Fix logo
@@ -21,6 +20,7 @@
 - [ ] https://codepen.io/ma_suwa/pen/eYdZVML
 - [ ] https://github.com/jvnaveenbabu/Neumorphism-Designs
 
+- [x] Explanatory text
 - [x] eslint
 - [x] GitHub logo
 - [x] Display song title in input field hint

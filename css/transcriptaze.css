@@ -87,6 +87,11 @@ div#banner {
   color: var(--hint);
 }
 
+div#banner p {
+  max-width: 640px;
+  font-style: italic;
+}
+
 div#banner input {
   width: 384px; 
   margin-top: 8px; 
