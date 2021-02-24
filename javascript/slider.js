@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-var Slider = function (node, label, handler) {
+const Slider = function (node, label, handler) {
   this.domNode = document.getElementById(node)
   this.labelNode = document.getElementById(label)
   this.labelLeft = this.domNode.classList.contains('min')
@@ -27,7 +27,7 @@ var Slider = function (node, label, handler) {
     pageUp: 33,
     pageDown: 34,
     end: 35,
-    home: 36,
+    home: 36
   })
 }
 
@@ -50,7 +50,7 @@ Slider.prototype.init = function (min, max, t) {
     this.maxDomNode = this.domNode.nextElementSibling
   }
 
-  if (this.domNode.tabIndex != 0) {
+  if (this.domNode.tabIndex !== 0) {
     this.domNode.tabIndex = 0
   }
 
@@ -63,11 +63,11 @@ Slider.prototype.init = function (min, max, t) {
 }
 
 Slider.prototype.moveSliderTo = function (value, released) {
-  var valueMax = parseInt(this.domNode.getAttribute('aria-valuemax'));
-  var valueMin = parseInt(this.domNode.getAttribute('aria-valuemin'));
+  const valueMax = parseInt(this.domNode.getAttribute('aria-valuemax'))
+  const valueMin = parseInt(this.domNode.getAttribute('aria-valuemin'))
 
   if (value > valueMax) {
-    value = valueMax;
+    value = valueMax
   }
 
   if (value < valueMin) {
@@ -78,19 +78,19 @@ Slider.prototype.moveSliderTo = function (value, released) {
   this.dolValueNow = value
 
   if (released) {
-    this.domNode.setAttribute('aria-valuenow', this.valueNow);    
+    this.domNode.setAttribute('aria-valuenow', this.valueNow)
   }
 
   if (this.minDomNode) {
-    this.minDomNode.setAttribute('aria-valuemax', this.valueNow);
+    this.minDomNode.setAttribute('aria-valuemax', this.valueNow)
   }
 
   if (this.maxDomNode) {
-    this.maxDomNode.setAttribute('aria-valuemin', this.valueNow);
+    this.maxDomNode.setAttribute('aria-valuemin', this.valueNow)
   }
 
   const range = this.railMax - this.railMin
-  const scale = this.railWidth/range
+  const scale = this.railWidth / range
   const pos = (this.valueNow - this.railMin) * scale
 
   if (this.labelLeft) {
@@ -113,66 +113,66 @@ Slider.prototype.moveSliderTo = function (value, released) {
 }
 
 Slider.prototype.handleKeyDown = function (event) {
-  var flag = false;
+  let flag = false
 
   switch (event.keyCode) {
     case this.keyCode.left:
     case this.keyCode.down:
       this.moveSliderTo(this.valueNow - 1, true)
-      flag = true;
-      break;
+      flag = true
+      break
 
     case this.keyCode.right:
     case this.keyCode.up:
       this.moveSliderTo(this.valueNow + 1, true)
-      flag = true;
-      break;
+      flag = true
+      break
 
     case this.keyCode.pageDown:
       this.moveSliderTo(this.valueNow - 10, true)
-      flag = true;
-      break;
+      flag = true
+      break
 
     case this.keyCode.pageUp:
       this.moveSliderTo(this.valueNow + 10, true)
-      flag = true;
-      break;
+      flag = true
+      break
 
     case this.keyCode.home:
       this.moveSliderTo(this.railMin, true)
-      flag = true;
-      break;
+      flag = true
+      break
 
     case this.keyCode.end:
       this.moveSliderTo(this.railMax, true)
-      flag = true;
-      break;
+      flag = true
+      break
 
     default:
-      break;
+      break
   }
 
   if (flag) {
-    event.preventDefault();
-    event.stopPropagation();
+    event.preventDefault()
+    event.stopPropagation()
   }
-};
+}
 
 Slider.prototype.handleFocus = function () {
-  this.domNode.classList.add('focus');
-  this.railDomNode.classList.add('focus');
-};
+  this.domNode.classList.add('focus')
+  this.railDomNode.classList.add('focus')
+}
 
 Slider.prototype.handleBlur = function () {
-  this.domNode.classList.remove('focus');
-  this.railDomNode.classList.remove('focus');
-};
+  this.domNode.classList.remove('focus')
+  this.railDomNode.classList.remove('focus')
+}
 
 Slider.prototype.handleMouseDown = function (event) {
-  var self = this;
+  const self = this
 
-  var handleMouseMove = function (event) {
-    var diffX = event.pageX - self.railDomNode.offsetLeft
+  const handleMouseMove = function (event) {
+    const diffX = event.pageX - self.railDomNode.offsetLeft
     self.valueNow = self.railMin + parseInt(((self.railMax - self.railMin) * diffX) / self.railWidth)
 
     self.moveSliderTo(self.valueNow)
@@ -181,7 +181,7 @@ Slider.prototype.handleMouseDown = function (event) {
     event.stopPropagation()
   }
 
-  var handleMouseUp = function () {
+  const handleMouseUp = function () {
     document.removeEventListener('mousemove', handleMouseMove)
     document.removeEventListener('mouseup', handleMouseUp)
 
@@ -195,16 +195,4 @@ Slider.prototype.handleMouseDown = function (event) {
   event.stopPropagation()
 
   this.domNode.focus()
-}
-
-function format(t) {
-  let minutes = 0
-  let seconds = 0
-
-  if (t > 0) {
-    minutes = Math.floor(t/60)
-    seconds = t % 60
-  }
-
-  return String(minutes) + ':' + String(seconds).padStart(2,'0')
 }

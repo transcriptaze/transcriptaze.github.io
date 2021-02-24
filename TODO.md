@@ -1,5 +1,7 @@
 ## IN PROGRESS
 
+- [ ] Explanatory text
+- [ ] Fix logo
 - [ ] github.com/transcriptaze logo
 - [ ] Clear local storage button 
 - [ ] Move panel style to outer container
@@ -7,19 +9,17 @@
 - [ ] Colorize slider bar
 - [ ] Zoot up slider
 - [ ] (optionally) discard beats with only 1 tap (?)
+- [ ] Not clustering properly when tapping double time
 
 - [ ] Cleanup combobox code/CSS
 - [ ] Cleanup slider code/CSS
-- [ ] Not clustering properly when tapping double time
-- [ ] eslint
-- [ ] Fix logo
-- [ ] Explanatory text
 - [ ] 'Loading' windmill
 - [ ] Fade out loading overlay
 - [ ] Parse other YouTube URL formats
 - [ ] https://codepen.io/ma_suwa/pen/eYdZVML
 - [ ] https://github.com/jvnaveenbabu/Neumorphism-Designs
 
+- [x] eslint
 - [x] GitHub logo
 - [x] Display song title in input field hint
 - [x] Include '' in list of options

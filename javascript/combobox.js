@@ -3,268 +3,268 @@
  *   https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document
  */
 
-'use strict';
+'use strict'
 
 class ComboboxAutocomplete {
-  constructor(comboboxNode, buttonNode, listboxNode) {
-    this.comboboxNode = comboboxNode;
-    this.buttonNode = buttonNode;
-    this.listboxNode = listboxNode;
+  constructor (comboboxNode, buttonNode, listboxNode) {
+    this.comboboxNode = comboboxNode
+    this.buttonNode = buttonNode
+    this.listboxNode = listboxNode
 
-    this.comboboxHasVisualFocus = false;
-    this.listboxHasVisualFocus = false;
+    this.comboboxHasVisualFocus = false
+    this.listboxHasVisualFocus = false
 
-    this.hasHover = false;
+    this.hasHover = false
 
     this.isNone = true
-    this.isList = false;
-    this.isBoth = false;
+    this.isList = false
+    this.isBoth = false
 
-    this.allOptions = [];
+    this.allOptions = []
 
-    this.option = null;
-    this.firstOption = null;
-    this.lastOption = null;
+    this.option = null
+    this.firstOption = null
+    this.lastOption = null
 
-    this.filteredOptions = [];
-    this.filter = '';
+    this.filteredOptions = []
+    this.filter = ''
 
     this.comboboxNode.addEventListener(
       'keydown',
       this.onComboboxKeyDown.bind(this)
-    );
+    )
     this.comboboxNode.addEventListener(
       'keyup',
       this.onComboboxKeyUp.bind(this)
-    );
+    )
     this.comboboxNode.addEventListener(
       'click',
       this.onComboboxClick.bind(this)
-    );
+    )
     this.comboboxNode.addEventListener(
       'focus',
       this.onComboboxFocus.bind(this)
-    );
-    this.comboboxNode.addEventListener('blur', this.onComboboxBlur.bind(this));
+    )
+    this.comboboxNode.addEventListener('blur', this.onComboboxBlur.bind(this))
 
     // initialize pop up menu
 
     this.listboxNode.addEventListener(
       'mouseover',
       this.onListboxMouseover.bind(this)
-    );
+    )
     this.listboxNode.addEventListener(
       'mouseout',
       this.onListboxMouseout.bind(this)
-    );
+    )
 
     // Traverse the element children of domNode: configure each with
     // option role behavior and store reference in.options array.
-    var nodes = this.listboxNode.getElementsByTagName('LI');
+    const nodes = this.listboxNode.getElementsByTagName('LI')
 
-    for (var i = 0; i < nodes.length; i++) {
-      var node = nodes[i];
-      this.allOptions.push(node);
+    for (let i = 0; i < nodes.length; i++) {
+      const node = nodes[i]
+      this.allOptions.push(node)
 
-      node.addEventListener('click', this.onOptionClick.bind(this));
-      node.addEventListener('mouseover', this.onOptionMouseover.bind(this));
-      node.addEventListener('mouseout', this.onOptionMouseout.bind(this));
+      node.addEventListener('click', this.onOptionClick.bind(this))
+      node.addEventListener('mouseover', this.onOptionMouseover.bind(this))
+      node.addEventListener('mouseout', this.onOptionMouseout.bind(this))
     }
 
-    this.filterOptions();
+    this.filterOptions()
 
     // Open Button
 
-    var button = this.comboboxNode.nextElementSibling;
+    const button = this.comboboxNode.nextElementSibling
 
     if (button && button.tagName === 'BUTTON') {
-      button.addEventListener('click', this.onButtonClick.bind(this));
+      button.addEventListener('click', this.onButtonClick.bind(this))
     }
   }
 
-  init() {
+  init () {
   }
 
-  getLowercaseContent(node) {
-    return node.textContent.toLowerCase();
+  getLowercaseContent (node) {
+    return node.textContent.toLowerCase()
   }
 
-  setActiveDescendant(option) {
+  setActiveDescendant (option) {
     if (option && this.listboxHasVisualFocus) {
-      this.comboboxNode.setAttribute('aria-activedescendant', option.id);
+      this.comboboxNode.setAttribute('aria-activedescendant', option.id)
     } else {
-      this.comboboxNode.setAttribute('aria-activedescendant', '');
+      this.comboboxNode.setAttribute('aria-activedescendant', '')
     }
   }
 
-  setValue(value) {
-    this.filter = value;
-    this.comboboxNode.value = this.filter;
-    this.comboboxNode.setSelectionRange(this.filter.length, this.filter.length);
-    this.filterOptions();
+  setValue (value) {
+    this.filter = value
+    this.comboboxNode.value = this.filter
+    this.comboboxNode.setSelectionRange(this.filter.length, this.filter.length)
+    this.filterOptions()
   }
 
-  setOption(option, flag) {
+  setOption (option, flag) {
     if (typeof flag !== 'boolean') {
-      flag = false;
+      flag = false
     }
 
     if (option) {
-      this.option = option;
-      this.setCurrentOptionStyle(this.option);
-      this.setActiveDescendant(this.option);
+      this.option = option
+      this.setCurrentOptionStyle(this.option)
+      this.setActiveDescendant(this.option)
 
       if (this.isBoth) {
-        this.comboboxNode.value = this.option.textContent;
+        this.comboboxNode.value = this.option.textContent
         if (flag) {
           this.comboboxNode.setSelectionRange(
             this.option.textContent.length,
             this.option.textContent.length
-          );
+          )
         } else {
           this.comboboxNode.setSelectionRange(
             this.filter.length,
             this.option.textContent.length
-          );
+          )
         }
       }
     }
   }
 
-  setVisualFocusCombobox() {
-    this.listboxNode.classList.remove('focus');
-    this.comboboxNode.parentNode.classList.add('focus'); // set the focus class to the parent for easier styling
-    this.comboboxHasVisualFocus = true;
-    this.listboxHasVisualFocus = false;
-    this.setActiveDescendant(false);
+  setVisualFocusCombobox () {
+    this.listboxNode.classList.remove('focus')
+    this.comboboxNode.parentNode.classList.add('focus') // set the focus class to the parent for easier styling
+    this.comboboxHasVisualFocus = true
+    this.listboxHasVisualFocus = false
+    this.setActiveDescendant(false)
   }
 
-  setVisualFocusListbox() {
-    this.comboboxNode.parentNode.classList.remove('focus');
-    this.comboboxHasVisualFocus = false;
-    this.listboxHasVisualFocus = true;
-    this.listboxNode.classList.add('focus');
-    this.setActiveDescendant(this.option);
+  setVisualFocusListbox () {
+    this.comboboxNode.parentNode.classList.remove('focus')
+    this.comboboxHasVisualFocus = false
+    this.listboxHasVisualFocus = true
+    this.listboxNode.classList.add('focus')
+    this.setActiveDescendant(this.option)
   }
 
-  removeVisualFocusAll() {
-    this.comboboxNode.parentNode.classList.remove('focus');
-    this.comboboxHasVisualFocus = false;
-    this.listboxHasVisualFocus = false;
-    this.listboxNode.classList.remove('focus');
-    this.option = null;
-    this.setActiveDescendant(false);
+  removeVisualFocusAll () {
+    this.comboboxNode.parentNode.classList.remove('focus')
+    this.comboboxHasVisualFocus = false
+    this.listboxHasVisualFocus = false
+    this.listboxNode.classList.remove('focus')
+    this.option = null
+    this.setActiveDescendant(false)
   }
 
   // ComboboxAutocomplete Events
 
-  filterOptions() {
+  filterOptions () {
     // do not filter any options if autocomplete is none
     if (this.isNone) {
-      this.filter = '';
+      this.filter = ''
     }
 
-    var option = null;
-    var currentOption = this.option;
-    var filter = this.filter.toLowerCase();
+    let option = null
+    const currentOption = this.option
+    const filter = this.filter.toLowerCase()
 
-    this.filteredOptions = [];
-    this.listboxNode.innerHTML = '';
+    this.filteredOptions = []
+    this.listboxNode.innerHTML = ''
 
-    for (var i = 0; i < this.allOptions.length; i++) {
-      option = this.allOptions[i];
+    for (let i = 0; i < this.allOptions.length; i++) {
+      option = this.allOptions[i]
       if (
         filter.length === 0 ||
         this.getLowercaseContent(option).indexOf(filter) === 0
       ) {
-        this.filteredOptions.push(option);
-        this.listboxNode.appendChild(option);
+        this.filteredOptions.push(option)
+        this.listboxNode.appendChild(option)
       }
     }
 
     // Use populated options array to initialize firstOption and lastOption.
-    var numItems = this.filteredOptions.length;
+    const numItems = this.filteredOptions.length
     if (numItems > 0) {
-      this.firstOption = this.filteredOptions[0];
-      this.lastOption = this.filteredOptions[numItems - 1];
+      this.firstOption = this.filteredOptions[0]
+      this.lastOption = this.filteredOptions[numItems - 1]
 
       if (currentOption && this.filteredOptions.indexOf(currentOption) >= 0) {
-        option = currentOption;
+        option = currentOption
       } else {
-        option = this.firstOption;
+        option = this.firstOption
       }
     } else {
-      this.firstOption = null;
-      option = null;
-      this.lastOption = null;
+      this.firstOption = null
+      option = null
+      this.lastOption = null
     }
 
-    return option;
+    return option
   }
 
-  setCurrentOptionStyle(option) {
-    for (var i = 0; i < this.filteredOptions.length; i++) {
-      var opt = this.filteredOptions[i];
+  setCurrentOptionStyle (option) {
+    for (let i = 0; i < this.filteredOptions.length; i++) {
+      const opt = this.filteredOptions[i]
       if (opt === option) {
-        opt.setAttribute('aria-selected', 'true');
+        opt.setAttribute('aria-selected', 'true')
         if (
           this.listboxNode.scrollTop + this.listboxNode.offsetHeight <
           opt.offsetTop + opt.offsetHeight
         ) {
           this.listboxNode.scrollTop =
-            opt.offsetTop + opt.offsetHeight - this.listboxNode.offsetHeight;
+            opt.offsetTop + opt.offsetHeight - this.listboxNode.offsetHeight
         } else if (this.listboxNode.scrollTop > opt.offsetTop + 2) {
-          this.listboxNode.scrollTop = opt.offsetTop;
+          this.listboxNode.scrollTop = opt.offsetTop
         }
       } else {
-        opt.removeAttribute('aria-selected');
+        opt.removeAttribute('aria-selected')
       }
     }
   }
 
-  getPreviousOption(currentOption) {
+  getPreviousOption (currentOption) {
     if (currentOption !== this.firstOption) {
-      var index = this.filteredOptions.indexOf(currentOption);
-      return this.filteredOptions[index - 1];
+      const index = this.filteredOptions.indexOf(currentOption)
+      return this.filteredOptions[index - 1]
     }
-    return this.lastOption;
+    return this.lastOption
   }
 
-  getNextOption(currentOption) {
+  getNextOption (currentOption) {
     if (currentOption !== this.lastOption) {
-      var index = this.filteredOptions.indexOf(currentOption);
-      return this.filteredOptions[index + 1];
+      const index = this.filteredOptions.indexOf(currentOption)
+      return this.filteredOptions[index + 1]
     }
-    return this.firstOption;
+    return this.firstOption
   }
 
   /* MENU DISPLAY METHODS */
 
-  doesOptionHaveFocus() {
-    return this.comboboxNode.getAttribute('aria-activedescendant') !== '';
+  doesOptionHaveFocus () {
+    return this.comboboxNode.getAttribute('aria-activedescendant') !== ''
   }
 
-  isOpen() {
-    return this.listboxNode.style.display === 'block';
+  isOpen () {
+    return this.listboxNode.style.display === 'block'
   }
 
-  isClosed() {
-    return this.listboxNode.style.display !== 'block';
+  isClosed () {
+    return this.listboxNode.style.display !== 'block'
   }
 
-  hasOptions() {
-    return this.filteredOptions.length;
+  hasOptions () {
+    return this.filteredOptions.length
   }
 
-  open() {
-    this.listboxNode.style.display = 'block';
-    this.comboboxNode.setAttribute('aria-expanded', 'true');
-    this.buttonNode.setAttribute('aria-expanded', 'true');
+  open () {
+    this.listboxNode.style.display = 'block'
+    this.comboboxNode.setAttribute('aria-expanded', 'true')
+    this.buttonNode.setAttribute('aria-expanded', 'true')
   }
 
-  close(force) {
+  close (force) {
     if (typeof force !== 'boolean') {
-      force = false;
+      force = false
     }
 
     if (
@@ -273,150 +273,151 @@ class ComboboxAutocomplete {
         !this.listboxHasVisualFocus &&
         !this.hasHover)
     ) {
-      this.setCurrentOptionStyle(false);
-      this.listboxNode.style.display = 'none';
-      this.comboboxNode.setAttribute('aria-expanded', 'false');
-      this.buttonNode.setAttribute('aria-expanded', 'false');
-      this.setActiveDescendant(false);
+      this.setCurrentOptionStyle(false)
+      this.listboxNode.style.display = 'none'
+      this.comboboxNode.setAttribute('aria-expanded', 'false')
+      this.buttonNode.setAttribute('aria-expanded', 'false')
+      this.setActiveDescendant(false)
     }
   }
 
   /* combobox Events */
 
-  onComboboxKeyDown(event) {
-    var flag = false,
-      altKey = event.altKey;
+  onComboboxKeyDown (event) {
+    let flag = false
+    const altKey = event.altKey
 
     if (event.ctrlKey || event.shiftKey) {
-      return;
+      return
     }
 
     switch (event.key) {
       case 'Enter':
         if (this.listboxHasVisualFocus) {
-          this.setValue(this.option.textContent);
+          this.setValue(this.option.textContent)
         }
-        this.close(true);
-        this.setVisualFocusCombobox();
-        flag = true;
-        break;
+        this.close(true)
+        this.setVisualFocusCombobox()
+        flag = true
+        break
 
       case 'Down':
       case 'ArrowDown':
         if (this.filteredOptions.length > 0) {
           if (altKey) {
-            this.open();
+            this.open()
           } else {
-            this.open();
+            this.open()
             if (
               this.listboxHasVisualFocus ||
               (this.isBoth && this.filteredOptions.length > 1)
             ) {
-              this.setOption(this.getNextOption(this.option), true);
-              this.setVisualFocusListbox();
+              this.setOption(this.getNextOption(this.option), true)
+              this.setVisualFocusListbox()
             } else {
-              this.setOption(this.firstOption, true);
-              this.setVisualFocusListbox();
+              this.setOption(this.firstOption, true)
+              this.setVisualFocusListbox()
             }
           }
         }
-        flag = true;
-        break;
+        flag = true
+        break
 
       case 'Up':
       case 'ArrowUp':
         if (this.hasOptions()) {
           if (this.listboxHasVisualFocus) {
-            this.setOption(this.getPreviousOption(this.option), true);
+            this.setOption(this.getPreviousOption(this.option), true)
           } else {
-            this.open();
+            this.open()
             if (!altKey) {
-              this.setOption(this.lastOption, true);
-              this.setVisualFocusListbox();
+              this.setOption(this.lastOption, true)
+              this.setVisualFocusListbox()
             }
           }
         }
-        flag = true;
-        break;
+        flag = true
+        break
 
       case 'Esc':
       case 'Escape':
         if (this.isOpen()) {
-          this.close(true);
-          this.filter = this.comboboxNode.value;
-          this.filterOptions();
-          this.setVisualFocusCombobox();
+          this.close(true)
+          this.filter = this.comboboxNode.value
+          this.filterOptions()
+          this.setVisualFocusCombobox()
         } else {
-          this.setValue('');
-          this.comboboxNode.value = '';
+          this.setValue('')
+          this.comboboxNode.value = ''
         }
-        this.option = null;
-        flag = true;
-        break;
+        this.option = null
+        flag = true
+        break
 
       case 'Tab':
-        this.close(true);
+        this.close(true)
         if (this.listboxHasVisualFocus) {
           if (this.option) {
-            this.setValue(this.option.textContent);
+            this.setValue(this.option.textContent)
           }
         }
-        break;
+        break
 
       case 'Home':
-        this.comboboxNode.setSelectionRange(0, 0);
-        flag = true;
-        break;
+        this.comboboxNode.setSelectionRange(0, 0)
+        flag = true
+        break
 
-      case 'End':
-        var length = this.comboboxNode.value.length;
-        this.comboboxNode.setSelectionRange(length, length);
-        flag = true;
-        break;
+      case 'End': {
+        const length = this.comboboxNode.value.length
+        this.comboboxNode.setSelectionRange(length, length)
+        flag = true
+      }
+        break
 
       default:
-        break;
+        break
     }
 
     if (flag) {
-      event.stopPropagation();
-      event.preventDefault();
+      event.stopPropagation()
+      event.preventDefault()
     }
   }
 
-  isPrintableCharacter(str) {
-    return str.length === 1 && str.match(/\S/);
+  isPrintableCharacter (str) {
+    return str.length === 1 && str.match(/\S/)
   }
 
-  onComboboxKeyUp(event) {
-    var flag = false,
-      option = null,
-      char = event.key;
+  onComboboxKeyUp (event) {
+    let flag = false
+    let option = null
+    const char = event.key
 
     if (this.isPrintableCharacter(char)) {
-      this.filter += char;
+      this.filter += char
     }
 
     // this is for the case when a selection in the textbox has been deleted
     if (this.comboboxNode.value.length < this.filter.length) {
-      this.filter = this.comboboxNode.value;
-      this.option = null;
-      this.filterOptions();
+      this.filter = this.comboboxNode.value
+      this.option = null
+      this.filterOptions()
     }
 
     if (event.key === 'Escape' || event.key === 'Esc') {
-      return;
+      return
     }
 
     switch (event.key) {
       case 'Backspace':
-        this.setVisualFocusCombobox();
-        this.setCurrentOptionStyle(false);
-        this.filter = this.comboboxNode.value;
-        this.option = null;
-        this.filterOptions();
-        flag = true;
-        break;
+        this.setVisualFocusCombobox()
+        this.setCurrentOptionStyle(false)
+        this.filter = this.comboboxNode.value
+        this.option = null
+        this.filterOptions()
+        flag = true
+        break
 
       case 'Left':
       case 'ArrowLeft':
@@ -425,26 +426,26 @@ class ComboboxAutocomplete {
       case 'Home':
       case 'End':
         if (this.isBoth) {
-          this.filter = this.comboboxNode.value;
+          this.filter = this.comboboxNode.value
         } else {
-          this.option = null;
-          this.setCurrentOptionStyle(false);
+          this.option = null
+          this.setCurrentOptionStyle(false)
         }
-        this.setVisualFocusCombobox();
-        flag = true;
-        break;
+        this.setVisualFocusCombobox()
+        flag = true
+        break
 
       default:
         if (this.isPrintableCharacter(char)) {
-          this.setVisualFocusCombobox();
-          this.setCurrentOptionStyle(false);
-          flag = true;
+          this.setVisualFocusCombobox()
+          this.setCurrentOptionStyle(false)
+          flag = true
 
           if (this.isList || this.isBoth) {
-            option = this.filterOptions();
+            option = this.filterOptions()
             if (option) {
               if (this.isClosed() && this.comboboxNode.value.length) {
-                this.open();
+                this.open()
               }
 
               if (
@@ -452,108 +453,107 @@ class ComboboxAutocomplete {
                   this.comboboxNode.value.toLowerCase()
                 ) === 0
               ) {
-                this.option = option;
+                this.option = option
                 if (this.isBoth || this.listboxHasVisualFocus) {
-                  this.setCurrentOptionStyle(option);
+                  this.setCurrentOptionStyle(option)
                   if (this.isBoth) {
-                    this.setOption(option);
+                    this.setOption(option)
                   }
                 }
               } else {
-                this.option = null;
-                this.setCurrentOptionStyle(false);
+                this.option = null
+                this.setCurrentOptionStyle(false)
               }
             } else {
-              this.close();
-              this.option = null;
-              this.setActiveDescendant(false);
+              this.close()
+              this.option = null
+              this.setActiveDescendant(false)
             }
           } else if (this.comboboxNode.value.length) {
-            this.open();
+            this.open()
           }
         }
 
-        break;
+        break
     }
 
     if (flag) {
-      event.stopPropagation();
-      event.preventDefault();
+      event.stopPropagation()
+      event.preventDefault()
     }
   }
 
-  onComboboxClick() {
+  onComboboxClick () {
     if (this.isOpen()) {
-      this.close(true);
+      this.close(true)
     } else {
-      this.open();
+      this.open()
     }
   }
 
-  onComboboxFocus() {
-    this.filter = this.comboboxNode.value;
-    this.filterOptions();
-    this.setVisualFocusCombobox();
-    this.option = null;
-    this.setCurrentOptionStyle(null);
+  onComboboxFocus () {
+    this.filter = this.comboboxNode.value
+    this.filterOptions()
+    this.setVisualFocusCombobox()
+    this.option = null
+    this.setCurrentOptionStyle(null)
   }
 
-  onComboboxBlur() {
-    this.comboboxHasVisualFocus = false;
-    this.setCurrentOptionStyle(null);
-    this.removeVisualFocusAll();
-    setTimeout(this.close.bind(this, false), 300);
+  onComboboxBlur () {
+    this.comboboxHasVisualFocus = false
+    this.setCurrentOptionStyle(null)
+    this.removeVisualFocusAll()
+    setTimeout(this.close.bind(this, false), 300)
   }
 
-  onButtonClick() {
+  onButtonClick () {
     if (this.isOpen()) {
-      this.close(true);
+      this.close(true)
     } else {
-      this.open();
+      this.open()
     }
-    this.comboboxNode.focus();
-    this.setVisualFocusCombobox();
+    this.comboboxNode.focus()
+    this.setVisualFocusCombobox()
   }
 
   /* Listbox Events */
 
-  onListboxMouseover() {
-    this.hasHover = true;
+  onListboxMouseover () {
+    this.hasHover = true
   }
 
-  onListboxMouseout() {
-    this.hasHover = false;
-    setTimeout(this.close.bind(this, false), 300);
+  onListboxMouseout () {
+    this.hasHover = false
+    setTimeout(this.close.bind(this, false), 300)
   }
 
   // Listbox Option Events
 
-  onOptionClick(event) {
+  onOptionClick (event) {
     this.comboboxNode.title = event.target.textContent
     this.comboboxNode.value = event.target.dataset.url
     this.close(true)
 
-    this.comboboxNode.dispatchEvent(new Event('change',{ bubbles:false, cancelable: true }))
+    this.comboboxNode.dispatchEvent(new Event('change', { bubbles: false, cancelable: true }))
   }
 
-  onOptionMouseover() {
-    this.hasHover = true;
-    this.open();
+  onOptionMouseover () {
+    this.hasHover = true
+    this.open()
   }
 
-  onOptionMouseout() {
-    this.hasHover = false;
-    setTimeout(this.close.bind(this, false), 300);
+  onOptionMouseout () {
+    this.hasHover = false
+    setTimeout(this.close.bind(this, false), 300)
   }
 }
 
-function initialiseComboBox(id) {
+export function initialiseComboBox (id) {
   const combobox = document.getElementById(id)
-  const comboboxNode = combobox.querySelector('input');
-  const buttonNode = combobox.querySelector('button');
-  const listboxNode = combobox.querySelector('[role="listbox"]');
-  const cba = new ComboboxAutocomplete(comboboxNode, buttonNode, listboxNode);
+  const comboboxNode = combobox.querySelector('input')
+  const buttonNode = combobox.querySelector('button')
+  const listboxNode = combobox.querySelector('[role="listbox"]')
+  const cba = new ComboboxAutocomplete(comboboxNode, buttonNode, listboxNode)
 
   cba.init()
 }
-
