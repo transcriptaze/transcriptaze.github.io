@@ -102,18 +102,8 @@ function onURL (event) { // eslint-disable-line no-unused-vars
     document.getElementById('load').disabled = true
   }
 
-  if (vid !== '') {
-    switch (event.type) {
-      case 'change':
-        onLoad(event)
-        break
-
-      case 'keydown':
-        if (event.key === 'Enter') {
-          onLoad(event)
-        }
-        break
-    }
+  if (vid !== '' && event.type === 'keydown' && event.key === 'Enter') {
+      onLoad(event)
   }
 }
 

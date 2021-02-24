@@ -1,6 +1,8 @@
 ## IN PROGRESS
 
 - [ ] Explanatory text
+- [ ] hover style for export/clear buttons
+- [ ] Rework using JS modules
 - [ ] Fix logo
 - [ ] github.com/transcriptaze logo
 - [ ] Clear local storage button 
@@ -13,7 +15,6 @@
 
 - [ ] Cleanup combobox code/CSS
 - [ ] Cleanup slider code/CSS
-- [ ] Rework using JS modules
 - [ ] 'Loading' windmill
 - [ ] Fade out loading overlay
 - [ ] Parse other YouTube URL formats
