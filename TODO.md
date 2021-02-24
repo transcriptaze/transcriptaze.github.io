@@ -13,6 +13,7 @@
 
 - [ ] Cleanup combobox code/CSS
 - [ ] Cleanup slider code/CSS
+- [ ] Rework using JS modules
 - [ ] 'Loading' windmill
 - [ ] Fade out loading overlay
 - [ ] Parse other YouTube URL formats

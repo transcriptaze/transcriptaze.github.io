@@ -23,16 +23,15 @@ document.addEventListener('keydown', event => {
   }
 })
 
-export function onPlayerReady (event) {
+function onPlayerReady (event) { // eslint-disable-line no-unused-vars
   document.getElementById('url').readOnly = false
-  // document.getElementById('load').disabled = false
 
   start = new Slider('start', 'from', onSetStart)
   end = new Slider('end', 'to', onSetEnd)
   end.init(0, 100, 100)
 }
 
-export function onPlayerStateChange (event) {
+function onPlayerStateChange (event) { // eslint-disable-line no-unused-vars
   clearInterval(loopTimer)
 
   switch (event.data) {
@@ -90,7 +89,7 @@ export function onPlayerStateChange (event) {
   }
 }
 
-export function onURL (event) {
+function onURL (event) { // eslint-disable-line no-unused-vars
   const vid = getVideoID()
 
   if (event.type === 'keydown') {
@@ -118,7 +117,7 @@ export function onURL (event) {
   }
 }
 
-function onLoad (event) {
+function onLoad (event) { // eslint-disable-line no-unused-vars
   const vid = getVideoID()
 
   if (vid !== '') {
@@ -172,11 +171,11 @@ function onSetEnd (t, released) {
   }
 }
 
-export function onLoop (event) {
+function onLoop (event) { // eslint-disable-line no-unused-vars
   looping = event.target.checked
 }
 
-export function onKey (event) {
+function onKey (event) { // eslint-disable-line no-unused-vars
   if (event.code === 'Space') {
     event.preventDefault()
 
@@ -211,19 +210,19 @@ export function onKey (event) {
   }
 }
 
-export function onQuantize () {
+function onQuantize () { // eslint-disable-line no-unused-vars
   analyse()
 }
 
-export function onInterpolate () {
+function onInterpolate () { // eslint-disable-line no-unused-vars
   analyse()
 }
 
-export function onClear (event) {
+function onClear (event) { // eslint-disable-line no-unused-vars
   clearTaps()
 }
 
-export function onExport (event) {
+function onExport (event) { // eslint-disable-line no-unused-vars
   let vid = getPlayerVideoID()
   if (vid === '') {
     vid = 'transcriptaze'
@@ -248,7 +247,7 @@ export function onExport (event) {
   link.click()
 }
 
-export function onDoubleClick (event) {
+function onDoubleClick (event) { // eslint-disable-line no-unused-vars
   const apikey = document.getElementById('apikey')
   const style = window.getComputedStyle(apikey)
 

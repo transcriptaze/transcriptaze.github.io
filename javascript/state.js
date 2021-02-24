@@ -1,6 +1,6 @@
 /* global state, initialiseComboBox */
 
-export const State = function () {
+const State = function () { // eslint-disable-line no-unused-vars
   this.history = new Set()
   this.titles = new Map()
   this.apikey = 'AIzaSyCmyt_fgo-FJRnYST53tdwE9K9Nn-UO-ZA'
@@ -111,7 +111,7 @@ async function lookup (apikey, vid) {
   }
 }
 
-export function onApiKey (event) {
+function onApiKey (event) { // eslint-disable-line no-unused-vars
   if (event.key === 'Enter') {
     state.setApiKey(document.getElementById('apikey').value)
   }
