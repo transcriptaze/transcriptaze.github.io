@@ -391,14 +391,14 @@ function analyse () {
 function draw () {
   let list = taps.current
 
-  if (state.player.getPlayerState() != YT.PlayerState.PLAYING && taps.current.length == 0 && taps.taps.length > 0) {
+  if (state.player.getPlayerState() !== YT.PlayerState.PLAYING && taps.current.length === 0 && taps.taps.length > 0) {
     list = taps.taps[taps.taps.length - 1]
   }
 
-    drawTaps(document.querySelector('#current canvas.all'), list, 0, Math.floor(taps.duration))
-    drawTaps(document.querySelector('#current canvas.zoomed'), list, start.valueNow, end.valueNow - start.valueNow)
+  drawTaps(document.querySelector('#current canvas.all'), list, 0, Math.floor(taps.duration))
+  drawTaps(document.querySelector('#current canvas.zoomed'), list, start.valueNow, end.valueNow - start.valueNow)
 
-  drawTaps(document.querySelector('#history canvas.all'), taps.taps, 0, Math.floor(taps.duration))    
+  drawTaps(document.querySelector('#history canvas.all'), taps.taps, 0, Math.floor(taps.duration))
   drawTaps(document.querySelector('#history canvas.zoomed'), taps.taps, start.valueNow, end.valueNow - start.valueNow)
 }
 

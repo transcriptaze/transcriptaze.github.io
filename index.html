@@ -225,7 +225,7 @@
 
   <script type="text/javascript">
     function onYouTubeIframeAPIReady() {
-      state.player = new YT.Player('player', {
+      window.state.player = new YT.Player('player', {
         playerVars: {
           fs: 0,
           controls: 1,
@@ -245,7 +245,7 @@
     }
 
   function initialise() {
-    state.restore()
+    window.state.restore()
   }
   </script>
 
