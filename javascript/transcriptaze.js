@@ -1,7 +1,5 @@
 /* global goTaps, YT, player */
 
-'use strict'
-
 import { State } from './state.js'
 import { Slider } from './slider.js'
 

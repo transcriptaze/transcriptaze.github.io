@@ -1,5 +1,3 @@
-'use strict'
-
 export const Slider = function (node, label, handler) {
   this.domNode = document.getElementById(node)
   this.labelNode = document.getElementById(label)
