@@ -2,7 +2,6 @@ import { state } from './transcriptaze.js'
 import { initialiseComboBox } from './combobox.js'
 
 export const State = function () {
-  this.player = null
   this.history = new Set()
   this.titles = new Map()
   this.apikey = 'AIzaSyCmyt_fgo-FJRnYST53tdwE9K9Nn-UO-ZA'

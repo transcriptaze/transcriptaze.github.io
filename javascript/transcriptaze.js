@@ -1,4 +1,4 @@
-/* global goTaps, YT */
+/* global goTaps, YT, player */
 
 'use strict'
 
@@ -42,7 +42,7 @@ export function onPlayerStateChange (event) {
     case YT.PlayerState.ENDED:
       if (!loaded) {
         loaded = true
-        const duration = state.player.getDuration()
+        const duration = player.getDuration()
 
         start.init(0, duration, 0)
         end.init(0, duration, duration)
@@ -83,7 +83,7 @@ export function onPlayerStateChange (event) {
       document.getElementById('data').style.display = 'block'
 
       react()
-      state.player.unMute()
+      player.unMute()
 
       if (taps.current.length > 0) {
         taps.taps.push(taps.current)
@@ -122,15 +122,15 @@ export function onLoad (event) {
     loaded = false
 
     document.getElementById('loading').style.visibility = 'visible'
-    state.player.mute()
-    state.player.loadVideoById({ videoId: vid, startSeconds: 0, endSeconds: 0.1 })
+    player.mute()
+    player.loadVideoById({ videoId: vid, startSeconds: 0, endSeconds: 0.1 })
   }
 }
 
 function onSetStart (t, released) {
   document.getElementById('from').value = format(t)
 
-  switch (state.player.getPlayerState()) {
+  switch (player.getPlayerState()) {
     case YT.PlayerState.CUED:
     case YT.PlayerState.ENDED:
       if (released) {
@@ -139,12 +139,12 @@ function onSetStart (t, released) {
       break
 
     case YT.PlayerState.PAUSED:
-      state.player.seekTo(t, released)
+      player.seekTo(t, released)
       break
 
     default:
-      if (released && state.player.getCurrentTime() < t) {
-        state.player.seekTo(t, true)
+      if (released && player.getCurrentTime() < t) {
+        player.seekTo(t, true)
       }
   }
 
@@ -157,7 +157,7 @@ function onSetEnd (t, released) {
   document.getElementById('to').value = format(t)
 
   if (released) {
-    switch (state.player.getPlayerState()) {
+    switch (player.getPlayerState()) {
       case YT.PlayerState.ENDED:
       case YT.PlayerState.CUED:
         cue(false)
@@ -177,30 +177,30 @@ export function onKey (event) {
     event.preventDefault()
 
     if (!event.repeat) {
-      switch (state.player.getPlayerState()) {
+      switch (player.getPlayerState()) {
         case YT.PlayerState.CUED:
         case YT.PlayerState.PAUSED:
           react()
           if ((end.valueNow - start.valueNow) > 1) {
-            state.player.playVideo()
+            player.playVideo()
           }
           break
 
         case YT.PlayerState.PLAYING:
-          taps.current.push(state.player.getCurrentTime())
+          taps.current.push(player.getCurrentTime())
           draw()
           break
       }
     }
   } else if (event.code === 'KeyS') {
     event.preventDefault()
-    if (!event.repeat && state.player.getPlayerState() === YT.PlayerState.PLAYING) {
+    if (!event.repeat && player.getPlayerState() === YT.PlayerState.PLAYING) {
       cue(false)
     }
   } else if (event.code === 'KeyP') {
     event.preventDefault()
-    if (!event.repeat && state.player.getPlayerState() === YT.PlayerState.PLAYING) {
-      state.player.pauseVideo()
+    if (!event.repeat && player.getPlayerState() === YT.PlayerState.PLAYING) {
+      player.pauseVideo()
     }
   }
 }
@@ -224,7 +224,7 @@ export function onExport (event) {
   }
 
   const object = {
-    url: state.player.getVideoUrl(),
+    url: player.getVideoUrl(),
     duration: taps.duration,
     taps: taps.taps
   }
@@ -256,7 +256,7 @@ export function onDoubleClick (event) {
 function react () {
   const data = document.getElementById('data')
 
-  if (loaded && (state.player.getPlayerState() === YT.PlayerState.CUED)) {
+  if (loaded && (player.getPlayerState() === YT.PlayerState.CUED)) {
     data.style.visibility = 'visible'
   }
 
@@ -309,10 +309,10 @@ function cue (play) {
     const start = document.getElementById('start').getAttribute('aria-valuenow')
 
     if (play) {
-      state.player.loadVideoById({ videoId: vid, startSeconds: start })
+      player.loadVideoById({ videoId: vid, startSeconds: start })
     } else {
-      state.player.mute()
-      state.player.cueVideoById({ videoId: vid, startSeconds: start })
+      player.mute()
+      player.cueVideoById({ videoId: vid, startSeconds: start })
     }
   }
 }
@@ -320,7 +320,7 @@ function cue (play) {
 function tick () {
   const delay = parseFloat(document.getElementById('delay').value)
   const end = document.getElementById('end').getAttribute('aria-valuenow')
-  const t = state.player.getCurrentTime()
+  const t = player.getCurrentTime()
 
   if (t > end) {
     if (!isNaN(delay) && delay > 0) {
@@ -391,7 +391,7 @@ function analyse () {
 function draw () {
   let list = taps.current
 
-  if (state.player.getPlayerState() !== YT.PlayerState.PLAYING && taps.current.length === 0 && taps.taps.length > 0) {
+  if (player.getPlayerState() !== YT.PlayerState.PLAYING && taps.current.length === 0 && taps.taps.length > 0) {
     list = taps.taps[taps.taps.length - 1]
   }
 
@@ -447,7 +447,7 @@ function getVideoID () {
 
 function getPlayerVideoID () {
   try {
-    const url = new URL(state.player.getVideoUrl())
+    const url = new URL(player.getVideoUrl())
     const vid = url.searchParams.get('v')
     if (vid != null) {
       return vid

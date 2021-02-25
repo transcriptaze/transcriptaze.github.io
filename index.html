@@ -19,7 +19,6 @@
                   go.run(result.instance)
                 })
 
-              initialise()
               break;
         }
       })
@@ -198,13 +197,11 @@
 
   <!-- SCRIPTS -->
  
-  <script src="https://www.youtube.com/iframe_api"></script>
-
   <script type="module">
-    import { state, 
+    import { state,
       onPlayerReady, onPlayerStateChange, 
       onURL, onLoad, onKey, onDoubleClick,
-     onLoop, onQuantize, onInterpolate, onExport, onClear } from './javascript/transcriptaze.js'
+      onLoop, onQuantize, onInterpolate, onExport, onClear } from './javascript/transcriptaze.js'
 
     import { onApiKey } from './javascript/state.js'
 
@@ -221,11 +218,17 @@
     window.onExport = onExport
     window.onClear = onClear
     window.onApiKey = onApiKey
+
+    window.state.restore()
   </script>
 
+  <script src="https://www.youtube.com/iframe_api"></script>
+
   <script type="text/javascript">
+    var player
+
     function onYouTubeIframeAPIReady() {
-      window.state.player = new YT.Player('player', {
+      player = new YT.Player('player', {
         playerVars: {
           fs: 0,
           controls: 1,
@@ -243,10 +246,6 @@
         }
       })
     }
-
-  function initialise() {
-    window.state.restore()
-  }
   </script>
 
 </html>
