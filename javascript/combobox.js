@@ -548,7 +548,7 @@ class ComboboxAutocomplete {
   }
 }
 
-function initialiseComboBox (id) { // eslint-disable-line no-unused-vars
+export function initialiseComboBox (id) {
   const combobox = document.getElementById(id)
   const comboboxNode = combobox.querySelector('input')
   const buttonNode = combobox.querySelector('button')

@@ -1,6 +1,6 @@
 'use strict'
 
-const Slider = function (node, label, handler) {
+export const Slider = function (node, label, handler) {
   this.domNode = document.getElementById(node)
   this.labelNode = document.getElementById(label)
   this.labelLeft = this.domNode.classList.contains('min')

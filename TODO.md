@@ -1,7 +1,6 @@
 ## IN PROGRESS
 
-- [ ] hover style for export/clear buttons
-- [ ] Rework using JS modules
+- [ ] Not resetting taps, etc on loop
 - [ ] Fix logo
 - [ ] github.com/transcriptaze logo
 - [ ] Clear local storage button 
@@ -20,6 +19,8 @@
 - [ ] https://codepen.io/ma_suwa/pen/eYdZVML
 - [ ] https://github.com/jvnaveenbabu/Neumorphism-Designs
 
+- [x] Rework using JS modules
+- [x] Hover style for load/export/clear buttons
 - [x] Explanatory text
 - [x] eslint
 - [x] GitHub logo

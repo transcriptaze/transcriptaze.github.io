@@ -1,15 +1,19 @@
-/* global goTaps, YT, Slider, State */
+/* global goTaps, YT */
 
 'use strict'
 
-const state = new State()
-let player
+import { State } from './state.js'
+import { Slider } from './slider.js'
+
+export const state = new State()
+
 let loopTimer
 let delayTimer
 let loaded = false
 let looping = false
 let start
 let end
+
 const taps = {
   duration: 0,
   taps: [],
@@ -23,7 +27,7 @@ document.addEventListener('keydown', event => {
   }
 })
 
-function onPlayerReady (event) { // eslint-disable-line no-unused-vars
+export function onPlayerReady (event) {
   document.getElementById('url').readOnly = false
 
   start = new Slider('start', 'from', onSetStart)
@@ -31,14 +35,14 @@ function onPlayerReady (event) { // eslint-disable-line no-unused-vars
   end.init(0, 100, 100)
 }
 
-function onPlayerStateChange (event) { // eslint-disable-line no-unused-vars
+export function onPlayerStateChange (event) {
   clearInterval(loopTimer)
 
   switch (event.data) {
     case YT.PlayerState.ENDED:
       if (!loaded) {
         loaded = true
-        const duration = player.getDuration()
+        const duration = state.player.getDuration()
 
         start.init(0, duration, 0)
         end.init(0, duration, duration)
@@ -78,7 +82,7 @@ function onPlayerStateChange (event) { // eslint-disable-line no-unused-vars
       document.getElementById('data').style.display = 'block'
 
       react()
-      player.unMute()
+      state.player.unMute()
 
       if (taps.current.length > 0) {
         taps.taps.push(taps.current)
@@ -89,7 +93,7 @@ function onPlayerStateChange (event) { // eslint-disable-line no-unused-vars
   }
 }
 
-function onURL (event) { // eslint-disable-line no-unused-vars
+export function onURL (event) {
   const vid = getVideoID()
 
   if (event.type === 'keydown') {
@@ -103,11 +107,11 @@ function onURL (event) { // eslint-disable-line no-unused-vars
   }
 
   if (vid !== '' && event.type === 'keydown' && event.key === 'Enter') {
-      onLoad(event)
+    onLoad(event)
   }
 }
 
-function onLoad (event) { // eslint-disable-line no-unused-vars
+export function onLoad (event) {
   const vid = getVideoID()
 
   if (vid !== '') {
@@ -115,15 +119,15 @@ function onLoad (event) { // eslint-disable-line no-unused-vars
     loaded = false
 
     document.getElementById('loading').style.visibility = 'visible'
-    player.mute()
-    player.loadVideoById({ videoId: vid, startSeconds: 0, endSeconds: 0.1 })
+    state.player.mute()
+    state.player.loadVideoById({ videoId: vid, startSeconds: 0, endSeconds: 0.1 })
   }
 }
 
 function onSetStart (t, released) {
   document.getElementById('from').value = format(t)
 
-  switch (player.getPlayerState()) {
+  switch (state.player.getPlayerState()) {
     case YT.PlayerState.CUED:
     case YT.PlayerState.ENDED:
       if (released) {
@@ -132,12 +136,12 @@ function onSetStart (t, released) {
       break
 
     case YT.PlayerState.PAUSED:
-      player.seekTo(t, released)
+      state.player.seekTo(t, released)
       break
 
     default:
-      if (released && player.getCurrentTime() < t) {
-        player.seekTo(t, true)
+      if (released && state.player.getCurrentTime() < t) {
+        state.player.seekTo(t, true)
       }
   }
 
@@ -150,7 +154,7 @@ function onSetEnd (t, released) {
   document.getElementById('to').value = format(t)
 
   if (released) {
-    switch (player.getPlayerState()) {
+    switch (state.player.getPlayerState()) {
       case YT.PlayerState.ENDED:
       case YT.PlayerState.CUED:
         cue(false)
@@ -161,65 +165,65 @@ function onSetEnd (t, released) {
   }
 }
 
-function onLoop (event) { // eslint-disable-line no-unused-vars
+export function onLoop (event) {
   looping = event.target.checked
 }
 
-function onKey (event) { // eslint-disable-line no-unused-vars
+export function onKey (event) {
   if (event.code === 'Space') {
     event.preventDefault()
 
     if (!event.repeat) {
-      switch (player.getPlayerState()) {
+      switch (state.player.getPlayerState()) {
         case YT.PlayerState.CUED:
         case YT.PlayerState.PAUSED:
           taps.current = []
           react()
 
           if ((end.valueNow - start.valueNow) > 1) {
-            player.playVideo()
+            state.player.playVideo()
           }
           break
 
         case YT.PlayerState.PLAYING:
-          taps.current.push(player.getCurrentTime())
+          taps.current.push(state.player.getCurrentTime())
           draw()
           break
       }
     }
   } else if (event.code === 'KeyS') {
     event.preventDefault()
-    if (!event.repeat && player.getPlayerState() === YT.PlayerState.PLAYING) {
+    if (!event.repeat && state.player.getPlayerState() === YT.PlayerState.PLAYING) {
       cue(false)
     }
   } else if (event.code === 'KeyP') {
     event.preventDefault()
-    if (!event.repeat && player.getPlayerState() === YT.PlayerState.PLAYING) {
-      player.pauseVideo()
+    if (!event.repeat && state.player.getPlayerState() === YT.PlayerState.PLAYING) {
+      state.player.pauseVideo()
     }
   }
 }
 
-function onQuantize () { // eslint-disable-line no-unused-vars
+export function onQuantize () {
   analyse()
 }
 
-function onInterpolate () { // eslint-disable-line no-unused-vars
+export function onInterpolate () {
   analyse()
 }
 
-function onClear (event) { // eslint-disable-line no-unused-vars
+export function onClear (event) {
   clearTaps()
 }
 
-function onExport (event) { // eslint-disable-line no-unused-vars
+export function onExport (event) {
   let vid = getPlayerVideoID()
   if (vid === '') {
     vid = 'transcriptaze'
   }
 
   const object = {
-    url: player.getVideoUrl(),
+    url: state.player.getVideoUrl(),
     duration: taps.duration,
     taps: taps.taps
   }
@@ -237,7 +241,7 @@ function onExport (event) { // eslint-disable-line no-unused-vars
   link.click()
 }
 
-function onDoubleClick (event) { // eslint-disable-line no-unused-vars
+export function onDoubleClick (event) {
   const apikey = document.getElementById('apikey')
   const style = window.getComputedStyle(apikey)
 
@@ -251,7 +255,7 @@ function onDoubleClick (event) { // eslint-disable-line no-unused-vars
 function react () {
   const data = document.getElementById('data')
 
-  if (loaded && (player.getPlayerState() === YT.PlayerState.CUED)) {
+  if (loaded && (state.player.getPlayerState() === YT.PlayerState.CUED)) {
     data.style.visibility = 'visible'
   }
 
@@ -304,10 +308,10 @@ function cue (play) {
     const start = document.getElementById('start').getAttribute('aria-valuenow')
 
     if (play) {
-      player.loadVideoById({ videoId: vid, startSeconds: start })
+      state.player.loadVideoById({ videoId: vid, startSeconds: start })
     } else {
-      player.mute()
-      player.cueVideoById({ videoId: vid, startSeconds: start })
+      state.player.mute()
+      state.player.cueVideoById({ videoId: vid, startSeconds: start })
     }
   }
 }
@@ -315,7 +319,7 @@ function cue (play) {
 function tick () {
   const delay = parseFloat(document.getElementById('delay').value)
   const end = document.getElementById('end').getAttribute('aria-valuenow')
-  const t = player.getCurrentTime()
+  const t = state.player.getCurrentTime()
 
   if (t > end) {
     if (!isNaN(delay) && delay > 0) {
@@ -436,7 +440,7 @@ function getVideoID () {
 
 function getPlayerVideoID () {
   try {
-    const url = new URL(player.getVideoUrl())
+    const url = new URL(state.player.getVideoUrl())
     const vid = url.searchParams.get('v')
     if (vid != null) {
       return vid

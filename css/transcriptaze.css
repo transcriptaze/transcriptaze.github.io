@@ -16,12 +16,15 @@
   --solarize-cyan:    #2aa198;
   --solarize-green:   #859900;
 
-  --background: var(--solarize-base3);
-  --panel:      var(--solarize-base2);
-  --text:       var(--solarize-base01);
-  --hint:       var(--solarize-base00);
-  --help:       var(--solarize-base00);
-  --border:     var(--solarize-red);
+  --background:  var(--solarize-base3);
+  --panel:       var(--solarize-base2);
+  --text:        var(--solarize-base01);
+  --hint:        var(--solarize-base00);
+  --help:        var(--solarize-base00);
+  --border:      var(--solarize-red);
+  --unclickable: invert(93%) sepia(0%) saturate(5805%) hue-rotate(134deg) brightness(133%) contrast(51%);
+  --clickable:   invert(58%) sepia(41%) saturate(6512%) hue-rotate(27deg) brightness(99%) contrast(101%);
+  --active:      invert(22%) sepia(77%) saturate(2123%) hue-rotate(342deg) brightness(109%) contrast(94%);
 }
 
 * {
@@ -39,6 +42,27 @@ body {
   background: var(--background);
   height: 100vh;
   padding: 0px;
+}
+
+button {
+  cursor: pointer;
+  outline: none; 
+}
+
+button[disabled] {
+  cursor: default;
+}
+
+button img {
+  filter: var(--clickable);
+}
+
+button:hover img {
+  filter: var(--active);
+}
+
+button[disabled] img {
+  filter: var(--unclickable);
 }
 
 .panel {
@@ -236,22 +260,11 @@ div.url button#load {
   margin-left: 4px;
   border: 1px solid var(--border);
   border-radius: 2px;
-  outline: none; 
 }
 
 div.url button#load img {
   width: 20px;
   height: 20px;
-  outline: none;
-  filter: invert(31%) sepia(17%) saturate(1936%) hue-rotate(71deg) brightness(88%) contrast(90%);
-}
-
-div.url button#load:hover img {
-  filter: invert(14%) sepia(69%) saturate(7492%) hue-rotate(358deg) brightness(104%) contrast(117%);
-}
-
-div.url button#load[disabled] img {
-  filter: invert(93%) sepia(0%) saturate(5805%) hue-rotate(134deg) brightness(133%) contrast(51%);
 }
 
 #player {
@@ -281,6 +294,7 @@ div.url button#load[disabled] img {
 
 #help .help {
   width: 128px;  
+  outline: none;
 }
 
 .help p {  
@@ -345,10 +359,12 @@ input#to {
 
 input#offset {
   grid-area: offset;
+  outline: none;
 }
 
 input#bpm {
   grid-area: bpm;
+  outline: none;
 }
 
 div#looping {
@@ -498,27 +514,16 @@ canvas.zoomed {
 
 div#data button {
   border: none;
-  outline: none;
+  margin: 4px;
 }
 
 div#data button img {
   width: 28px;
   height: 28px;
-  padding: 12px;
-  outline: none;
-  filter: invert(31%) sepia(17%) saturate(1936%) hue-rotate(71deg) brightness(88%) contrast(90%);
-}
-
-div#data button:disabled img {
-  filter: invert(93%) sepia(0%) saturate(5805%) hue-rotate(134deg) brightness(133%) contrast(51%);
-}
-
-div#data button:hover:enabled img {
-  filter: invert(23%) sepia(96%) saturate(1983%) hue-rotate(100deg) brightness(97%) contrast(107%);
-}
-
-div#data button:focus img {
-  filter: invert(23%) sepia(96%) saturate(1983%) hue-rotate(100deg) brightness(97%) contrast(107%);
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 4px;
+  padding-right: 4px;
 }
 
 footer {

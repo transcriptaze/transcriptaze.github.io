@@ -40,7 +40,7 @@
               then be exported as JSON for whatever other use they may be.</p>
           </div>
           <div>
-            <input id="apikey" type="text" value="" placeholder="YouTube Data V3 API key" onkeydown="onApiKey(event)" />
+            <input id="apikey" type="text" value="" placeholder="YouTube Data V3 API key" autocomplete="off" onkeydown="onApiKey(event)" />
           </div>
         </div>
         <div id="github">          
@@ -199,13 +199,33 @@
   <!-- SCRIPTS -->
  
   <script src="https://www.youtube.com/iframe_api"></script>
-  <script src="javascript/state.js"></script>
-  <script src="javascript/transcriptaze.js"></script>
-  <script src="javascript/slider.js"></script>
-  <script src="javascript/combobox.js"></script>
+
+  <script type="module">
+    import { state, 
+      onPlayerReady, onPlayerStateChange, 
+      onURL, onLoad, onKey, onDoubleClick,
+     onLoop, onQuantize, onInterpolate, onExport, onClear } from './javascript/transcriptaze.js'
+
+    import { onApiKey } from './javascript/state.js'
+
+    window.state = state
+    window.onPlayerReady = onPlayerReady
+    window.onPlayerStateChange = onPlayerStateChange
+    window.onURL = onURL
+    window.onLoad = onLoad
+    window.onKey = onKey
+    window.onDoubleClick = onDoubleClick
+    window.onLoop = onLoop
+    window.onQuantize = onQuantize
+    window.onInterpolate = onInterpolate
+    window.onExport = onExport
+    window.onClear = onClear
+    window.onApiKey = onApiKey
+  </script>
+
   <script type="text/javascript">
     function onYouTubeIframeAPIReady() {
-      player = new YT.Player('player', {
+      state.player = new YT.Player('player', {
         playerVars: {
           fs: 0,
           controls: 1,

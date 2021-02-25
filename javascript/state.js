@@ -1,6 +1,8 @@
-/* global state, initialiseComboBox */
+import { state } from './transcriptaze.js'
+import { initialiseComboBox } from './combobox.js'
 
-const State = function () { // eslint-disable-line no-unused-vars
+export const State = function () {
+  this.player = null
   this.history = new Set()
   this.titles = new Map()
   this.apikey = 'AIzaSyCmyt_fgo-FJRnYST53tdwE9K9Nn-UO-ZA'
@@ -111,7 +113,7 @@ async function lookup (apikey, vid) {
   }
 }
 
-function onApiKey (event) { // eslint-disable-line no-unused-vars
+export function onApiKey (event) {
   if (event.key === 'Enter') {
     state.setApiKey(document.getElementById('apikey').value)
   }
