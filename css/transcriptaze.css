@@ -201,6 +201,7 @@ main {
 div#file {
   display: flex;
   grid-area: url;
+  visibility: hidden;
 }
 
 div#video {

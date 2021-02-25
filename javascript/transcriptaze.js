@@ -26,6 +26,9 @@ document.addEventListener('keydown', event => {
 })
 
 export function onPlayerReady (event) {
+  console.log('DEBUG/onPlayerReady', event)
+
+  document.getElementById('file').style.visibility = 'visible'
   document.getElementById('url').readOnly = false
 
   start = new Slider('start', 'from', onSetStart)

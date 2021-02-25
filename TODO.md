@@ -1,5 +1,6 @@
 ## IN PROGRESS
 
+- [ ] Fix initialisation when running from Github page
 - [ ] Fix logo
 - [ ] github.com/transcriptaze logo
 - [ ] Clear local storage button 
