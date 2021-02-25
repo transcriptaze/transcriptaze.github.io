@@ -1,6 +1,5 @@
 ## IN PROGRESS
 
-- [ ] Not resetting taps, etc on loop
 - [ ] Fix logo
 - [ ] github.com/transcriptaze logo
 - [ ] Clear local storage button 

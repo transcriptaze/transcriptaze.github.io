@@ -59,6 +59,7 @@ export function onPlayerStateChange (event) {
         loopTimer = setInterval(tick, 100)
         document.getElementById('help').focus()
         document.getElementById('help').dataset.state = 'playing'
+        draw()
       }
       break
 
@@ -86,9 +87,11 @@ export function onPlayerStateChange (event) {
 
       if (taps.current.length > 0) {
         taps.taps.push(taps.current)
+        taps.current = []
         analyse()
         react()
       }
+
       break
   }
 }
@@ -177,9 +180,7 @@ export function onKey (event) {
       switch (state.player.getPlayerState()) {
         case YT.PlayerState.CUED:
         case YT.PlayerState.PAUSED:
-          taps.current = []
           react()
-
           if ((end.valueNow - start.valueNow) > 1) {
             state.player.playVideo()
           }
@@ -388,10 +389,16 @@ function analyse () {
 }
 
 function draw () {
-  drawTaps(document.querySelector('#current canvas.all'), taps.current, 0, Math.floor(taps.duration))
-  drawTaps(document.querySelector('#history canvas.all'), taps.taps, 0, Math.floor(taps.duration))
+  let list = taps.current
 
-  drawTaps(document.querySelector('#current canvas.zoomed'), taps.current, start.valueNow, end.valueNow - start.valueNow)
+  if (state.player.getPlayerState() != YT.PlayerState.PLAYING && taps.current.length == 0 && taps.taps.length > 0) {
+    list = taps.taps[taps.taps.length - 1]
+  }
+
+    drawTaps(document.querySelector('#current canvas.all'), list, 0, Math.floor(taps.duration))
+    drawTaps(document.querySelector('#current canvas.zoomed'), list, start.valueNow, end.valueNow - start.valueNow)
+
+  drawTaps(document.querySelector('#history canvas.all'), taps.taps, 0, Math.floor(taps.duration))    
   drawTaps(document.querySelector('#history canvas.zoomed'), taps.taps, start.valueNow, end.valueNow - start.valueNow)
 }
 
