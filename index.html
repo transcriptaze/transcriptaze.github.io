@@ -25,7 +25,7 @@
       })
 
       window.addEventListener('load', (event) => {
-        console.log('DEBUG:loaded')
+        console.log('DEBUG:loaded', player)
       })
     </script
   </head>
@@ -202,6 +202,8 @@
   <!-- SCRIPTS -->
  
   <script type="module">
+    console.log("DEBUG: initialising modules")
+
     import { state,
       onPlayerReady, onPlayerStateChange, 
       onURL, onLoad, onKey, onDoubleClick,
@@ -248,11 +250,34 @@
           enablejsapi: 1
         },
         events: {
-          'onReady': window.onPlayerReady,
-          'onStateChange': window.onPlayerStateChange
+          'onReady': onYouTubeReady,
+          'onStateChange': onYouTubeStateChange
         }
       })
+      
+      console.log("DEBUG: onYouTubeIframeAPIReady::player", player)
     }
+
+    function onYouTubeReady (event) {
+      console.log("DEBUG: onYouTubeReady", window.onPlayerReady)
+
+      if (window.onPlayerReady) {
+        window.onPlayerReady(event)
+      } else {
+        console.log("onYouTubeReady - initialisation borked")
+      }
+    }
+
+    function onYouTubeStateChange (event) {
+      console.log("DEBUG: onYouTubeStateChange", window.onPlayerStateChange)
+
+      if (window.onPlayerStateChange) {
+        window.onPlayerStateChange(event)
+      } else {
+        console.log("onYouTubeStateChange - initialisation borked")
+      }
+    }
+
   </script>
 
 </html>
