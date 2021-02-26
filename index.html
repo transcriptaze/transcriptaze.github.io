@@ -10,6 +10,7 @@
     <script src="./javascript/wasm_exec.js"></script>
     <script>
       document.addEventListener('readystatechange', event => {
+        console.log('DEBUG:readstatechange', event.target.readyState)
         switch (event.target.readyState) {
           case 'complete':           
               const go = new Go()
@@ -21,6 +22,10 @@
 
               break;
         }
+      })
+
+      window.addEventListener('load', (event) => {
+        console.log('DEBUG:loaded')
       })
     </script
   </head>
@@ -226,7 +231,10 @@
   <script type="text/javascript">
     var player
 
+    console.log("DEBUG: onYouTubeIframeAPIReady::before")
+
     function onYouTubeIframeAPIReady() {
+      console.log("DEBUG: onYouTubeIframeAPIReady::invoked")
       player = new YT.Player('player', {
         playerVars: {
           fs: 0,

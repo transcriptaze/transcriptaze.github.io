@@ -1,6 +1,8 @@
 ## IN PROGRESS
 
 - [ ] Fix initialisation when running from Github page
+      - force refresh on load/timeout ??
+      - no-cache ??
 - [ ] Fix logo
 - [ ] github.com/transcriptaze logo
 - [ ] Clear local storage button 
