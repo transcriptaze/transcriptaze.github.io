@@ -1,8 +1,7 @@
 ## IN PROGRESS
 
 - [ ] Fix initialisation when running from Github page
-      - force refresh on load/timeout ??
-      - no-cache ??
+      - defer YT player create until readystatechange is 'complete' + YouTube API is ready
 - [ ] Fix logo
 - [ ] github.com/transcriptaze logo
 - [ ] Clear local storage button 

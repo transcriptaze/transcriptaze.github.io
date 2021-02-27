@@ -26,8 +26,6 @@ document.addEventListener('keydown', event => {
 })
 
 export function onPlayerReady (event) {
-  console.log('DEBUG: transcriptaze::onPlayerReady', event)
-
   document.getElementById('file').style.visibility = 'visible'
   document.getElementById('url').readOnly = false
 
@@ -37,7 +35,6 @@ export function onPlayerReady (event) {
 }
 
 export function onPlayerStateChange (event) {
-  console.log('DEBUG: transcriptaze::onPlayerStateChange')
   clearInterval(loopTimer)
 
   switch (event.data) {

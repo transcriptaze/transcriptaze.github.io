@@ -9,8 +9,9 @@
     <link rel="stylesheet" href="css/combobox.css" type="text/css">
     <script src="./javascript/wasm_exec.js"></script>
     <script>
+      var onComplete
+
       document.addEventListener('readystatechange', event => {
-        console.log('DEBUG:readstatechange', event.target.readyState)
         switch (event.target.readyState) {
           case 'complete':           
               const go = new Go()
@@ -20,12 +21,12 @@
                   go.run(result.instance)
                 })
 
+              onComplete('document')
               break;
         }
       })
 
       window.addEventListener('load', (event) => {
-        console.log('DEBUG:loaded', player)
       })
     </script
   </head>
@@ -202,8 +203,6 @@
   <!-- SCRIPTS -->
  
   <script type="module">
-    console.log("DEBUG: initialising modules")
-
     import { state,
       onPlayerReady, onPlayerStateChange, 
       onURL, onLoad, onKey, onDoubleClick,
@@ -231,12 +230,34 @@
   <script src="https://www.youtube.com/iframe_api"></script>
 
   <script type="text/javascript">
-    var player
-
-    console.log("DEBUG: onYouTubeIframeAPIReady::before")
+    var onYouTube
 
     function onYouTubeIframeAPIReady() {
-      console.log("DEBUG: onYouTubeIframeAPIReady::invoked")
+      onYouTube('youtube')
+    }
+
+    function onYouTubeReady (event) {
+      if (window.onPlayerReady) {
+        window.onPlayerReady(event)
+      } else {
+        console.log("onYouTubeReady - initialisation borked")
+      }
+    }
+
+    function onYouTubeStateChange (event) {
+      if (window.onPlayerStateChange) {
+        window.onPlayerStateChange(event)
+      } else {
+        console.log("onYouTubeStateChange - initialisation borked")
+      }
+    }
+
+    // Defer creation of YouTube player until everything is ready
+    // (modules are loaded after scripts, Github pages are static, etc)
+    const ready = new Promise((resolve) => { onComplete = resolve })
+    const youtube = new Promise((resolve) => { onYouTube = resolve })
+
+    var player = Promise.all([ready, youtube]).then((v) => {
       player = new YT.Player('player', {
         playerVars: {
           fs: 0,
@@ -254,30 +275,8 @@
           'onStateChange': onYouTubeStateChange
         }
       })
-      
-      console.log("DEBUG: onYouTubeIframeAPIReady::player", player)
-    }
-
-    function onYouTubeReady (event) {
-      console.log("DEBUG: onYouTubeReady", window.onPlayerReady)
-
-      if (window.onPlayerReady) {
-        window.onPlayerReady(event)
-      } else {
-        console.log("onYouTubeReady - initialisation borked")
-      }
-    }
-
-    function onYouTubeStateChange (event) {
-      console.log("DEBUG: onYouTubeStateChange", window.onPlayerStateChange)
-
-      if (window.onPlayerStateChange) {
-        window.onPlayerStateChange(event)
-      } else {
-        console.log("onYouTubeStateChange - initialisation borked")
-      }
-    }
-
+    })
+    
   </script>
 
 </html>
