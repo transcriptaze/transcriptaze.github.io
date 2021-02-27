@@ -1,9 +1,6 @@
 ## IN PROGRESS
 
-- [ ] Fix initialisation when running from Github page
-      - defer YT player create until readystatechange is 'complete' + YouTube API is ready
-- [ ] Fix logo
-- [ ] github.com/transcriptaze logo
+- [ ] 'Loading' windmill
 - [ ] Clear local storage button 
 - [ ] Move panel style to outer container
 - [ ] Encapsulate all the things in 'state' object
@@ -14,12 +11,14 @@
 
 - [ ] Cleanup combobox code/CSS
 - [ ] Cleanup slider code/CSS
-- [ ] 'Loading' windmill
 - [ ] Fade out loading overlay
 - [ ] Parse other YouTube URL formats
 - [ ] https://codepen.io/ma_suwa/pen/eYdZVML
 - [ ] https://github.com/jvnaveenbabu/Neumorphism-Designs
 
+- [x] Fix logo
+- [x] github.com/transcriptaze logo
+- [x] Defer YT player create until readystatechange is 'complete' + YouTube API is ready
 - [x] Rework using JS modules
 - [x] Hover style for load/export/clear buttons
 - [x] Explanatory text

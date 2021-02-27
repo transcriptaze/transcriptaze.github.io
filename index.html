@@ -240,16 +240,12 @@
     function onYouTubeReady (event) {
       if (window.onPlayerReady) {
         window.onPlayerReady(event)
-      } else {
-        console.log("onYouTubeReady - initialisation borked")
       }
     }
 
     function onYouTubeStateChange (event) {
       if (window.onPlayerStateChange) {
         window.onPlayerStateChange(event)
-      } else {
-        console.log("onYouTubeStateChange - initialisation borked")
       }
     }
 
