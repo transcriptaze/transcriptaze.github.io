@@ -230,6 +230,7 @@
   <script src="https://www.youtube.com/iframe_api"></script>
 
   <script type="text/javascript">
+    var player
     var onYouTube
 
     function onYouTubeIframeAPIReady() {
@@ -254,10 +255,10 @@
 
     // Defer creation of YouTube player until everything is ready
     // (modules are loaded after scripts, Github pages are static, etc)
-    const ready = new Promise((resolve) => { onComplete = resolve })
+    const complete = new Promise((resolve) => { onComplete = resolve })
     const youtube = new Promise((resolve) => { onYouTube = resolve })
 
-    var player = Promise.all([ready, youtube]).then((v) => {
+    Promise.all([complete, youtube]).then((v) => {
       player = new YT.Player('player', {
         playerVars: {
           fs: 0,
