@@ -1,8 +1,7 @@
 ## IN PROGRESS
 
-- [ ] 'Loading' windmill
-- [ ] Clear local storage button 
 - [ ] Move panel style to outer container
+- [ ] Clear local storage button 
 - [ ] Encapsulate all the things in 'state' object
 - [ ] Colorize slider bar
 - [ ] Zoot up slider
@@ -16,6 +15,7 @@
 - [ ] https://codepen.io/ma_suwa/pen/eYdZVML
 - [ ] https://github.com/jvnaveenbabu/Neumorphism-Designs
 
+- [x] 'Loading' windmill
 - [x] Fix logo
 - [x] github.com/transcriptaze logo
 - [x] Defer YT player create until readystatechange is 'complete' + YouTube API is ready

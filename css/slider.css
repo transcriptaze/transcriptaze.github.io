@@ -1,0 +1,53 @@
+.slider .rail {
+  background-color: #eee;
+  border: 1px solid #888;
+  position: relative;
+  width: 640px;
+  height: 4px;
+  float: left;
+}
+
+.slider .rail input {
+  position: absolute;
+  width: 40px;
+  top: -14px;
+  font-size: 0.65em;
+  border: none;
+}
+
+.slider input#from {
+  left: -60px;
+  text-align: right;
+}
+
+.slider input#to {
+  left: 10px;
+  text-align: left;
+}
+
+.slider img[role="slider"] {
+  position: absolute;
+  padding: 0;
+  margin: 0;
+  top: -10px;
+}
+
+.slider img[role="slider"].focus,
+.slider img[role="slider"]:hover {
+  outline: none;
+}
+
+.slider img#start {
+  width: 10px;
+  left: -10px;
+}
+
+.slider img#end {
+  width: 10px;
+}
+
+.slider .rail.focus {
+  background-color: #aaa;
+}
+
+

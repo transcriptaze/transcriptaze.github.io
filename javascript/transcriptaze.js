@@ -71,6 +71,8 @@ export function onPlayerStateChange (event) {
 
     case YT.PlayerState.CUED:
       document.getElementById('loading').style.visibility = 'hidden'
+      document.getElementById('windmill').style.display = 'none'
+
       document.getElementById('controls').style.visibility = 'visible'
       document.getElementById('taps').style.visibility = 'visible'
 
@@ -121,6 +123,8 @@ export function onLoad (event) {
     loaded = false
 
     document.getElementById('loading').style.visibility = 'visible'
+    document.getElementById('windmill').style.display = 'block'
+
     player.mute()
     player.loadVideoById({ videoId: vid, startSeconds: 0, endSeconds: 0.1 })
   }

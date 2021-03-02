@@ -332,6 +332,13 @@ div.controls {
   grid-column-gap: 2px;
 }
 
+div.slider {
+  grid-area: slider;
+  clear: none;
+  padding-top: 0.5em;
+  padding-bottom: 1em;
+}
+
 input.info {
   width: 4em;
   padding: 2px 4px 2px 4px;
@@ -537,63 +544,33 @@ footer {
   color: #002b36;
 }
 
-div.slider {
-  grid-area: slider;
-  clear: none;
-  padding-top: 0.5em;
-  padding-bottom: 1em;
+#windmill {
+  background:#000000d0; 
+  display: none;
 }
 
-div.slider .rail {
-  background-color: #eee;
-  border: 1px solid #888;
-  position: relative;
-  width: 640px;
-  height: 4px;
-  float: left;
+.windmill {
+  display: block;
+  visibility: visible;
 }
 
-div.slider .rail input {
+.windmill:before {
+  content: "";
+  box-sizing: border-box;
+  width: 100px;
+  height: 100px;
   position: absolute;
-  width: 40px;
-  top: -14px;
-  font-size: 0.65em;
-  border: none;
+  left: 270px;
+  top: 145px;
+  border-radius: 50%;
+  border-top: 3px solid var(--solarize-blue);
+  border-right: 3px solid transparent;
+  animation: windmill 0.9s linear infinite;
 }
 
-div.slider input#from {
-  left: -60px;
-  text-align: right;
+@keyframes windmill {
+  to {
+    transform: rotate(360deg);
+  }
 }
-
-div.slider input#to {
-  left: 10px;
-  text-align: left;
-}
-
-div.slider img[role="slider"] {
-  position: absolute;
-  padding: 0;
-  margin: 0;
-  top: -10px;
-}
-
-div.slider img[role="slider"].focus,
-div.slider img[role="slider"]:hover {
-  outline: none;
-}
-
-div.slider img#start {
-  width: 10px;
-  left: -10px;
-}
-
-div.slider img#end {
-  width: 10px;
-}
-
-div.slider .rail.focus {
-  background-color: #aaa;
-}
-
 
