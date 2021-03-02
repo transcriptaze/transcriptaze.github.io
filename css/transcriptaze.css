@@ -213,7 +213,7 @@ div#help {
   grid-area: help;
   visibility: hidden;
   outline: none;
-  display: none;
+  display: block;
 }
 
 div#controls {

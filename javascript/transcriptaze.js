@@ -48,7 +48,6 @@ export function onPlayerStateChange (event) {
         taps.duration = duration
 
         state.addVideo(getPlayerVideoID())
-
         cue(false)
       }
       break

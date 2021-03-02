@@ -5,12 +5,13 @@
 - [ ] Encapsulate all the things in 'state' object
 - [ ] Colorize slider bar
 - [ ] Zoot up slider
+- [ ] Zoot up tap bars
 - [ ] (optionally) discard beats with only 1 tap (?)
 - [ ] Not clustering properly when tapping double time
 
+- [ ] Soften transition to loaded video
 - [ ] Cleanup combobox code/CSS
 - [ ] Cleanup slider code/CSS
-- [ ] Fade out loading overlay
 - [ ] Parse other YouTube URL formats
 - [ ] https://codepen.io/ma_suwa/pen/eYdZVML
 - [ ] https://github.com/jvnaveenbabu/Neumorphism-Designs
