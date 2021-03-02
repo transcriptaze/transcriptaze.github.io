@@ -66,9 +66,6 @@ button[disabled] img {
 }
 
 .panel {
-  padding: 4px;
-  background: var(--panel);
-  box-shadow: -1px -1px 2px 0 #fdf6e3, 1px 1px 4px 0 #93a1a1;
 }
 
 #logo {
@@ -195,7 +192,10 @@ main {
 
   text-align: center;
   margin: auto;
-  padding: 0;
+
+  padding: 4px;
+  background: var(--panel);
+  box-shadow: -1px -1px 2px 0 #fdf6e3, 1px 1px 4px 0 #93a1a1;
 }
 
 div#file {
@@ -211,9 +211,9 @@ div#video {
 
 div#help {
   grid-area: help;
-  visibility: hidden;
   outline: none;
   display: block;
+  visibility: visible;
 }
 
 div#controls {
@@ -279,8 +279,8 @@ div.url button#load img {
   width: 640px; 
   height: 390px; 
   position: absolute; 
-  left: 4px; 
-  top: 4px; 
+  left: 0px; 
+  top: 0px; 
   z-index: 1;
   visibility: visible;
   text-align: center;
@@ -308,12 +308,20 @@ div.url button#load img {
   margin-top: 24px;
 }
 
+.help p.basic {
+  display: none;
+}
+
 .help p.cued {
   display: none;
 }
 
 .help p.playing {
   display: none;
+}
+
+#help[data-state="hint"] .help p.basic {
+  display: block;
 }
 
 #help[data-state="cued"] .help p.cued {

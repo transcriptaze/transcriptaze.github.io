@@ -1,6 +1,5 @@
 ## IN PROGRESS
 
-- [ ] Move panel style to outer container
 - [ ] Clear local storage button 
 - [ ] Encapsulate all the things in 'state' object
 - [ ] Colorize slider bar
@@ -9,6 +8,7 @@
 - [ ] (optionally) discard beats with only 1 tap (?)
 - [ ] Not clustering properly when tapping double time
 
+- [ ] Liven up the bottom panel when nothing is happening
 - [ ] Soften transition to loaded video
 - [ ] Cleanup combobox code/CSS
 - [ ] Cleanup slider code/CSS
@@ -16,6 +16,7 @@
 - [ ] https://codepen.io/ma_suwa/pen/eYdZVML
 - [ ] https://github.com/jvnaveenbabu/Neumorphism-Designs
 
+- [x] Move panel style to outer container
 - [x] 'Loading' windmill
 - [x] Fix logo
 - [x] github.com/transcriptaze logo
