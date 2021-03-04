@@ -1,7 +1,8 @@
 ## IN PROGRESS
 
-- [ ] Looping is borked
 - [ ] Slider allow drag to end (even if not multiple of second)
+- [ ] Slider - draw bar to current position
+- [ ] Looping is borked occasionally
 - [ ] Zoot up tap bars
 - [ ] Clear local storage button (?)
 - [ ] Encapsulate all the things in 'state' object

@@ -175,17 +175,17 @@ function onSetEnd (t, released) {
   drawSlider()
 }
 
-function drawSlider() {
+function drawSlider () {
   const canvas = document.getElementById('controls').querySelector('div.slider div.rail canvas')
   const ctx = canvas.getContext('2d')
   const width = canvas.width
   const height = canvas.height
-  const x = width * start.valueNow/taps.duration
-  const w = width * end.valueNow/taps.duration
+  const x = width * start.valueNow / taps.duration
+  const w = width * end.valueNow / taps.duration
 
   ctx.fillStyle = '#268bd2c0'
-  ctx.clearRect(0,0,width,height)
-  ctx.fillRect(x,0,w-x+1,height)
+  ctx.clearRect(0, 0, width, height)
+  ctx.fillRect(x, 0, w - x + 1, height)
 }
 
 export function onLoop (event) {
