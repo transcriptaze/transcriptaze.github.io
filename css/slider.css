@@ -14,6 +14,7 @@
   font-size: 0.6em;
   border: none;
   outline: none;
+  z-index: 1;
 }
 
 .slider input#from {
@@ -31,6 +32,7 @@
   padding: 0;
   margin: 0;
   top: -4px;
+  z-index: 1;
 }
 
 .slider img[role="slider"].focus,
@@ -47,4 +49,9 @@
   width: 10px;
 }
 
-
+.slider .rail canvas {
+  background: transparent;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}

@@ -1,6 +1,7 @@
 ## IN PROGRESS
 
-- [ ] Colorize slider bar
+- [ ] Looping is borked
+- [ ] Slider allow drag to end (even if not multiple of second)
 - [ ] Zoot up tap bars
 - [ ] Clear local storage button (?)
 - [ ] Encapsulate all the things in 'state' object
@@ -15,6 +16,7 @@
 - [ ] https://codepen.io/ma_suwa/pen/eYdZVML
 - [ ] https://github.com/jvnaveenbabu/Neumorphism-Designs
 
+- [x] Colorize slider bar
 - [x] Zoot up slider
 - [x] Move panel style to outer container
 - [x] 'Loading' windmill
