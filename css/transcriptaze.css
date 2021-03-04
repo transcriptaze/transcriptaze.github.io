@@ -25,6 +25,8 @@
   --unclickable: invert(93%) sepia(0%) saturate(5805%) hue-rotate(134deg) brightness(133%) contrast(51%);
   --clickable:   invert(58%) sepia(41%) saturate(6512%) hue-rotate(27deg) brightness(99%) contrast(101%);
   --active:      invert(22%) sepia(77%) saturate(2123%) hue-rotate(342deg) brightness(109%) contrast(94%);
+
+  --pad-left: 2px;
 }
 
 * {
@@ -188,7 +190,7 @@ main {
   grid-template-rows: auto auto auto auto;
   grid-template-areas: "url unused1" "video help" "controls data" "taps data";
   column-gap: 6px;
-  row-gap: 4px;
+  row-gap: 1px;
 
   text-align: center;
   margin: auto;
@@ -202,11 +204,19 @@ div#file {
   display: flex;
   grid-area: url;
   visibility: hidden;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  margin-left: var(--pad-left);
 }
 
 div#video {
   display: block;
   grid-area: video;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+  margin-left: var(--pad-left);
+  overflow: none;
+  border: none;
 }
 
 div#help {
@@ -220,17 +230,20 @@ div#controls {
   grid-area: controls;
   visibility: hidden;
   outline: none;
+  margin-left: var(--pad-left);
 }
 
 div#data {
   grid-area: data;
   visibility: hidden;
   display: none;
+  padding-top: 24px;
 }
 
 div#taps {
   grid-area: taps;
   visibility: hidden;
+  margin-left: var(--pad-left);
 }
 
 div.url {
@@ -272,6 +285,7 @@ div.url button#load img {
   display: inline-block;
   width: 640px; 
   height: 390px; 
+  vertical-align:top;
 }
 
 .overlay {
@@ -343,7 +357,6 @@ div.controls {
 div.slider {
   grid-area: slider;
   clear: none;
-  padding-top: 0.5em;
   padding-bottom: 1em;
 }
 

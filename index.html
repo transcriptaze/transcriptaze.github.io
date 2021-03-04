@@ -122,26 +122,18 @@
             <div id="controls" class="controls panel">
               <div class="slider">
                 <div class="rail" style="width:640px;">
-                  <img id="start"
-                       src="images/min-arrow.svg"
+                  <img id="start" class="min thumb" src="images/min-arrow.svg" tabindex="0" draggable="false"
                        role="slider"
-                       tabindex="0"
-                       class="min thumb"
                        aria-valuemin="0"
                        aria-valuenow="0"
-                       aria-valuemax="100"
-                       draggable="false">
-                  <img id="end"
-                       src="images/max-arrow.svg"
+                       aria-valuemax="100">
+                  <img id="end" class="max thumb" src="images/max-arrow.svg" tabindex="0" draggable="false"
                        role="slider"
-                       tabindex="0"
-                       class="max thumb"
                        aria-valuemin="0"
                        aria-valuenow="100"
-                       aria-valuemax="100"
-                       draggable="false">
-                  <input id="from" type="text" readonly />
-                  <input id="to"   type="text" readonly />
+                       aria-valuemax="100">
+                  <input id="from" type="text" tabindex="0" readonly />
+                  <input id="to"   type="text" tabindex="0" readonly />
                 </div>
               </div>
 

@@ -1,22 +1,23 @@
 .slider .rail {
   background-color: #eee;
-  border: 1px solid #888;
+  border: 0.5px solid #c0c0c080;
   position: relative;
   width: 640px;
-  height: 4px;
+  height: 12px;
   float: left;
 }
 
 .slider .rail input {
   position: absolute;
   width: 40px;
-  top: -14px;
-  font-size: 0.65em;
+  top: 0px;
+  font-size: 0.6em;
   border: none;
+  outline: none;
 }
 
 .slider input#from {
-  left: -60px;
+  left: -50px;
   text-align: right;
 }
 
@@ -29,7 +30,7 @@
   position: absolute;
   padding: 0;
   margin: 0;
-  top: -10px;
+  top: -4px;
 }
 
 .slider img[role="slider"].focus,
@@ -44,10 +45,6 @@
 
 .slider img#end {
   width: 10px;
-}
-
-.slider .rail.focus {
-  background-color: #aaa;
 }
 
 

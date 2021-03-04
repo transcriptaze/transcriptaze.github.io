@@ -1,10 +1,9 @@
 ## IN PROGRESS
 
-- [ ] Clear local storage button 
-- [ ] Encapsulate all the things in 'state' object
 - [ ] Colorize slider bar
-- [ ] Zoot up slider
 - [ ] Zoot up tap bars
+- [ ] Clear local storage button (?)
+- [ ] Encapsulate all the things in 'state' object
 - [ ] (optionally) discard beats with only 1 tap (?)
 - [ ] Not clustering properly when tapping double time
 
@@ -16,6 +15,7 @@
 - [ ] https://codepen.io/ma_suwa/pen/eYdZVML
 - [ ] https://github.com/jvnaveenbabu/Neumorphism-Designs
 
+- [x] Zoot up slider
 - [x] Move panel style to outer container
 - [x] 'Loading' windmill
 - [x] Fix logo
