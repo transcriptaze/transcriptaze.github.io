@@ -180,12 +180,22 @@ function drawSlider () {
   const ctx = canvas.getContext('2d')
   const width = canvas.width
   const height = canvas.height
+  const t  = player.getCurrentTime()
   const x = width * start.valueNow / taps.duration
   const w = width * end.valueNow / taps.duration
 
-  ctx.fillStyle = '#268bd2c0'
   ctx.clearRect(0, 0, width, height)
+
+  ctx.fillStyle = '#268bd2c0'
   ctx.fillRect(x, 0, w - x + 1, height)
+
+  if (t) {
+    ctx.fillStyle = '#dc322fC0'
+    ctx.fillRect(0, 0, Math.max(width *t/taps.duration,x), height)    
+  } else {
+    ctx.fillStyle = '#dc322fC0'
+    ctx.fillRect(0, 0, x, height)    
+  }
 }
 
 export function onLoop (event) {
@@ -288,26 +298,41 @@ function react () {
     document.getElementById('beats').style.display = 'none'
   }
 
-  if (taps.beats != null) {
-    document.querySelector('#beats canvas.all').style.display = 'block'
-    document.querySelector('#beats canvas.zoomed').style.display = 'block'
-    document.getElementById('message').style.display = 'none'
+  if (taps.beats) {
+    document.getElementById('beats').style.display = 'block'
   } else {
-    document.querySelector('#beats canvas.all').style.display = 'none'
-    document.querySelector('#beats canvas.zoomed').style.display = 'none'
-    document.getElementById('message').style.display = 'flex'
+    document.getElementById('beats').style.display = 'none'    
+  }
+
+  if (!taps.beats && taps.taps.length > 0) {
+    document.getElementById('message').style.display = 'flex'    
+  } else {
+    document.getElementById('message').style.display = 'none'    
+  }
+
+  const w = (end.valueNow - start.valueNow)/taps.duration
+  if (w && w < 0.75) {
+    [ 'current', 'history', 'beats' ].forEach(div => {
+      document.getElementById(div).style.height = '17px'    
+      document.getElementById(div).querySelector('canvas.zoomed').style.display = 'block'          
+    })
+  } else {
+    [ 'current', 'history', 'beats' ].forEach(div => {
+      document.getElementById(div).style.height = '9px'    
+      document.getElementById(div).querySelector('canvas.zoomed').style.display = 'none'          
+    })
   }
 
   if (taps.taps.length > 0) {
     data.querySelector('#export').disabled = false
     data.querySelector('#clear').disabled = false
-
     draw()
   }
 
   if (taps.beats != null) {
     drawBeats(taps.beats.beats)
   }
+
 }
 
 function clearTaps () {
@@ -350,6 +375,8 @@ function tick () {
       cue(looping)
     }
   }
+
+  drawSlider()
 }
 
 function delayed () {
@@ -485,8 +512,9 @@ function format (t) {
 
   if (t > 0) {
     minutes = Math.floor(t / 60)
-    seconds = t % 60
+    seconds = Math.round((t % 60) * 10)/10.0
   }
+
 
   return String(minutes) + ':' + String(seconds).padStart(2, '0')
 }

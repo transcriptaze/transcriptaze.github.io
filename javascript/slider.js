@@ -61,8 +61,8 @@ Slider.prototype.init = function (min, max, t) {
 }
 
 Slider.prototype.moveSliderTo = function (value, released) {
-  const valueMax = parseInt(this.domNode.getAttribute('aria-valuemax'))
-  const valueMin = parseInt(this.domNode.getAttribute('aria-valuemin'))
+  const valueMax = this.domNode.getAttribute('aria-valuemax')
+  const valueMin = this.domNode.getAttribute('aria-valuemin')
 
   if (value > valueMax) {
     value = valueMax

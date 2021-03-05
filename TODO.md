@@ -1,9 +1,8 @@
 ## IN PROGRESS
 
-- [ ] Slider allow drag to end (even if not multiple of second)
-- [ ] Slider - draw bar to current position
-- [ ] Looping is borked occasionally
 - [ ] Zoot up tap bars
+- [ ] Finer resolution pixels for slider/taps - CSS/canvas widths?
+- [ ] Looping is borked occasionally
 - [ ] Clear local storage button (?)
 - [ ] Encapsulate all the things in 'state' object
 - [ ] (optionally) discard beats with only 1 tap (?)
@@ -17,6 +16,8 @@
 - [ ] https://codepen.io/ma_suwa/pen/eYdZVML
 - [ ] https://github.com/jvnaveenbabu/Neumorphism-Designs
 
+- [x] Slider - draw bar to current position
+- [x] Slider allow drag to end (even if not multiple of second)
 - [x] Colorize slider bar
 - [x] Zoot up slider
 - [x] Move panel style to outer container

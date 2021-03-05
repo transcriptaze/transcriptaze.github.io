@@ -488,30 +488,28 @@ div#taps {
 }
 
 div#current {
-  position: relative;
-  height: 17px;
+  display: block;
+   position: relative;
+   height: 9px;
 }
 
 div#history {
+  display: block;
   position: relative;
-  height: 17px;
+  height: 9px;
   margin-top: 2px;
-  display: none;
 }
 
 div#beats {
   display: none;
   position: relative;
-  height: 17px;
+  height: 9px;
   margin-top: 2px;
-  display: none;
 }
 
 div#message {
   display: none;
-  position: absolute;
-  width: 100%;
-  height: 17px;
+  margin-top: 4px;
   justify-content: center;
   align-items: center;
 }
@@ -539,6 +537,7 @@ canvas.all {
 canvas.zoomed {
   top: 9px;
   background: lightgreen;
+  display: none;
 }
 
 div#data button {
