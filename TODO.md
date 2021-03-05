@@ -1,20 +1,27 @@
 ## IN PROGRESS
 
 - [ ] Zoot up tap bars
-- [ ] Finer resolution pixels for slider/taps - CSS/canvas widths?
-- [ ] Looping is borked occasionally
-- [ ] Clear local storage button (?)
-- [ ] Encapsulate all the things in 'state' object
+      - try grouping normal and zoomed
+      - maybe finer resolution pixels for slider/taps - CSS/canvas widths?
+      - use normal layout i.e. not absolute positioning
+- [ ] Slider thumb active style
+- [ ] Slider max thumb goes all weird when hovering over other buttons
 - [ ] (optionally) discard beats with only 1 tap (?)
 - [ ] Not clustering properly when tapping double time
+- [ ] Encapsulate all the things in 'state' object
+- [ ] Looping is borked occasionally
+- [ ] Slider is borked occasionally
+- [ ] Clear local storage button (?)
 
 - [ ] Liven up the bottom panel when nothing is happening
+- [ ] Dangling left time label
 - [ ] Soften transition to loaded video
 - [ ] Cleanup combobox code/CSS
 - [ ] Cleanup slider code/CSS
 - [ ] Parse other YouTube URL formats
-- [ ] https://codepen.io/ma_suwa/pen/eYdZVML
-- [ ] https://github.com/jvnaveenbabu/Neumorphism-Designs
+- [ ] Neumorphic (?)
+      - https://codepen.io/ma_suwa/pen/eYdZVML
+      - https://github.com/jvnaveenbabu/Neumorphism-Designs
 
 - [x] Slider - draw bar to current position
 - [x] Slider allow drag to end (even if not multiple of second)

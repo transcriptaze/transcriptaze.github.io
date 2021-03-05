@@ -489,8 +489,8 @@ div#taps {
 
 div#current {
   display: block;
-   position: relative;
-   height: 9px;
+  position: relative;
+  height: 9px;
 }
 
 div#history {
@@ -525,8 +525,10 @@ div#message p {
 canvas.taps {
   position: absolute;
   left: 4px;
-  width: 640;
-  height: 8;
+  width: 640px;
+  height: 5px;
+  border: 0.5px solid #c0c0c080;
+  border-radius: 2px;
 }
 
 canvas.all {
@@ -535,7 +537,7 @@ canvas.all {
 }
 
 canvas.zoomed {
-  top: 9px;
+  top: 8px;
   background: lightgreen;
   display: none;
 }
