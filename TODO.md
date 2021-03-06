@@ -1,17 +1,15 @@
 ## IN PROGRESS
 
-- [ ] Zoot up tap bars
-      - maybe finer resolution pixels for slider/taps - CSS/canvas widths?
-      - move loop etc below taps
-- [ ] Use colours from logo
 - [ ] Slider thumb active style
 - [ ] Slider max thumb goes all weird when hovering over other buttons
 - [ ] (optionally) discard beats with only 1 tap (?)
+- [ ] Zoot up tap bars
+      - maybe finer resolution pixels for slider/taps - CSS/canvas widths?
+- [ ] Use colours from logo
 - [ ] Not clustering properly when tapping double time
 - [ ] Encapsulate all the things in 'state' object
 - [ ] Looping is borked occasionally
 - [ ] Slider is borked occasionally
-- [ ] Clear local storage button (?)
 
 - [ ] Liven up the bottom panel when nothing is happening
 - [ ] Dangling left time label

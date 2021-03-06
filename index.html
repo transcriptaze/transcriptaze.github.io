@@ -118,8 +118,10 @@
               </div>
             </div>
 
-            <!-- CONTROLS -->
+            <!-- CONTROL PANEL -->
             <div id="controls" class="controls panel">
+            
+              <!-- SLIDER -->
               <div class="slider">
                 <div class="rail" style="width:640px;">
                   <img id="start" class="min thumb" src="images/min-arrow.svg" tabindex="0" draggable="false"
@@ -138,6 +140,26 @@
                 </div>
               </div>
 
+              <!-- TAPS -->
+              <div id="taps" class="panel">
+                <div id="all">
+                  <canvas class="taps current" width="640" height="5" title="Current taps"></canvas>
+                  <canvas class="taps history" width="640" height="5" title="Accumulated taps"></canvas>
+                  <canvas class="taps beats"   width="640" height="5" title="Analyzed taps"></canvas>
+                </div>
+
+                <div id="zoomed">
+                  <canvas class="taps current" width="640" height="5" title="Current taps"></canvas>
+                  <canvas class="taps history" width="640" height="5" title="Accumulated taps"></canvas>
+                  <canvas class="taps beats"   width="640" height="5" title="Analyzed taps"></canvas>
+                </div>
+
+                <div id="message">
+                  <p>INSUFFICIENT DATA</p>
+                </div>
+              </div>
+
+              <!-- CONTROLS -->
               <div id="looping">
                 <label id="loop">
                   <input type="checkbox" onclick="onLoop(event)" />
@@ -159,25 +181,6 @@
               
               <input id="offset" type="text" class="info" placeholder="offset" readonly />
               <input id="bpm"    type="text" class="info" placeholder="BPM"    readonly />              
-            </div>
-
-            <!-- TAPS -->
-            <div id="taps" class="panel">
-              <div id="all">
-                <canvas class="taps current" width="640" height="5" title="Current taps"></canvas>
-                <canvas class="taps history" width="640" height="5" title="Accumulated taps"></canvas>
-                <canvas class="taps beats"   width="640" height="5" title="Analyzed taps"></canvas>
-              </div>
-
-              <div id="zoomed">
-                <canvas class="taps current" width="640" height="5" title="Current taps"></canvas>
-                <canvas class="taps history" width="640" height="5" title="Accumulated taps"></canvas>
-                <canvas class="taps beats"   width="640" height="5" title="Analyzed taps"></canvas>
-              </div>
-
-              <div id="message">
-                <p>INSUFFICIENT DATA</p>
-              </div>
             </div>
 
             <!-- DATA -->

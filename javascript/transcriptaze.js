@@ -82,8 +82,6 @@ export function onPlayerStateChange (event) {
       document.getElementById('help').dataset.state = 'cued'
       document.getElementById('help').focus()
 
-      document.getElementById('data').style.display = 'block'
-
       react()
       player.unMute()
 
