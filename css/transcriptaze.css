@@ -26,6 +26,9 @@
   --clickable:   invert(58%) sepia(41%) saturate(6512%) hue-rotate(27deg) brightness(99%) contrast(101%);
   --active:      invert(22%) sepia(77%) saturate(2123%) hue-rotate(342deg) brightness(109%) contrast(94%);
 
+  --taps-all-background: #268bd240;
+  --taps-zoomed-background: #85990040;
+
   --pad-left: 2px;
 }
 
@@ -484,27 +487,36 @@ input#delay::-webkit-outer-spin-button {
 }
 
 div#taps {
-  margin-top: 4px;
-}
-
-div#current {
-  display: block;
-  position: relative;
-  height: 9px;
-}
-
-div#history {
-  display: block;
-  position: relative;
-  height: 9px;
-  margin-top: 2px;
-}
-
-div#beats {
+  padding-top: 4px;
   display: none;
-  position: relative;
-  height: 9px;
-  margin-top: 2px;
+}
+
+div#all {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+div#zoomed {
+  display: none;
+  flex-flow: column nowrap;
+  margin-top: 1px;
+}
+
+div#all canvas {
+  background: var(--taps-all-background);
+}
+
+div#zoomed canvas {
+  background: var(--taps-zoomed-background);
+}
+
+canvas.taps {
+  width: 640px;
+  height: 5px;
+  margin-top: 1px;
+  margin-bottom: 1px;
+  border: 0.5px solid #c0c0c080;
+  border-radius: 2px;
 }
 
 div#message {
@@ -520,26 +532,6 @@ div#message p {
   font-size: 0.6em;
   text-align: center;
   color: var(--hint);
-}
-
-canvas.taps {
-  position: absolute;
-  left: 4px;
-  width: 640px;
-  height: 5px;
-  border: 0.5px solid #c0c0c080;
-  border-radius: 2px;
-}
-
-canvas.all {
-  top: 0px;
-  background: lightblue;
-}
-
-canvas.zoomed {
-  top: 8px;
-  background: lightgreen;
-  display: none;
 }
 
 div#data button {

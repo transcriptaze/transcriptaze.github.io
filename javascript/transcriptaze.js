@@ -74,6 +74,7 @@ export function onPlayerStateChange (event) {
       document.getElementById('windmill').style.display = 'none'
 
       document.getElementById('controls').style.visibility = 'visible'
+      document.getElementById('taps').style.display = 'block'
       document.getElementById('taps').style.visibility = 'visible'
 
       document.getElementById('help').style.display = 'block'
@@ -291,17 +292,17 @@ function react () {
   }
 
   if (taps.taps.length > 0) {
-    document.getElementById('history').style.display = 'block'
-    document.getElementById('beats').style.display = 'block'
+    document.querySelector('#all canvas.history').style.display = 'block'
   } else {
-    document.getElementById('history').style.display = 'none'
-    document.getElementById('beats').style.display = 'none'
+    document.querySelector('#all canvas.history').style.display = 'none'
   }
 
-  if (taps.beats) {
-    document.getElementById('beats').style.display = 'block'
+  if (taps.taps.length > 0 && taps.beats) {
+    document.querySelector('#all canvas.beats').style.display = 'block'
+    document.querySelector('#zoomed canvas.beats').style.display = 'block'
   } else {
-    document.getElementById('beats').style.display = 'none'    
+    document.querySelector('#all canvas.beats').style.display = 'none'
+    document.querySelector('#zoomed canvas.beats').style.display = 'none'
   }
 
   if (!taps.beats && taps.taps.length > 0) {
@@ -312,15 +313,9 @@ function react () {
 
   const w = (end.valueNow - start.valueNow)/taps.duration
   if (w && w < 0.75) {
-    [ 'current', 'history', 'beats' ].forEach(div => {
-      document.getElementById(div).style.height = '17px'    
-      document.getElementById(div).querySelector('canvas.zoomed').style.display = 'block'          
-    })
+      document.getElementById('zoomed').style.display = 'flex'          
   } else {
-    [ 'current', 'history', 'beats' ].forEach(div => {
-      document.getElementById(div).style.height = '9px'    
-      document.getElementById(div).querySelector('canvas.zoomed').style.display = 'none'          
-    })
+      document.getElementById('zoomed').style.display = 'none'          
   }
 
   if (taps.taps.length > 0) {
@@ -442,11 +437,11 @@ function draw () {
     list = taps.taps[taps.taps.length - 1]
   }
 
-  drawTaps(document.querySelector('#current canvas.all'), list, 0, Math.floor(taps.duration))
-  drawTaps(document.querySelector('#current canvas.zoomed'), list, start.valueNow, end.valueNow - start.valueNow)
+  drawTaps(document.querySelector('#all canvas.current'), list, 0, Math.floor(taps.duration))
+  drawTaps(document.querySelector('#all canvas.history'), taps.taps, 0, Math.floor(taps.duration))
 
-  drawTaps(document.querySelector('#history canvas.all'), taps.taps, 0, Math.floor(taps.duration))
-  drawTaps(document.querySelector('#history canvas.zoomed'), taps.taps, start.valueNow, end.valueNow - start.valueNow)
+  drawTaps(document.querySelector('#zoomed canvas.current'), list, start.valueNow, end.valueNow - start.valueNow)
+  drawTaps(document.querySelector('#zoomed canvas.history'), taps.taps, start.valueNow, end.valueNow - start.valueNow)
 }
 
 function drawBeats (beats) {
@@ -455,8 +450,8 @@ function drawBeats (beats) {
 
     beats.forEach(b => { ticks.push(b.at) })
 
-    drawTaps(document.querySelector('#beats canvas.all'), ticks, 0, Math.floor(taps.duration))
-    drawTaps(document.querySelector('#beats canvas.zoomed'), ticks, start.valueNow, end.valueNow - start.valueNow)
+    drawTaps(document.querySelector('#all canvas.beats'), ticks, 0, Math.floor(taps.duration))
+    drawTaps(document.querySelector('#zoomed canvas.beats'), ticks, start.valueNow, end.valueNow - start.valueNow)
   }
 }
 

@@ -163,18 +163,18 @@
 
             <!-- TAPS -->
             <div id="taps" class="panel">
-              <div id="current" title="Current taps">
-                <canvas class="taps all" width="640" height="5"></canvas>
-                <canvas class="taps zoomed" width="640" height="5"></canvas>
+              <div id="all">
+                <canvas class="taps current" width="640" height="5" title="Current taps"></canvas>
+                <canvas class="taps history" width="640" height="5" title="Accumulated taps"></canvas>
+                <canvas class="taps beats"   width="640" height="5" title="Analyzed taps"></canvas>
               </div>
-              <div id="history" title="Accumulated taps">
-                <canvas class="taps all" width="640" height="5"></canvas>
-                <canvas class="taps zoomed" width="640" height="5"></canvas>
+
+              <div id="zoomed">
+                <canvas class="taps current" width="640" height="5" title="Current taps"></canvas>
+                <canvas class="taps history" width="640" height="5" title="Accumulated taps"></canvas>
+                <canvas class="taps beats"   width="640" height="5" title="Analyzed taps"></canvas>
               </div>
-              <div id="beats" title="Analyzed taps">
-                <canvas class="taps all" width="640" height="5"></canvas>
-                <canvas class="taps zoomed" width="640" height="5"></canvas>
-              </div>
+
               <div id="message">
                 <p>INSUFFICIENT DATA</p>
               </div>

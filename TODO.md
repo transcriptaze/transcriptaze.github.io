@@ -1,9 +1,9 @@
 ## IN PROGRESS
 
 - [ ] Zoot up tap bars
-      - try grouping normal and zoomed
       - maybe finer resolution pixels for slider/taps - CSS/canvas widths?
-      - use normal layout i.e. not absolute positioning
+      - move loop etc below taps
+- [ ] Use colours from logo
 - [ ] Slider thumb active style
 - [ ] Slider max thumb goes all weird when hovering over other buttons
 - [ ] (optionally) discard beats with only 1 tap (?)
