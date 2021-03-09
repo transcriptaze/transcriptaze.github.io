@@ -16,6 +16,10 @@
   --solarize-cyan:    #2aa198;
   --solarize-green:   #859900;
 
+  --transcriptaze-red:    #c40312;
+  --transcriptaze-orange: #ffa52b;
+  --transcriptaze-blue:   #008da0;
+
   --background:  var(--solarize-base3);
   --panel:       var(--solarize-base2);
   --text:        var(--solarize-base01);
@@ -23,8 +27,12 @@
   --help:        var(--solarize-base00);
   --border:      var(--solarize-red);
   --unclickable: invert(93%) sepia(0%) saturate(5805%) hue-rotate(134deg) brightness(133%) contrast(51%);
-  --clickable:   invert(58%) sepia(41%) saturate(6512%) hue-rotate(27deg) brightness(99%) contrast(101%);
-  --active:      invert(22%) sepia(77%) saturate(2123%) hue-rotate(342deg) brightness(109%) contrast(94%);
+  --clickable:   invert(18%) sepia(66%) saturate(4803%) hue-rotate(346deg) brightness(73%) contrast(115%);
+  --active:      invert(65%) sepia(96%) saturate(640%) hue-rotate(336deg) brightness(101%) contrast(102%);
+
+  --solarize-unclickable: invert(93%) sepia(0%) saturate(5805%) hue-rotate(134deg) brightness(133%) contrast(51%);
+  --solarize-clickable:   invert(58%) sepia(41%) saturate(6512%) hue-rotate(27deg) brightness(99%) contrast(101%);
+  --solarize-active:      invert(22%) sepia(77%) saturate(2123%) hue-rotate(342deg) brightness(109%) contrast(94%);
 
   --taps-all-background: #268bd240;
   --taps-zoomed-background: #85990040;
