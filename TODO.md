@@ -1,18 +1,15 @@
 ## IN PROGRESS
 
-- [ ] Slider max thumb goes all weird when hovering over other buttons
+- [ ] Parse other YouTube URL formats
 - [ ] (maybe) finer resolution pixels for slider/taps - CSS/canvas widths?
-- [ ] Not clustering properly when tapping double time
 - [ ] Encapsulate all the things in 'state' object
-- [ ] Looping is borked occasionally
-- [ ] Slider is borked occasionally
+- [ ] Not clustering properly when tapping double time
 
 - [ ] Liven up the bottom panel when nothing is happening
 - [ ] Dangling left time label
 - [ ] Soften transition to loaded video
 - [ ] Cleanup combobox code/CSS
 - [ ] Cleanup slider code/CSS
-- [ ] Parse other YouTube URL formats
 
 - [x] Slider thumb active style
 - [x] Styled buttons with colours from logo
@@ -72,8 +69,8 @@
 
 ## TODO
 
-- [ ] Load audio from file
 - [ ] Export as MIDI
+- [ ] Load audio from file
 - [ ] Neumorphic (?)
       - https://codepen.io/ma_suwa/pen/eYdZVML
       - https://github.com/jvnaveenbabu/Neumorphism-Designs
@@ -81,5 +78,5 @@
 ## NOTES
 
 1. https://w3c.github.io/aria-practices/examples/slider/multithumb-slider.html
-
+2. https://gist.github.com/rodrigoborgesdeoliveira/987683cfbfcc8d800192da1e73adc486
 

@@ -97,7 +97,8 @@ export function onPlayerStateChange (event) {
 }
 
 export function onURL (event) {
-  const vid = getVideoID()
+  const url = document.getElementById('url')
+  const vid = getVideoID(url)
 
   if (event.type === 'keydown') {
     document.getElementById('url').title = 'YouTube URL'
@@ -115,7 +116,8 @@ export function onURL (event) {
 }
 
 export function onLoad (event) {
-  const vid = getVideoID()
+  const url = document.getElementById('url').value
+  const vid = getVideoID(url)
 
   if (vid !== '') {
     clearTaps()
@@ -340,7 +342,8 @@ function clearTaps () {
 }
 
 function cue (play) {
-  const vid = getVideoID()
+  const url = document.getElementById('url').value
+  const vid = getVideoID(url)
 
   if (vid !== '') {
     const start = document.getElementById('start').getAttribute('aria-valuenow')
@@ -470,10 +473,9 @@ function drawTaps (canvas, taps, offset, duration) {
   ctx.stroke()
 }
 
-function getVideoID () {
+function getVideoID (url) {
   try {
-    const url = new URL(document.getElementById('url').value)
-    const vid = url.searchParams.get('v')
+    const vid = new URL(url).searchParams.get('v')
     if (vid != null) {
       return vid
     }
