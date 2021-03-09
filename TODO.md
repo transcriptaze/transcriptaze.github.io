@@ -1,6 +1,5 @@
 ## IN PROGRESS
 
-- [ ] Slider thumb active style
 - [ ] Slider max thumb goes all weird when hovering over other buttons
 - [ ] (maybe) finer resolution pixels for slider/taps - CSS/canvas widths?
 - [ ] Not clustering properly when tapping double time
@@ -15,6 +14,7 @@
 - [ ] Cleanup slider code/CSS
 - [ ] Parse other YouTube URL formats
 
+- [x] Slider thumb active style
 - [x] Styled buttons with colours from logo
 - [x] Invoke taps2beats.Clean to discard outlier beats
 - [x] Slider - draw bar to current position

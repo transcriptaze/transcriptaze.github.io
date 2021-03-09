@@ -38,6 +38,7 @@
 .slider img[role="slider"].focus,
 .slider img[role="slider"]:hover {
   outline: none;
+  filter: var(--active);
 }
 
 .slider img#start {
