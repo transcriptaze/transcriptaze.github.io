@@ -37,9 +37,15 @@ func taps(this js.Value, inputs []js.Value) interface{} {
 
 		beats := taps2beats.Taps2Beats(taps2beats.Floats2Seconds(taps), 0.0)
 
-		if len(beats.Beats) > 1 && beats.Variance != nil && *beats.Variance < 0.1 {
+		if len(beats.Beats) > 1 && beats.Variance != nil && *beats.Variance < 0.1 {			
+			cleaned,err := beats.Clean()
+			if err != nil {
+					callback.Invoke(js.Null(), err.Error())
+					return
+			}
+
 			if quantize {
-				if err := beats.Quantize(); err != nil {
+				if err := cleaned.Quantize(); err != nil {
 					callback.Invoke(js.Null(), err.Error())
 					return
 				}
@@ -48,16 +54,10 @@ func taps(this js.Value, inputs []js.Value) interface{} {
 			if interpolate {
 				start := taps2beats.Seconds(0.0)
 				end := taps2beats.Seconds(duration)
-				if err := beats.Interpolate(start, end); err != nil {
+				if err := cleaned.Interpolate(start, end); err != nil {
 					callback.Invoke(js.Null(), err.Error())
 					return
 				}
-			}
-
-			cleaned,err := beats.Clean()
-			if err != nil {
-					callback.Invoke(js.Null(), err.Error())
-					return
 			}
 
 			callback.Invoke(marshal(cleaned), js.Null())

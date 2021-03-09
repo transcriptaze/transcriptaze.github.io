@@ -1,5 +1,6 @@
 ## IN PROGRESS
 
+- [ ] Interpolate is borked
 - [ ] Parse other YouTube URL formats
 - [ ] (maybe) finer resolution pixels for slider/taps - CSS/canvas widths?
 - [ ] Encapsulate all the things in 'state' object
