@@ -97,7 +97,7 @@ export function onPlayerStateChange (event) {
 }
 
 export function onURL (event) {
-  const url = document.getElementById('url')
+  const url = document.getElementById('url').value
   const vid = getVideoID(url)
 
   if (event.type === 'keydown') {
