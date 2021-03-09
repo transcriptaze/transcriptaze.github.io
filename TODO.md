@@ -1,11 +1,12 @@
 ## IN PROGRESS
 
+- [ ] Fix taps2beats golint warnings
+- [ ] Fix taps2beat variance to use VARP instead of VAR
+- [ ] Use colours from logo
 - [ ] Slider thumb active style
 - [ ] Slider max thumb goes all weird when hovering over other buttons
-- [ ] (optionally) discard beats with only 1 tap (?)
 - [ ] Zoot up tap bars
       - maybe finer resolution pixels for slider/taps - CSS/canvas widths?
-- [ ] Use colours from logo
 - [ ] Not clustering properly when tapping double time
 - [ ] Encapsulate all the things in 'state' object
 - [ ] Looping is borked occasionally
@@ -17,10 +18,8 @@
 - [ ] Cleanup combobox code/CSS
 - [ ] Cleanup slider code/CSS
 - [ ] Parse other YouTube URL formats
-- [ ] Neumorphic (?)
-      - https://codepen.io/ma_suwa/pen/eYdZVML
-      - https://github.com/jvnaveenbabu/Neumorphism-Designs
 
+- [x] Invoke taps2beats.Clean to discard outlier beats
 - [x] Slider - draw bar to current position
 - [x] Slider allow drag to end (even if not multiple of second)
 - [x] Colorize slider bar
@@ -78,6 +77,9 @@
 
 - [ ] Load audio from file
 - [ ] Export as MIDI
+- [ ] Neumorphic (?)
+      - https://codepen.io/ma_suwa/pen/eYdZVML
+      - https://github.com/jvnaveenbabu/Neumorphism-Designs
 
 ## NOTES
 

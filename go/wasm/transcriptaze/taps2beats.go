@@ -54,7 +54,13 @@ func taps(this js.Value, inputs []js.Value) interface{} {
 				}
 			}
 
-			callback.Invoke(marshal(beats), js.Null())
+			cleaned,err := beats.Clean()
+			if err != nil {
+					callback.Invoke(js.Null(), err.Error())
+					return
+			}
+
+			callback.Invoke(marshal(cleaned), js.Null())
 			return
 		}
 

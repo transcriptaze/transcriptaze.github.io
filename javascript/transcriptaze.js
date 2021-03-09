@@ -179,7 +179,7 @@ function drawSlider () {
   const ctx = canvas.getContext('2d')
   const width = canvas.width
   const height = canvas.height
-  const t  = player.getCurrentTime()
+  const t = player.getCurrentTime()
   const x = width * start.valueNow / taps.duration
   const w = width * end.valueNow / taps.duration
 
@@ -190,10 +190,10 @@ function drawSlider () {
 
   if (t) {
     ctx.fillStyle = '#dc322fC0'
-    ctx.fillRect(0, 0, Math.max(width *t/taps.duration,x), height)    
+    ctx.fillRect(0, 0, Math.max(width * t / taps.duration, x), height)
   } else {
     ctx.fillStyle = '#dc322fC0'
-    ctx.fillRect(0, 0, x, height)    
+    ctx.fillRect(0, 0, x, height)
   }
 }
 
@@ -304,16 +304,16 @@ function react () {
   }
 
   if (!taps.beats && taps.taps.length > 0) {
-    document.getElementById('message').style.display = 'flex'    
+    document.getElementById('message').style.display = 'flex'
   } else {
-    document.getElementById('message').style.display = 'none'    
+    document.getElementById('message').style.display = 'none'
   }
 
-  const w = (end.valueNow - start.valueNow)/taps.duration
+  const w = (end.valueNow - start.valueNow) / taps.duration
   if (w && w < 0.75) {
-      document.getElementById('zoomed').style.display = 'flex'          
+    document.getElementById('zoomed').style.display = 'flex'
   } else {
-      document.getElementById('zoomed').style.display = 'none'          
+    document.getElementById('zoomed').style.display = 'none'
   }
 
   if (taps.taps.length > 0) {
@@ -325,7 +325,6 @@ function react () {
   if (taps.beats != null) {
     drawBeats(taps.beats.beats)
   }
-
 }
 
 function clearTaps () {
@@ -505,9 +504,8 @@ function format (t) {
 
   if (t > 0) {
     minutes = Math.floor(t / 60)
-    seconds = Math.round((t % 60) * 10)/10.0
+    seconds = Math.round((t % 60) * 10) / 10.0
   }
-
 
   return String(minutes) + ':' + String(seconds).padStart(2, '0')
 }
