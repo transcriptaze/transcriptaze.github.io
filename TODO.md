@@ -1,10 +1,10 @@
 ## IN PROGRESS
 
-- [ ] Interpolate is borked
 - [ ] Parse other YouTube URL formats
 - [ ] (maybe) finer resolution pixels for slider/taps - CSS/canvas widths?
 - [ ] Encapsulate all the things in 'state' object
 - [ ] Not clustering properly when tapping double time
+- [ ] BPM estimation is a bit iffy
 
 - [ ] Liven up the bottom panel when nothing is happening
 - [ ] Dangling left time label
@@ -12,6 +12,7 @@
 - [ ] Cleanup combobox code/CSS
 - [ ] Cleanup slider code/CSS
 
+- [x] Discard outliers
 - [x] Slider thumb active style
 - [x] Styled buttons with colours from logo
 - [x] Invoke taps2beats.Clean to discard outlier beats
