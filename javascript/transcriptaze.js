@@ -191,10 +191,10 @@ function drawSlider () {
   ctx.fillRect(x, 0, w - x + 1, height)
 
   if (t) {
-    ctx.fillStyle = '#dc322fC0'
+    ctx.fillStyle = '#dc322fc0'
     ctx.fillRect(0, 0, Math.max(width * t / taps.duration, x), height)
   } else {
-    ctx.fillStyle = '#dc322fC0'
+    ctx.fillStyle = '#dc322fc0'
     ctx.fillRect(0, 0, x, height)
   }
 }

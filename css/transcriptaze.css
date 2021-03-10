@@ -16,6 +16,12 @@
   --solarize-cyan:    #2aa198;
   --solarize-green:   #859900;
 
+  --logo-red:    #c40312;
+  --logo-orange: #ffa52b;
+  --logo-blue:   #008da0;
+
+  --taps-red:   #bc4f59;
+
   --transcriptaze-red:    #c40312;
   --transcriptaze-orange: #ffa52b;
   --transcriptaze-blue:   #008da0;
@@ -27,8 +33,12 @@
   --help:        var(--solarize-base00);
   --border:      var(--solarize-red);
   --unclickable: invert(93%) sepia(0%) saturate(5805%) hue-rotate(134deg) brightness(133%) contrast(51%);
-  --clickable:   invert(18%) sepia(66%) saturate(4803%) hue-rotate(346deg) brightness(73%) contrast(115%);
-  --active:      invert(65%) sepia(96%) saturate(640%) hue-rotate(336deg) brightness(101%) contrast(102%);
+  --clickable:   invert(19%) sepia(86%) saturate(6582%) hue-rotate(349deg) brightness(75%) contrast(108%);
+  --active:      invert(58%) sepia(41%) saturate(6512%) hue-rotate(27deg) brightness(99%) contrast(101%);
+  --slider-thumbs-active: invert(65%) sepia(96%) saturate(640%) hue-rotate(336deg) brightness(101%) contrast(102%);
+
+  --logo-clickable: invert(18%) sepia(66%) saturate(4803%) hue-rotate(346deg) brightness(73%) contrast(115%);
+  --logo-active:    invert(65%) sepia(96%) saturate(640%) hue-rotate(336deg) brightness(101%) contrast(102%);
 
   --solarize-unclickable: invert(93%) sepia(0%) saturate(5805%) hue-rotate(134deg) brightness(133%) contrast(51%);
   --solarize-clickable:   invert(58%) sepia(41%) saturate(6512%) hue-rotate(27deg) brightness(99%) contrast(101%);
