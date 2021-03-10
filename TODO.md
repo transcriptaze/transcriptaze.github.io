@@ -1,7 +1,6 @@
 ## IN PROGRESS
 
 - [ ] Parse other YouTube URL formats
-- [ ] (maybe) finer resolution pixels for slider/taps - CSS/canvas widths?
 - [ ] Encapsulate all the things in 'state' object
 - [ ] Not clustering properly when tapping double time
 
@@ -11,6 +10,7 @@
 - [ ] Cleanup combobox code/CSS
 - [ ] Cleanup slider code/CSS
 
+- [x] Finer resolution pixels for slider/taps - CSS/canvas widths?
 - [x] Discard outliers
 - [x] Slider thumb active style
 - [x] Styled buttons with colours from logo

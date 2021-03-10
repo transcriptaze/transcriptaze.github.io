@@ -461,16 +461,19 @@ function drawTaps (canvas, taps, offset, duration) {
   const height = canvas.height
 
   ctx.lineWidth = 1
-  ctx.strokeStyle = 'red'
+  ctx.strokeStyle = '#bc4f59'
+  ctx.fillStyle = '#bc4f59'
 
   ctx.clearRect(0, 0, width, height)
   ctx.beginPath()
   taps.flat().forEach(function (t) {
     const x = Math.floor((t - offset) * width / duration) + 0.5
-    ctx.moveTo(x, 0)
-    ctx.lineTo(x, height)
+
+    ctx.moveTo(x-3, height)
+    ctx.lineTo(x, 0)
+    ctx.lineTo(x+3, height)
+    ctx.fill()
   })
-  ctx.stroke()
 }
 
 function getVideoID (url) {
