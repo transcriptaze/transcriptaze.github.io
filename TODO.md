@@ -1,15 +1,17 @@
 ## IN PROGRESS
 
-- [ ] Parse other YouTube URL formats
 - [ ] Encapsulate all the things in 'state' object
-- [ ] Not clustering properly when tapping double time
+- [ ] Put T2B in separate namespace in local storage
+- [ ] Parse other YouTube URL formats
 
-- [ ] Liven up the bottom panel when nothing is happening
-- [ ] Dangling left time label
-- [ ] Soften transition to loaded video
 - [ ] Cleanup combobox code/CSS
 - [ ] Cleanup slider code/CSS
+- [ ] Liven up the bottom panel when nothing is happening
+- [ ] Not clustering properly when tapping double time
+- [ ] Dangling left time label
+- [ ] Soften transition to loaded video
 
+- [x] Cookies notice
 - [x] Finer resolution pixels for slider/taps - CSS/canvas widths?
 - [x] Discard outliers
 - [x] Slider thumb active style
@@ -72,7 +74,8 @@
 
 - [ ] Export as MIDI
 - [ ] Load audio from file
-- [ ] Neumorphic (?)
+- [ ] View as JSON
+- [ ] Go all neumorphic (?)
       - https://codepen.io/ma_suwa/pen/eYdZVML
       - https://github.com/jvnaveenbabu/Neumorphism-Designs
 
