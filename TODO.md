@@ -4,7 +4,6 @@
 - [ ] (maybe) finer resolution pixels for slider/taps - CSS/canvas widths?
 - [ ] Encapsulate all the things in 'state' object
 - [ ] Not clustering properly when tapping double time
-- [ ] BPM estimation is a bit iffy
 
 - [ ] Liven up the bottom panel when nothing is happening
 - [ ] Dangling left time label
