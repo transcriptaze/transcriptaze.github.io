@@ -16,7 +16,7 @@ export const State = function () {
       this.apikey = blob.trim()
     }
 
-    // Restore history from local storage
+    // Restore history
     try {
       blob = window.localStorage.getItem('history')
       if (blob !== null) {

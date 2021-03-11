@@ -1,8 +1,8 @@
 ## IN PROGRESS
 
-- [ ] Encapsulate all the things in 'state' object
 - [ ] Put T2B in separate namespace in local storage
 - [ ] Parse other YouTube URL formats
+- [ ] Include title in JSON export
 
 - [ ] Cleanup combobox code/CSS
 - [ ] Cleanup slider code/CSS
@@ -11,6 +11,7 @@
 - [ ] Dangling left time label
 - [ ] Soften transition to loaded video
 
+- [x] Encapsulate all the things in 'local' object
 - [x] Cookies notice
 - [x] Finer resolution pixels for slider/taps - CSS/canvas widths?
 - [x] Discard outliers

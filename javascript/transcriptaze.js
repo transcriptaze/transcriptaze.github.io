@@ -5,22 +5,23 @@ import { Slider } from './slider.js'
 
 export const state = new State()
 
-let loopTimer
-let delayTimer
-let loaded = false
-let looping = false
-let start
-let end
-
-const taps = {
-  duration: 0,
-  taps: [],
-  current: [],
-  beats: null
+const local = {
+  loopTimer: 0,
+  delayTimer: 0,
+  loaded: false,
+  looping: false,
+  start: null,
+  end: null,
+  taps: {
+    duration: 0,
+    taps: [],
+    current: [],
+    beats: null
+  }
 }
 
 document.addEventListener('keydown', event => {
-  if (loaded) {
+  if (local.loaded) {
     onKey(event)
   }
 })
@@ -29,23 +30,23 @@ export function onPlayerReady (event) {
   document.getElementById('file').style.visibility = 'visible'
   document.getElementById('url').readOnly = false
 
-  start = new Slider('start', 'from', onSetStart)
-  end = new Slider('end', 'to', onSetEnd)
-  end.init(0, 100, 100)
+  local.start = new Slider('start', 'from', onSetStart)
+  local.end = new Slider('end', 'to', onSetEnd)
+  local.end.init(0, 100, 100)
 }
 
 export function onPlayerStateChange (event) {
-  clearInterval(loopTimer)
+  clearInterval(local.loopTimer)
 
   switch (event.data) {
     case YT.PlayerState.ENDED:
-      if (!loaded) {
-        loaded = true
+      if (!local.loaded) {
+        local.loaded = true
         const duration = player.getDuration()
 
-        start.init(0, duration, 0)
-        end.init(0, duration, duration)
-        taps.duration = duration
+        local.start.init(0, duration, 0)
+        local.end.init(0, duration, duration)
+        local.taps.duration = duration
 
         state.addVideo(getPlayerVideoID())
         cue(false)
@@ -54,8 +55,8 @@ export function onPlayerStateChange (event) {
       break
 
     case YT.PlayerState.PLAYING:
-      if (loaded) {
-        loopTimer = setInterval(tick, 100)
+      if (local.loaded) {
+        local.loopTimer = setInterval(tick, 100)
         document.getElementById('help').focus()
         document.getElementById('help').dataset.state = 'playing'
         draw()
@@ -85,9 +86,9 @@ export function onPlayerStateChange (event) {
       react()
       player.unMute()
 
-      if (taps.current.length > 0) {
-        taps.taps.push(taps.current)
-        taps.current = []
+      if (local.taps.current.length > 0) {
+        local.taps.taps.push(local.taps.current)
+        local.taps.current = []
         analyse()
         react()
       }
@@ -121,7 +122,7 @@ export function onLoad (event) {
 
   if (vid !== '') {
     clearTaps()
-    loaded = false
+    local.loaded = false
 
     document.getElementById('loading').style.visibility = 'visible'
     document.getElementById('windmill').style.display = 'block'
@@ -182,8 +183,8 @@ function drawSlider () {
   const width = canvas.width
   const height = canvas.height
   const t = player.getCurrentTime()
-  const x = width * start.valueNow / taps.duration
-  const w = width * end.valueNow / taps.duration
+  const x = width * local.start.valueNow / local.taps.duration
+  const w = width * local.end.valueNow / local.taps.duration
 
   ctx.clearRect(0, 0, width, height)
 
@@ -192,7 +193,7 @@ function drawSlider () {
 
   if (t) {
     ctx.fillStyle = '#dc322fc0'
-    ctx.fillRect(0, 0, Math.max(width * t / taps.duration, x), height)
+    ctx.fillRect(0, 0, Math.max(width * t / local.taps.duration, x), height)
   } else {
     ctx.fillStyle = '#dc322fc0'
     ctx.fillRect(0, 0, x, height)
@@ -200,7 +201,7 @@ function drawSlider () {
 }
 
 export function onLoop (event) {
-  looping = event.target.checked
+  local.looping = event.target.checked
 }
 
 export function onKey (event) {
@@ -212,13 +213,13 @@ export function onKey (event) {
         case YT.PlayerState.CUED:
         case YT.PlayerState.PAUSED:
           react()
-          if ((end.valueNow - start.valueNow) > 1) {
+          if ((local.end.valueNow - local.start.valueNow) > 1) {
             player.playVideo()
           }
           break
 
         case YT.PlayerState.PLAYING:
-          taps.current.push(player.getCurrentTime())
+          local.taps.current.push(player.getCurrentTime())
           draw()
           break
       }
@@ -256,12 +257,12 @@ export function onExport (event) {
 
   const object = {
     url: player.getVideoUrl(),
-    duration: taps.duration,
-    taps: taps.taps
+    duration: local.taps.duration,
+    taps: local.taps.taps
   }
 
-  if (taps.beats != null) {
-    object.beats = taps.beats
+  if (local.taps.beats != null) {
+    object.beats = local.taps.beats
   }
 
   const blob = new Blob([JSON.stringify(object, null, 2)], { type: 'application/json' })
@@ -287,17 +288,17 @@ export function onDoubleClick (event) {
 function react () {
   const data = document.getElementById('data')
 
-  if (loaded && (player.getPlayerState() === YT.PlayerState.CUED)) {
+  if (local.loaded && (player.getPlayerState() === YT.PlayerState.CUED)) {
     data.style.visibility = 'visible'
   }
 
-  if (taps.taps.length > 0) {
+  if (local.taps.taps.length > 0) {
     document.querySelector('#all canvas.history').style.display = 'block'
   } else {
     document.querySelector('#all canvas.history').style.display = 'none'
   }
 
-  if (taps.taps.length > 0 && taps.beats) {
+  if (local.taps.taps.length > 0 && local.taps.beats) {
     document.querySelector('#all canvas.beats').style.display = 'block'
     document.querySelector('#zoomed canvas.beats').style.display = 'block'
   } else {
@@ -305,34 +306,34 @@ function react () {
     document.querySelector('#zoomed canvas.beats').style.display = 'none'
   }
 
-  if (!taps.beats && taps.taps.length > 0) {
+  if (!local.taps.beats && local.taps.taps.length > 0) {
     document.getElementById('message').style.display = 'flex'
   } else {
     document.getElementById('message').style.display = 'none'
   }
 
-  const w = (end.valueNow - start.valueNow) / taps.duration
+  const w = (local.end.valueNow - local.start.valueNow) / local.taps.duration
   if (w && w < 0.75) {
     document.getElementById('zoomed').style.display = 'flex'
   } else {
     document.getElementById('zoomed').style.display = 'none'
   }
 
-  if (taps.taps.length > 0) {
+  if (local.taps.taps.length > 0) {
     data.querySelector('#export').disabled = false
     data.querySelector('#clear').disabled = false
     draw()
   }
 
-  if (taps.beats != null) {
-    drawBeats(taps.beats.beats)
+  if (local.taps.beats != null) {
+    drawBeats(local.taps.beats.beats)
   }
 }
 
 function clearTaps () {
-  taps.duration = 0
-  taps.taps = []
-  taps.current = []
+  local.taps.duration = 0
+  local.taps.taps = []
+  local.taps.current = []
 
   react()
   draw()
@@ -346,13 +347,13 @@ function cue (play) {
   const vid = getVideoID(url)
 
   if (vid !== '') {
-    const start = document.getElementById('start').getAttribute('aria-valuenow')
+    const startAt = document.getElementById('start').getAttribute('aria-valuenow')
 
     if (play) {
-      player.loadVideoById({ videoId: vid, startSeconds: start })
+      player.loadVideoById({ videoId: vid, startSeconds: startAt })
     } else {
       player.mute()
-      player.cueVideoById({ videoId: vid, startSeconds: start })
+      player.cueVideoById({ videoId: vid, startSeconds: startAt })
     }
   }
 }
@@ -365,9 +366,9 @@ function tick () {
   if (t > end) {
     if (!isNaN(delay) && delay > 0) {
       cue(false)
-      delayTimer = setInterval(delayed, delay * 1000)
+      local.delayTimer = setInterval(delayed, delay * 1000)
     } else {
-      cue(looping)
+      cue(local.looping)
     }
   }
 
@@ -375,12 +376,12 @@ function tick () {
 }
 
 function delayed () {
-  clearInterval(delayTimer)
-  cue(looping)
+  clearInterval(local.delayTimer)
+  cue(local.looping)
 }
 
 function analyse () {
-  if (taps.taps.flat().length > 0) {
+  if (local.taps.taps.flat().length > 0) {
     const quantize = document.getElementById('quantize').querySelector('input').checked
     const interpolate = document.getElementById('interpolate').querySelector('input').checked
 
@@ -391,10 +392,10 @@ function analyse () {
         } else {
           resolve(obj)
         }
-      }, taps.taps, taps.duration, quantize, interpolate)
+      }, local.taps.taps, local.taps.duration, quantize, interpolate)
     })
       .then(beats => {
-        taps.beats = beats
+        local.taps.beats = beats
 
         if (beats == null) {
           document.getElementById('bpm').value = ''
@@ -431,27 +432,33 @@ function analyse () {
 }
 
 function draw () {
-  let list = taps.current
+  const startAt = local.start.valueNow
+  const playDuration = local.end.valueNow - local.start.valueNow
+  const videoDuration = Math.floor(local.taps.duration)
+  let list = local.taps.current
 
-  if (player.getPlayerState() !== YT.PlayerState.PLAYING && taps.current.length === 0 && taps.taps.length > 0) {
-    list = taps.taps[taps.taps.length - 1]
+  if (player.getPlayerState() !== YT.PlayerState.PLAYING && local.taps.current.length === 0 && local.taps.taps.length > 0) {
+    list = local.taps.taps[local.taps.taps.length - 1]
   }
 
-  drawTaps(document.querySelector('#all canvas.current'), list, 0, Math.floor(taps.duration))
-  drawTaps(document.querySelector('#all canvas.history'), taps.taps, 0, Math.floor(taps.duration))
+  drawTaps(document.querySelector('#all canvas.current'), list, 0, videoDuration)
+  drawTaps(document.querySelector('#all canvas.history'), local.taps.taps, 0, videoDuration)
 
-  drawTaps(document.querySelector('#zoomed canvas.current'), list, start.valueNow, end.valueNow - start.valueNow)
-  drawTaps(document.querySelector('#zoomed canvas.history'), taps.taps, start.valueNow, end.valueNow - start.valueNow)
+  drawTaps(document.querySelector('#zoomed canvas.current'), list, startAt, playDuration)
+  drawTaps(document.querySelector('#zoomed canvas.history'), local.taps.taps, startAt, playDuration)
 }
 
 function drawBeats (beats) {
   if (beats != null) {
+    const startAt = local.start.valueNow
+    const playDuration = local.end.valueNow - local.start.valueNow
+    const videoDuration = Math.floor(local.taps.duration)
     const ticks = []
 
     beats.forEach(b => { ticks.push(b.at) })
 
-    drawTaps(document.querySelector('#all canvas.beats'), ticks, 0, Math.floor(taps.duration))
-    drawTaps(document.querySelector('#zoomed canvas.beats'), ticks, start.valueNow, end.valueNow - start.valueNow)
+    drawTaps(document.querySelector('#all canvas.beats'), ticks, 0, videoDuration)
+    drawTaps(document.querySelector('#zoomed canvas.beats'), ticks, startAt, playDuration)
   }
 }
 
@@ -469,9 +476,9 @@ function drawTaps (canvas, taps, offset, duration) {
   taps.flat().forEach(function (t) {
     const x = Math.floor((t - offset) * width / duration) + 0.5
 
-    ctx.moveTo(x-3, height)
+    ctx.moveTo(x - 3, height)
     ctx.lineTo(x, 0)
-    ctx.lineTo(x+3, height)
+    ctx.lineTo(x + 3, height)
     ctx.fill()
   })
 }
