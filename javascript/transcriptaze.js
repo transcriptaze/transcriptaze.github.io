@@ -257,8 +257,13 @@ export function onExport (event) {
 
   const object = {
     url: player.getVideoUrl(),
+    title: '',
     duration: local.taps.duration,
     taps: local.taps.taps
+  }
+
+  if (state.titles.has(vid)) {
+    object.title = state.titles.get(vid)
   }
 
   if (local.taps.beats != null) {

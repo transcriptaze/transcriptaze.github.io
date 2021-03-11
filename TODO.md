@@ -1,15 +1,15 @@
 ## IN PROGRESS
 
-- [ ] Include title in JSON export
 - [ ] Parse other YouTube URL formats
+- [ ] Cleanup slider code/CSS
 
 - [ ] Cleanup combobox code/CSS
-- [ ] Cleanup slider code/CSS
 - [ ] Liven up the bottom panel when nothing is happening
 - [ ] Not clustering properly when tapping double time
 - [ ] Dangling left time label
 - [ ] Soften transition to loaded video
 
+- [x] Include title in JSON export
 - [x] Put T2B in separate namespace in local storage
 - [x] Encapsulate all the things in 'local' object
 - [x] Cookies notice
