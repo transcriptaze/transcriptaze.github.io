@@ -1,6 +1,12 @@
 import { state } from './transcriptaze.js'
 import { initialiseComboBox } from './combobox.js'
 
+const tags = {
+  apikey: 'T2B.apikey',
+  history: 'T2B.history',
+  titles: 'T2B.titles'
+}
+
 export const State = function () {
   this.history = new Set()
   this.titles = new Map()
@@ -11,14 +17,14 @@ export const State = function () {
     this.titles.clear()
 
     // Restore API key
-    let blob = window.localStorage.getItem('apikey')
+    let blob = window.localStorage.getItem(tags.apikey)
     if (blob !== null) {
       this.apikey = blob.trim()
     }
 
     // Restore history
     try {
-      blob = window.localStorage.getItem('history')
+      blob = window.localStorage.getItem(tags.history)
       if (blob !== null) {
         JSON.parse(blob).forEach(vid => this.history.add(vid))
       }
@@ -27,7 +33,7 @@ export const State = function () {
     }
 
     try {
-      blob = window.localStorage.getItem('titles')
+      blob = window.localStorage.getItem(tags.titles)
       if (blob !== null) {
         JSON.parse(blob).forEach(([k, v]) => {
           this.titles.set(k, v)
@@ -56,7 +62,7 @@ export const State = function () {
 
       this.history = new Set(Array.from(lru).slice(0, 8))
 
-      window.localStorage.setItem('history', JSON.stringify(Array.from(this.history)))
+      window.localStorage.setItem(tags.history, JSON.stringify(Array.from(this.history)))
       lookup(state.apikey, vid.trim())
     }
   }
@@ -64,7 +70,7 @@ export const State = function () {
   this.setApiKey = function (key) {
     this.apikey = key.trim()
 
-    window.localStorage.setItem('apikey', this.apikey)
+    window.localStorage.setItem(tags.apikey, this.apikey)
   }
 }
 
@@ -106,7 +112,7 @@ async function lookup (apikey, vid) {
 
       state.titles = new Map(Array.from(lru).slice(0, 25))
 
-      window.localStorage.setItem('titles', JSON.stringify(Array.from(state.titles.entries())))
+      window.localStorage.setItem(tags.titles, JSON.stringify(Array.from(state.titles.entries())))
       setPickList()
     }
   }
