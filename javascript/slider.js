@@ -32,9 +32,9 @@ export const Slider = function (node, label, handler) {
 // Initialize slider
 Slider.prototype.init = function (min, max, t) {
   this.valueNow = t
-  this.domNode.setAttribute('aria-valuenow', t)
-  this.domNode.setAttribute('aria-valuemin', min)
-  this.domNode.setAttribute('aria-valuemax', max)
+  this.domNode.setAttribute('valuenow', t)
+  this.domNode.setAttribute('valuemin', min)
+  this.domNode.setAttribute('valuemax', max)
 
   this.railMin = min
   this.railMax = max
@@ -61,8 +61,8 @@ Slider.prototype.init = function (min, max, t) {
 }
 
 Slider.prototype.moveSliderTo = function (value, released) {
-  const valueMax = this.domNode.getAttribute('aria-valuemax')
-  const valueMin = this.domNode.getAttribute('aria-valuemin')
+  const valueMax = this.domNode.getAttribute('valuemax')
+  const valueMin = this.domNode.getAttribute('valuemin')
 
   if (value > valueMax) {
     value = valueMax
@@ -76,15 +76,15 @@ Slider.prototype.moveSliderTo = function (value, released) {
   this.dolValueNow = value
 
   if (released) {
-    this.domNode.setAttribute('aria-valuenow', this.valueNow)
+    this.domNode.setAttribute('valuenow', this.valueNow)
   }
 
   if (this.minDomNode) {
-    this.minDomNode.setAttribute('aria-valuemax', this.valueNow)
+    this.minDomNode.setAttribute('valuemax', this.valueNow)
   }
 
   if (this.maxDomNode) {
-    this.maxDomNode.setAttribute('aria-valuemin', this.valueNow)
+    this.maxDomNode.setAttribute('valuemin', this.valueNow)
   }
 
   const range = this.railMax - this.railMin

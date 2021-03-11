@@ -1,11 +1,10 @@
 ## IN PROGRESS
 
-- [ ] Parse other YouTube URL formats
 - [ ] Cleanup slider code/CSS
+- [ ] Parse other YouTube URL formats
 
 - [ ] Cleanup combobox code/CSS
 - [ ] Liven up the bottom panel when nothing is happening
-- [ ] Not clustering properly when tapping double time
 - [ ] Dangling left time label
 - [ ] Soften transition to loaded video
 

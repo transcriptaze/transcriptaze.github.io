@@ -352,7 +352,7 @@ function cue (play) {
   const vid = getVideoID(url)
 
   if (vid !== '') {
-    const startAt = document.getElementById('start').getAttribute('aria-valuenow')
+    const startAt = document.getElementById('start').getAttribute('valuenow')
 
     if (play) {
       player.loadVideoById({ videoId: vid, startSeconds: startAt })
@@ -365,7 +365,7 @@ function cue (play) {
 
 function tick () {
   const delay = parseFloat(document.getElementById('delay').value)
-  const end = document.getElementById('end').getAttribute('aria-valuenow')
+  const end = document.getElementById('end').getAttribute('valuenow')
   const t = player.getCurrentTime()
 
   if (t > end) {
