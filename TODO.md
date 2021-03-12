@@ -1,13 +1,11 @@
 ## IN PROGRESS
 
-- [ ] Cleanup slider code/CSS
-- [ ] Parse other YouTube URL formats
-
 - [ ] Cleanup combobox code/CSS
+- [ ] Parse other YouTube URL formats
 - [ ] Liven up the bottom panel when nothing is happening
-- [ ] Dangling left time label
 - [ ] Soften transition to loaded video
 
+- [x] Cleanup slider.js
 - [x] Include title in JSON export
 - [x] Put T2B in separate namespace in local storage
 - [x] Encapsulate all the things in 'local' object
@@ -75,6 +73,7 @@
 - [ ] Export as MIDI
 - [ ] Load audio from file
 - [ ] View as JSON
+- [ ] Dangling left slider label
 - [ ] Go all neumorphic (?)
       - https://codepen.io/ma_suwa/pen/eYdZVML
       - https://github.com/jvnaveenbabu/Neumorphism-Designs

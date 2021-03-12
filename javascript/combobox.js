@@ -1,9 +1,4 @@
-/*
- *   This content is licensed according to the W3C Software License at
- *   https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document
- */
-
-class ComboboxAutocomplete {
+class Combobox {
   constructor (comboboxNode, buttonNode, listboxNode) {
     this.comboboxNode = comboboxNode
     this.buttonNode = buttonNode
@@ -11,55 +6,26 @@ class ComboboxAutocomplete {
 
     this.comboboxHasVisualFocus = false
     this.listboxHasVisualFocus = false
-
     this.hasHover = false
 
-    this.isNone = true
-    this.isList = false
-    this.isBoth = false
-
     this.allOptions = []
-
     this.option = null
     this.firstOption = null
     this.lastOption = null
-
     this.filteredOptions = []
-    this.filter = ''
 
-    this.comboboxNode.addEventListener(
-      'keydown',
-      this.onComboboxKeyDown.bind(this)
-    )
-    this.comboboxNode.addEventListener(
-      'keyup',
-      this.onComboboxKeyUp.bind(this)
-    )
-    this.comboboxNode.addEventListener(
-      'click',
-      this.onComboboxClick.bind(this)
-    )
-    this.comboboxNode.addEventListener(
-      'focus',
-      this.onComboboxFocus.bind(this)
-    )
+    this.comboboxNode.addEventListener('keydown', this.onComboboxKeyDown.bind(this))
+    this.comboboxNode.addEventListener('keyup', this.onComboboxKeyUp.bind(this))
+    this.comboboxNode.addEventListener('click', this.onComboboxClick.bind(this))
+    this.comboboxNode.addEventListener('focus', this.onComboboxFocus.bind(this))
     this.comboboxNode.addEventListener('blur', this.onComboboxBlur.bind(this))
 
-    // initialize pop up menu
-
-    this.listboxNode.addEventListener(
-      'mouseover',
-      this.onListboxMouseover.bind(this)
-    )
-    this.listboxNode.addEventListener(
-      'mouseout',
-      this.onListboxMouseout.bind(this)
-    )
+    this.listboxNode.addEventListener('mouseover', this.onListboxMouseover.bind(this))
+    this.listboxNode.addEventListener('mouseout', this.onListboxMouseout.bind(this))
 
     // Traverse the element children of domNode: configure each with
     // option role behavior and store reference in.options array.
     const nodes = this.listboxNode.getElementsByTagName('LI')
-
     for (let i = 0; i < nodes.length; i++) {
       const node = nodes[i]
       this.allOptions.push(node)
@@ -69,22 +35,14 @@ class ComboboxAutocomplete {
       node.addEventListener('mouseout', this.onOptionMouseout.bind(this))
     }
 
-    this.filterOptions()
-
-    // Open Button
-
+    // 'open' button
     const button = this.comboboxNode.nextElementSibling
-
     if (button && button.tagName === 'BUTTON') {
       button.addEventListener('click', this.onButtonClick.bind(this))
     }
   }
 
   init () {
-  }
-
-  getLowercaseContent (node) {
-    return node.textContent.toLowerCase()
   }
 
   setActiveDescendant (option) {
@@ -96,10 +54,7 @@ class ComboboxAutocomplete {
   }
 
   setValue (value) {
-    this.filter = value
-    this.comboboxNode.value = this.filter
-    this.comboboxNode.setSelectionRange(this.filter.length, this.filter.length)
-    this.filterOptions()
+    this.comboboxNode.value = value
   }
 
   setOption (option, flag) {
@@ -111,21 +66,6 @@ class ComboboxAutocomplete {
       this.option = option
       this.setCurrentOptionStyle(this.option)
       this.setActiveDescendant(this.option)
-
-      if (this.isBoth) {
-        this.comboboxNode.value = this.option.textContent
-        if (flag) {
-          this.comboboxNode.setSelectionRange(
-            this.option.textContent.length,
-            this.option.textContent.length
-          )
-        } else {
-          this.comboboxNode.setSelectionRange(
-            this.filter.length,
-            this.option.textContent.length
-          )
-        }
-      }
     }
   }
 
@@ -156,61 +96,13 @@ class ComboboxAutocomplete {
 
   // ComboboxAutocomplete Events
 
-  filterOptions () {
-    // do not filter any options if autocomplete is none
-    if (this.isNone) {
-      this.filter = ''
-    }
-
-    let option = null
-    const currentOption = this.option
-    const filter = this.filter.toLowerCase()
-
-    this.filteredOptions = []
-    this.listboxNode.innerHTML = ''
-
-    for (let i = 0; i < this.allOptions.length; i++) {
-      option = this.allOptions[i]
-      if (
-        filter.length === 0 ||
-        this.getLowercaseContent(option).indexOf(filter) === 0
-      ) {
-        this.filteredOptions.push(option)
-        this.listboxNode.appendChild(option)
-      }
-    }
-
-    // Use populated options array to initialize firstOption and lastOption.
-    const numItems = this.filteredOptions.length
-    if (numItems > 0) {
-      this.firstOption = this.filteredOptions[0]
-      this.lastOption = this.filteredOptions[numItems - 1]
-
-      if (currentOption && this.filteredOptions.indexOf(currentOption) >= 0) {
-        option = currentOption
-      } else {
-        option = this.firstOption
-      }
-    } else {
-      this.firstOption = null
-      option = null
-      this.lastOption = null
-    }
-
-    return option
-  }
-
   setCurrentOptionStyle (option) {
     for (let i = 0; i < this.filteredOptions.length; i++) {
       const opt = this.filteredOptions[i]
       if (opt === option) {
         opt.setAttribute('aria-selected', 'true')
-        if (
-          this.listboxNode.scrollTop + this.listboxNode.offsetHeight <
-          opt.offsetTop + opt.offsetHeight
-        ) {
-          this.listboxNode.scrollTop =
-            opt.offsetTop + opt.offsetHeight - this.listboxNode.offsetHeight
+        if (this.listboxNode.scrollTop + this.listboxNode.offsetHeight < opt.offsetTop + opt.offsetHeight) {
+          this.listboxNode.scrollTop = opt.offsetTop + opt.offsetHeight - this.listboxNode.offsetHeight
         } else if (this.listboxNode.scrollTop > opt.offsetTop + 2) {
           this.listboxNode.scrollTop = opt.offsetTop
         }
@@ -265,12 +157,7 @@ class ComboboxAutocomplete {
       force = false
     }
 
-    if (
-      force ||
-      (!this.comboboxHasVisualFocus &&
-        !this.listboxHasVisualFocus &&
-        !this.hasHover)
-    ) {
+    if (force || (!this.comboboxHasVisualFocus && !this.listboxHasVisualFocus && !this.hasHover)) {
       this.setCurrentOptionStyle(false)
       this.listboxNode.style.display = 'none'
       this.comboboxNode.setAttribute('aria-expanded', 'false')
@@ -306,10 +193,7 @@ class ComboboxAutocomplete {
             this.open()
           } else {
             this.open()
-            if (
-              this.listboxHasVisualFocus ||
-              (this.isBoth && this.filteredOptions.length > 1)
-            ) {
+            if (this.listboxHasVisualFocus) {
               this.setOption(this.getNextOption(this.option), true)
               this.setVisualFocusListbox()
             } else {
@@ -341,8 +225,6 @@ class ComboboxAutocomplete {
       case 'Escape':
         if (this.isOpen()) {
           this.close(true)
-          this.filter = this.comboboxNode.value
-          this.filterOptions()
           this.setVisualFocusCombobox()
         } else {
           this.setValue('')
@@ -383,26 +265,7 @@ class ComboboxAutocomplete {
     }
   }
 
-  isPrintableCharacter (str) {
-    return str.length === 1 && str.match(/\S/)
-  }
-
   onComboboxKeyUp (event) {
-    let flag = false
-    let option = null
-    const char = event.key
-
-    if (this.isPrintableCharacter(char)) {
-      this.filter += char
-    }
-
-    // this is for the case when a selection in the textbox has been deleted
-    if (this.comboboxNode.value.length < this.filter.length) {
-      this.filter = this.comboboxNode.value
-      this.option = null
-      this.filterOptions()
-    }
-
     if (event.key === 'Escape' || event.key === 'Esc') {
       return
     }
@@ -411,10 +274,10 @@ class ComboboxAutocomplete {
       case 'Backspace':
         this.setVisualFocusCombobox()
         this.setCurrentOptionStyle(false)
-        this.filter = this.comboboxNode.value
         this.option = null
-        this.filterOptions()
-        flag = true
+
+        event.stopPropagation()
+        event.preventDefault()
         break
 
       case 'Left':
@@ -423,61 +286,13 @@ class ComboboxAutocomplete {
       case 'ArrowRight':
       case 'Home':
       case 'End':
-        if (this.isBoth) {
-          this.filter = this.comboboxNode.value
-        } else {
-          this.option = null
-          this.setCurrentOptionStyle(false)
-        }
+        this.option = null
+        this.setCurrentOptionStyle(false)
         this.setVisualFocusCombobox()
-        flag = true
+
+        event.stopPropagation()
+        event.preventDefault()
         break
-
-      default:
-        if (this.isPrintableCharacter(char)) {
-          this.setVisualFocusCombobox()
-          this.setCurrentOptionStyle(false)
-          flag = true
-
-          if (this.isList || this.isBoth) {
-            option = this.filterOptions()
-            if (option) {
-              if (this.isClosed() && this.comboboxNode.value.length) {
-                this.open()
-              }
-
-              if (
-                this.getLowercaseContent(option).indexOf(
-                  this.comboboxNode.value.toLowerCase()
-                ) === 0
-              ) {
-                this.option = option
-                if (this.isBoth || this.listboxHasVisualFocus) {
-                  this.setCurrentOptionStyle(option)
-                  if (this.isBoth) {
-                    this.setOption(option)
-                  }
-                }
-              } else {
-                this.option = null
-                this.setCurrentOptionStyle(false)
-              }
-            } else {
-              this.close()
-              this.option = null
-              this.setActiveDescendant(false)
-            }
-          } else if (this.comboboxNode.value.length) {
-            this.open()
-          }
-        }
-
-        break
-    }
-
-    if (flag) {
-      event.stopPropagation()
-      event.preventDefault()
     }
   }
 
@@ -490,8 +305,6 @@ class ComboboxAutocomplete {
   }
 
   onComboboxFocus () {
-    this.filter = this.comboboxNode.value
-    this.filterOptions()
     this.setVisualFocusCombobox()
     this.option = null
     this.setCurrentOptionStyle(null)
@@ -514,8 +327,7 @@ class ComboboxAutocomplete {
     this.setVisualFocusCombobox()
   }
 
-  /* Listbox Events */
-
+  // Listbox events
   onListboxMouseover () {
     this.hasHover = true
   }
@@ -525,8 +337,7 @@ class ComboboxAutocomplete {
     setTimeout(this.close.bind(this, false), 300)
   }
 
-  // Listbox Option Events
-
+  // Listbox option events
   onOptionClick (event) {
     this.comboboxNode.title = event.target.textContent
     this.comboboxNode.value = event.target.dataset.url
@@ -551,7 +362,7 @@ export function initialiseComboBox (id) {
   const comboboxNode = combobox.querySelector('input')
   const buttonNode = combobox.querySelector('button')
   const listboxNode = combobox.querySelector('[role="listbox"]')
-  const cba = new ComboboxAutocomplete(comboboxNode, buttonNode, listboxNode)
+  const cb = new Combobox(comboboxNode, buttonNode, listboxNode)
 
-  cba.init()
+  cb.init()
 }
