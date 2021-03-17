@@ -1,10 +1,9 @@
 ## IN PROGRESS
 
-- [ ] Cleanup combobox code/CSS
 - [ ] Parse other YouTube URL formats
-- [ ] Liven up the bottom panel when nothing is happening
 - [ ] Soften transition to loaded video
 
+- [x] Cleanup combobox code/CSS
 - [x] Cleanup slider.js
 - [x] Include title in JSON export
 - [x] Put T2B in separate namespace in local storage
