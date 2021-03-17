@@ -488,14 +488,67 @@ function drawTaps (canvas, taps, offset, duration) {
   })
 }
 
-function getVideoID (url) {
+/* eslint prefer-regex-literals: 0 */
+export function getVideoID (url) {
+  if (!url.startsWith('http://') && !url.startsWith('https://')) {
+    url = 'https://' + url
+  }
+
   try {
-    const vid = new URL(url).searchParams.get('v')
-    if (vid != null) {
-      return vid
+    const uri = new URL(url)
+    const host = uri.host
+    const origin = uri.origin
+    const params = new URL(url).searchParams
+    const pathname = uri.pathname
+    const hash = uri.hash
+
+    // www.youtube.com/watch?v=ZPIMomJP4kY'
+    // www.youtube.com/watch?vi=ZPIMomJP4kY'
+
+    if (params.has('v')) {
+      return params.get('v')
+    }
+
+    if (params.has('vi')) {
+      return params.get('vi')
+    }
+
+    // www.youtube.com/v/-wtIMTCHWuI
+    // youtube.com/vi/oTJRivZTMLs
+    // www.youtube.com/embed/nas1rJpm7wY
+    // www.youtube.com/e/nas1rJpm7wY
+    let match = new RegExp('/(?:embed|v|vi)/(.*?)(?:&.*)', 'i').exec(pathname)
+    if (match !== null && match.length > 1) {
+      return match[1]
+    }
+
+    match = new RegExp('/(?:embed|v|vi|e)/(.*)', 'i').exec(pathname)
+    if (match !== null && match.length > 1) {
+      return match[1]
+    }
+
+    // youtu.be/-wtIMTCHWuI
+    match = new RegExp('/(.*?)(?:[&].*|$)', 'i').exec(pathname)
+    if (host === 'youtu.be' && match !== null && match.length > 1) {
+      return match[1]
+    }
+
+    //  www.youtube.com/user/IngridMichaelsonVEVO#p/a/u/1/QdK8U-VIH_o
+    match = new RegExp('#p/(?:.*?)/[0-9]+/(.*?)(?:[?].*|$)', 'i').exec(hash)
+    if (match !== null && match.length > 1) {
+      return match[1]
+    }
+
+    // www.youtube.com/attribution_link?a=8g8kPrPIi-ecwIsS&u=/watch%3Fv%3DyZv2daTWRZU%26feature%3Dem-uploademail
+    if (origin && pathname === '/attribution_link' && params.has('u')) {
+      return getVideoID(new URL(params.get('u'), origin).toString())
+    }
+
+    // www.youtube.com/oembed?url=http%3A//www.youtube.com/watch?v%3D-wtIMTCHWuI&format=json
+    if (pathname === '/oembed' && params.has('url')) {
+      return getVideoID(params.get('url'))
     }
   } catch (err) {
-    // console.log(err)
   }
 
   return ''
