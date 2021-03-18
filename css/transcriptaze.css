@@ -307,6 +307,12 @@ div.url button#load img {
   width: 640px; 
   height: 390px; 
   vertical-align:top;
+  opacity: 1;
+  transition: opacity 15s ease;
+}
+
+#windmill {
+  background: transparent; 
 }
 
 .overlay {
@@ -314,11 +320,15 @@ div.url button#load img {
   width: 640px; 
   height: 390px; 
   position: absolute; 
-  left: 0px; 
+  left: 0x; 
   top: 0px; 
   z-index: 1;
   visibility: visible;
   text-align: center;
+}
+
+.hidden {
+  opacity: 0;
 }
 
 .overlay img {

@@ -1,7 +1,8 @@
 ## IN PROGRESS
 
-- [ ] Soften transition to loaded video
+- [ ] Tag and release
 
+- [x] Soften transition to loaded video
 - [x] Parse other YouTube URL formats
 - [x] Cleanup combobox code/CSS
 - [x] Cleanup slider.js
