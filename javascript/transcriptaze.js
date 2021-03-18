@@ -20,12 +20,6 @@ const local = {
   }
 }
 
-document.addEventListener('keydown', event => {
-  if (local.loaded) {
-    onKey(event)
-  }
-})
-
 export function onPlayerReady (event) {
   document.getElementById('file').style.visibility = 'visible'
   document.getElementById('url').readOnly = false
@@ -205,34 +199,36 @@ export function onLoop (event) {
 }
 
 export function onKey (event) {
-  if (event.code === 'Space') {
-    event.preventDefault()
+  if (local.loaded) {
+    if (event.code === 'Space') {
+      event.preventDefault()
 
-    if (!event.repeat) {
-      switch (player.getPlayerState()) {
-        case YT.PlayerState.CUED:
-        case YT.PlayerState.PAUSED:
-          react()
-          if ((local.end.valueNow - local.start.valueNow) > 1) {
-            player.playVideo()
-          }
-          break
+      if (!event.repeat) {
+        switch (player.getPlayerState()) {
+          case YT.PlayerState.CUED:
+          case YT.PlayerState.PAUSED:
+            react()
+            if ((local.end.valueNow - local.start.valueNow) > 1) {
+              player.playVideo()
+            }
+            break
 
-        case YT.PlayerState.PLAYING:
-          local.taps.current.push(player.getCurrentTime())
-          draw()
-          break
+          case YT.PlayerState.PLAYING:
+            local.taps.current.push(player.getCurrentTime())
+            draw()
+            break
+        }
       }
-    }
-  } else if (event.code === 'KeyS') {
-    event.preventDefault()
-    if (!event.repeat && player.getPlayerState() === YT.PlayerState.PLAYING) {
-      cue(false)
-    }
-  } else if (event.code === 'KeyP') {
-    event.preventDefault()
-    if (!event.repeat && player.getPlayerState() === YT.PlayerState.PLAYING) {
-      player.pauseVideo()
+    } else if (event.code === 'KeyS') {
+      event.preventDefault()
+      if (!event.repeat && player.getPlayerState() === YT.PlayerState.PLAYING) {
+        cue(false)
+      }
+    } else if (event.code === 'KeyP') {
+      event.preventDefault()
+      if (!event.repeat && player.getPlayerState() === YT.PlayerState.PLAYING) {
+        player.pauseVideo()
+      }
     }
   }
 }

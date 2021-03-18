@@ -231,6 +231,10 @@
     window.onApiKey = onApiKey
 
     window.state.restore()
+
+    document.addEventListener('keydown', event => {
+      onKey(event)
+    })
   </script>
 
   <script src="https://www.youtube.com/iframe_api"></script>
@@ -279,7 +283,6 @@
         }
       })
     })
-    
   </script>
 
 </html>

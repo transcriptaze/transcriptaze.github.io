@@ -1,6 +1,8 @@
 // Ref. https://gist.github.com/rodrigoborgesdeoliveira/987683cfbfcc8d800192da1e73adc486
 /* eslint prefer-regex-literals: 0 */
 
+import { getVideoID } from './transcriptaze.js'
+
 const URLs = [
   { url: 'https://www.youtube.com/watch?v=peFZbP64dsU', vid: 'peFZbP64dsU' },
   { url: 'https://www.youtube.com/watch?v=-wtIMTCHWuI', vid: '-wtIMTCHWuI' },
@@ -68,73 +70,7 @@ const URLs = [
   { url: 'http://www.youtube.com/attribution_link?a=JdfC0C9V6ZI&u=%2Fwatch%3Fv%3DEhxJLojIE_o%26feature%3Dshare', vid: 'EhxJLojIE_o' },
 
   { url: 'http://www.youtube.com/oembed?url=http%3A//www.youtube.com/watch?v%3D-wtIMTCHWuI&format=json', vid: '-wtIMTCHWuI' }
-
 ]
-
-function getVideoID (url) {
-  if (!url.startsWith('http://') && !url.startsWith('https://')) {
-    url = 'https://' + url
-  }
-
-  try {
-    const uri = new URL(url)
-    const host = uri.host
-    const origin = uri.origin
-    const params = new URL(url).searchParams
-    const pathname = uri.pathname
-    const hash = uri.hash
-
-    // www.youtube.com/watch?v=ZPIMomJP4kY'
-    // www.youtube.com/watch?vi=ZPIMomJP4kY'
-
-    if (params.has('v')) {
-      return params.get('v')
-    }
-
-    if (params.has('vi')) {
-      return params.get('vi')
-    }
-
-    // www.youtube.com/v/-wtIMTCHWuI
-    // youtube.com/vi/oTJRivZTMLs
-    // www.youtube.com/embed/nas1rJpm7wY
-    // www.youtube.com/e/nas1rJpm7wY
-    let match = new RegExp('/(?:embed|v|vi)/(.*?)(?:&.*)', 'i').exec(pathname)
-    if (match !== null && match.length > 1) {
-      return match[1]
-    }
-
-    match = new RegExp('/(?:embed|v|vi|e)/(.*)', 'i').exec(pathname)
-    if (match !== null && match.length > 1) {
-      return match[1]
-    }
-
-    // youtu.be/-wtIMTCHWuI
-    match = new RegExp('/(.*?)(?:[&].*|$)', 'i').exec(pathname)
-    if (host === 'youtu.be' && match !== null && match.length > 1) {
-      return match[1]
-    }
-
-    //  www.youtube.com/user/IngridMichaelsonVEVO#p/a/u/1/QdK8U-VIH_o
-    match = new RegExp('#p/(?:.*?)/[0-9]+/(.*?)(?:[?].*|$)', 'i').exec(hash)
-    if (match !== null && match.length > 1) {
-      return match[1]
-    }
-
-    // www.youtube.com/attribution_link?a=8g8kPrPIi-ecwIsS&u=/watch%3Fv%3DyZv2daTWRZU%26feature%3Dem-uploademail
-    if (origin && pathname === '/attribution_link' && params.has('u')) {
-      return getVideoID(new URL(params.get('u'), origin).toString())
-    }
-
-    // www.youtube.com/oembed?url=http%3A//www.youtube.com/watch?v%3D-wtIMTCHWuI&format=json
-    if (pathname === '/oembed' && params.has('url')) {
-      return getVideoID(params.get('url'))
-    }
-  } catch (err) {
-  }
-
-  return ''
-}
 
 function testGetYouTubeVideoID () {
   URLs.forEach(v => {

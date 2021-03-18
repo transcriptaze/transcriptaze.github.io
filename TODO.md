@@ -1,8 +1,8 @@
 ## IN PROGRESS
 
-- [ ] Parse other YouTube URL formats
 - [ ] Soften transition to loaded video
 
+- [x] Parse other YouTube URL formats
 - [x] Cleanup combobox code/CSS
 - [x] Cleanup slider.js
 - [x] Include title in JSON export
