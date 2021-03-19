@@ -1,7 +1,6 @@
 ## IN PROGRESS
 
-- [ ] Tag and release
-
+- [x] Tag and release
 - [x] Soften transition to loaded video
 - [x] Parse other YouTube URL formats
 - [x] Cleanup combobox code/CSS
