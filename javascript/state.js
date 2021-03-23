@@ -1,4 +1,4 @@
-import { state } from './transcriptaze.js'
+import { state } from './T2B.js'
 import { initialiseComboBox } from './combobox.js'
 
 const tags = {

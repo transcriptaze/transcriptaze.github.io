@@ -1,7 +1,7 @@
 // Ref. https://gist.github.com/rodrigoborgesdeoliveira/987683cfbfcc8d800192da1e73adc486
 /* eslint prefer-regex-literals: 0 */
 
-import { getVideoID } from './transcriptaze.js'
+import { getVideoID } from './T2B.js'
 
 const URLs = [
   { url: 'https://www.youtube.com/watch?v=peFZbP64dsU', vid: 'peFZbP64dsU' },

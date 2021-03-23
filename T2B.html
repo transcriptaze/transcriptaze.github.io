@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>transcriptaze - T2B</title>
+    <link rel="icon"       href="images/favicon.png">
+    <link rel="stylesheet" href="css/transcriptaze.css" type="text/css">
+    <link rel="stylesheet" href="css/combobox.css" type="text/css">
+    <link rel="stylesheet" href="css/slider.css" type="text/css">
+    <script src="./javascript/wasm_exec.js"></script>
+    <script>
+      var onComplete
+
+      document.addEventListener('readystatechange', event => {
+        switch (event.target.readyState) {
+          case 'complete':           
+              const go = new Go()
+              WebAssembly
+                .instantiateStreaming(fetch("./wasm/transcriptaze.wasm"), go.importObject)
+                .then((result) => {
+                  go.run(result.instance)
+                })
+
+              onComplete('document')
+              break;
+        }
+      })
+
+      window.addEventListener('load', (event) => {
+      })
+    </script>
+  </head>
+
+  <body> 
+    <div id="content">
+
+      <!-- HEADER -->
+      <header>
+        <img id="logo" src="images/logo.png" ondblclick="onDoubleClick(event)" />
+        
+        <div id="banner">
+          <div id="nav">
+           <a class="active" href=".">T2B</a>
+           <a href="./W2P.html">W2P</a>
+          </div>
+          <div id="blurb">
+           <p>An experimental and somewhat (?) odd 'thing' to identify the significant beats of a YouTube
+              song by tapping on the spacebar over multiple loops of the song (or segment of the song). 
+              ckmeans.1d.dp regression is used to cluster the taps into the identified beats which can be
+              then be exported as JSON for whatever other use they may be.</p>
+          </div>
+        
+          <div>
+            <input id="apikey" type="text" value="" placeholder="YouTube Data V3 API key" autocomplete="off" onkeydown="onApiKey(event)" />
+          </div>
+        </div>
+        
+        <div id="github">          
+          <a href="https://github.com/transcriptaze" target="_blank">
+            <span><img src="images/github-brands.svg" draggable="false"/>GitHub</span>
+          </a>
+        </div>
+      </header>
+
+      <!-- NAV -->
+
+      <nav>
+      </nav>
+
+      <!-- MAIN -->
+      <main>
+        <div>
+          <div id="container">
+
+            <div id="file" class="url panel">
+              <div id="picklist" class="combobox combobox-list" style="z-index:5;">
+                <div class="group">
+                  <input id="url" class="cb_edit" type="text" role="combobox" 
+                         autocomplete="off" title="YouTube URL" placeholder="https://www.youtube.com/watch?v=CKI7MnfBYJA" value="" 
+                         onchange="onURL(event)" onkeydown="onURL(event)"
+                         aria-expanded="false" aria-controls="cb1-listbox" 
+                         readonly />
+                  <button id="cb1-button" tabindex="-1" aria-label="States" aria-expanded="false" aria-controls="cb1-listbox">
+                    <span class="arrow">
+                      <svg width="18" height="16" aria-hidden="true" focusable="false">
+                        <polygon class="outline" points="1,4 17,4 9,15"></polygon>
+                        <polygon class="arrow" points="3,5 15,5 9,13"></polygon>
+                      </svg>
+                    </span>
+                  </button>
+                </div>
+                <ul id="cb1-listbox" role="listbox">
+                  <li id="none" role="option">&nbsp;</li>
+                </ul>
+              </div>
+
+              <button id="load" type="button" onclick="onLoad(event)" disabled>
+                <img src="images/cloud-download-alt-solid.svg" />
+              </button>
+
+            </div>
+
+            <div id="video" class="panel" style="position:relative;">
+              <div id="player" class="player hidden" tabindex="-1"></div>
+              <div id="loading" class="overlay">
+                <img src="images/youtube-brands.svg" draggable="false" />
+              </div>
+              <div id="windmill" class="overlay">
+                <span class="windmill"></span>
+              </div>
+            </div>
+
+            <div id="help" class="panel" tabindex="-1" data-state="hint">
+              <div class="help" tabindex="0">
+                <p class="basic" >
+                  Paste a YouTube URL into the text field (or select a song from the drop down list).<br/><br/> Then press the
+                  'Load' button
+                </p>
+                <p class="cued" >
+                  Press 'SPACE' to start video. <br/><br/>While the video is playing, press 'SPACE' on each beat of the song
+                </p>
+                <p class="playing">
+                  Press 'SPACE' on each beat or:<br/><br/>&#8226;&nbsp;'P' to pause<br/>&#8226;&nbsp;'S' to stop
+                </p>
+              </div>
+            </div>
+
+            <!-- CONTROL PANEL -->
+            <div id="controls" class="controls panel">
+            
+              <!-- SLIDER -->
+              <div class="slider">
+                <div class="rail" style="width:640px;">
+                  <img id="start" class="min thumb" src="images/min-arrow.svg" tabindex="0" draggable="false"
+                       role="slider"
+                       valuemin="0"
+                       valuenow="0"
+                       valuemax="100">
+                  <img id="end" class="max thumb" src="images/max-arrow.svg" tabindex="0" draggable="false"
+                       role="slider"
+                       valuemin="0"
+                       valuenow="100"
+                       valuemax="100">
+                  <input id="from" type="text" tabindex="0" readonly />
+                  <input id="to"   type="text" tabindex="0" readonly />
+                  <canvas width="1280" height="12"></canvas>
+                </div>
+              </div>
+
+              <!-- TAPS -->
+              <div id="taps" class="panel">
+                <div id="all">
+                  <canvas class="taps current" width="1280" height="5" title="Current taps"></canvas>
+                  <canvas class="taps history" width="1280" height="5" title="Accumulated taps"></canvas>
+                  <canvas class="taps beats"   width="1280" height="5" title="Analyzed taps"></canvas>
+                </div>
+
+                <div id="zoomed">
+                  <canvas class="taps current" width="1280" height="5" title="Current taps"></canvas>
+                  <canvas class="taps history" width="1280" height="5" title="Accumulated taps"></canvas>
+                  <canvas class="taps beats"   width="1280" height="5" title="Analyzed taps"></canvas>
+                </div>
+
+                <div id="message">
+                  <p>INSUFFICIENT DATA</p>
+                </div>
+              </div>
+
+              <!-- CONTROLS -->
+              <div id="looping">
+                <label id="loop">
+                  <input type="checkbox" onclick="onLoop(event)" />
+                  <img class="no"  src="images/redo-alt-solid.svg" draggable="false" />
+                  <img class="yes" src="images/redo-alt-solid.svg" draggable="false" />
+                </label>
+                <input id="delay" type="number" min="0" max="10" title="loop delay" placeholder="loop delay" value="1.0" />
+              </div>
+
+              <label id="quantize" class="checktext">
+                <input type="checkbox" onchange="onQuantize(event)" disabled/>
+                <span>QUANTIZE</span>
+              </label>
+
+              <label id="interpolate" class="checktext">
+                <input type="checkbox" onchange="onInterpolate(event)" disabled/>
+                <span>INTERPOLATE</span>
+              </label>
+              
+              <input id="offset" type="text" class="info" placeholder="offset" readonly />
+              <input id="bpm"    type="text" class="info" placeholder="BPM"    readonly />              
+            </div>
+
+            <!-- DATA -->
+            <div id="data" class="panel">
+              <a id="download" style="display: none;"></a>
+              <button id="export" type="button" onclick="onExport(event)" disabled>
+                <img src="images/file-export-solid.svg" />
+              </button>
+              <button id="clear" type="button" onclick="onClear(event)" disabled>
+                <img src="images/trash-solid.svg" />
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </main>
+
+      <!-- FOOTER -->
+      <footer>
+       YouTube (and possibly Github) seem to unavoidably add cookies to this page. Also, your settings and history, 
+       such as they are, are kept in browser local storage.
+      </footer>
+    </div>
+  </body>
+
+  <!-- SCRIPTS -->
+ 
+  <script type="module">
+    import { state,
+      onPlayerReady, onPlayerStateChange, 
+      onURL, onLoad, onKey, onDoubleClick,
+      onLoop, onQuantize, onInterpolate, onExport, onClear } from './javascript/T2B.js'
+
+    import { onApiKey } from './javascript/state.js'
+
+    window.state = state
+    window.onPlayerReady = onPlayerReady
+    window.onPlayerStateChange = onPlayerStateChange
+    window.onURL = onURL
+    window.onLoad = onLoad
+    window.onKey = onKey
+    window.onDoubleClick = onDoubleClick
+    window.onLoop = onLoop
+    window.onQuantize = onQuantize
+    window.onInterpolate = onInterpolate
+    window.onExport = onExport
+    window.onClear = onClear
+    window.onApiKey = onApiKey
+
+    window.state.restore()
+
+    document.addEventListener('keydown', event => {
+      onKey(event)
+    })
+  </script>
+
+  <script src="https://www.youtube.com/iframe_api"></script>
+
+  <script type="text/javascript">
+    var player
+    var onYouTube
+
+    function onYouTubeIframeAPIReady() {
+      onYouTube('youtube')
+    }
+
+    function onYouTubeReady (event) {
+      if (window.onPlayerReady) {
+        window.onPlayerReady(event)
+      }
+    }
+
+    function onYouTubeStateChange (event) {
+      if (window.onPlayerStateChange) {
+        window.onPlayerStateChange(event)
+      }
+    }
+
+    // Defer creation of YouTube player until everything is ready
+    // (modules are loaded after scripts, Github pages are static, etc)
+    const complete = new Promise((resolve) => { onComplete = resolve })
+    const youtube = new Promise((resolve) => { onYouTube = resolve })
+
+    Promise.all([complete, youtube]).then((v) => {
+      player = new YT.Player('player', {
+        playerVars: {
+          fs: 0,
+          controls: 1,
+          disablekb: 1,
+          rel: 0,
+          autoplay: 0,
+          loop: 0,
+          modestbranding: 1,
+          iv_load_policy: 3,
+          enablejsapi: 1
+        },
+        events: {
+          'onReady': onYouTubeReady,
+          'onStateChange': onYouTubeStateChange
+        }
+      })
+    })
+  </script>
+
+</html>
