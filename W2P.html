@@ -6,8 +6,7 @@
     <title>transcriptaze - W2P</title>
     <link rel="icon"       href="images/favicon.png">
     <link rel="stylesheet" href="css/transcriptaze.css" type="text/css">
-    <link rel="stylesheet" href="css/combobox.css" type="text/css">
-    <link rel="stylesheet" href="css/slider.css" type="text/css">
+    <link rel="stylesheet" href="css/W2P.css" type="text/css">
     <script src="./javascript/wasm_exec.js"></script>
     <script>
     </script>
@@ -18,7 +17,7 @@
 
       <!-- HEADER -->
       <header>
-        <img id="logo" src="images/logo.png" ondblclick="onDoubleClick(event)" />
+        <img id="logo" src="images/logo.png" />
         
         <div id="banner">
           <div id="nav">
@@ -26,7 +25,7 @@
            <a class="active" href=".">W2P</a>
           </div>
           <div id="blurb">
-           <p>In-browser utility to create a PNG spectrogram from an audio file</p>
+           <p>In-browser utility to create a downloadable PNG spectrogram from an audio file</p>
           </div>
         </div>
 
@@ -45,9 +44,11 @@
       <main>
         <div>
           <div id="container">
-
-            <div id="spectrogram" class="panel">
-              PNG GOES HERE
+            <div id="spectrogram" class="panel" ondrop="onDrop(event)"  ondragover="onDragOver(event)">
+              <div id="picker" class="picker">
+                <input id="file" type="file" accept="audio/*" onchange="onPicked(event)" style="display:none;" />
+                <img onclick="return onPick(event)" src="../images/audio.png" />
+              </div>
             </div>
 
             <div id="controls" class="panel">
@@ -69,6 +70,12 @@
   <!-- SCRIPTS -->
  
   <script type="module">
+    import { onDrop, onDragOver, onPick, onPicked } from './javascript/W2P.js'
+
+    window.onDrop = onDrop
+    window.onDragOver = onDragOver
+    window.onPick = onPick
+    window.onPicked = onPicked
   </script>
 
   <script type="text/javascript">

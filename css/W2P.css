@@ -1,0 +1,16 @@
+:root {  
+  --picker-border: var(--solarize-base1);
+}
+
+div#spectrogram {
+  width: 640px;
+  height: 390px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+div#picker img {
+  padding: 16px;
+  border: none;
+}
