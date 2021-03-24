@@ -9,7 +9,8 @@ build:
 	npx eslint --fix ./javascript/*.js
 
 build-all: build
-	cd go; GOOS=js GOARCH=wasm go build -o ../wasm/transcriptaze.wasm ./...
+	cd go; GOOS=js GOARCH=wasm go build -o ../wasm/ ./...
+	mv ./wasm/T2B ./wasm/T2B.wasm
 
 test: build-all
 	npm test

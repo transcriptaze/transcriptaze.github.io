@@ -69,8 +69,6 @@ export function onPlayerStateChange (event) {
       document.getElementById('windmill').style.display = 'none'
       document.getElementById('player').classList.remove('hidden')
 
-      console.log(document.getElementById('player'))
-
       document.getElementById('controls').style.visibility = 'visible'
       document.getElementById('taps').style.display = 'block'
       document.getElementById('taps').style.visibility = 'visible'

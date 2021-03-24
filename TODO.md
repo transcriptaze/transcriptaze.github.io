@@ -2,6 +2,7 @@
 
 - [ ] Store slider settings with video ID (for playing along!)
 - [ ] Finer slider increments (for playing along)
+- [ ] 'clear' entirely messes up the slider
 
 ## TODO
 
