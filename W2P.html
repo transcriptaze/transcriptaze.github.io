@@ -9,6 +9,22 @@
     <link rel="stylesheet" href="css/W2P.css" type="text/css">
     <script src="./javascript/wasm_exec.js"></script>
     <script>
+      var onComplete
+
+      document.addEventListener('readystatechange', event => {
+        switch (event.target.readyState) {
+          case 'complete':           
+              const go = new Go()
+              WebAssembly
+                .instantiateStreaming(fetch("./wasm/W2P.wasm"), go.importObject)
+                .then((result) => {
+                  go.run(result.instance)
+                })
+
+              onComplete('document')
+              break;
+        }
+      })
     </script>
   </head>
 
@@ -49,6 +65,10 @@
                 <input id="file" type="file" accept="audio/*" onchange="onPicked(event)" style="display:none;" />
                 <img onclick="return onPick(event)" src="../images/audio.png" />
               </div>
+              <div>
+                <canvas id="canvas" width="640" height="390">
+                </canvas>
+              </div>
             </div>
 
             <div id="controls" class="panel">
@@ -79,6 +99,13 @@
   </script>
 
   <script type="text/javascript">
+    // Defer doing anything useful until WASM is loaded and everything is ready
+    // (modules are loaded after scripts, Github pages are static, etc)
+    const complete = new Promise((resolve) => { onComplete = resolve })
+
+    Promise.all([complete]).then((v) => {
+      console.log("'k, ready at last")
+    })
   </script>
 
 </html>

@@ -2,15 +2,31 @@
   --picker-border: var(--solarize-base1);
 }
 
+div#container {
+}
+
 div#spectrogram {
   width: 640px;
   height: 390px;
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+}
+
+div#picker {
 }
 
 div#picker img {
   padding: 16px;
   border: none;
 }
+
+#canvas {
+  background: #00ff0040;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  visibility: hidden;
+}
+

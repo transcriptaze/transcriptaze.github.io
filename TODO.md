@@ -3,6 +3,8 @@
 - [ ] Store slider settings with video ID (for playing along!)
 - [ ] Finer slider increments (for playing along)
 - [ ] 'clear' entirely messes up the slider
+- [ ] Consider iterator that uses JS.Index()
+      https://stackoverflow.com/questions/14000534/what-is-most-idiomatic-way-to-create-an-iterator-in-go
 
 ## TODO
 

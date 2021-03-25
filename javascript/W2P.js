@@ -1,3 +1,5 @@
+/* global goRender */
+
 const AudioContext = window.AudioContext || window.webkitAudioContext
 
 export function onDrop (event) {
@@ -34,9 +36,16 @@ export function onPicked (event) {
 }
 
 function load (blob) {
+  const picker = document.getElementById('picker')
+  const canvas = document.getElementById('canvas')
+
   return blob.arrayBuffer()
     .then(b => transcode(b))
-    .then(b => console.log('transcoded', b))
+    .then(b => render(b))
+    .then(b => {
+      picker.style.visibility = 'hidden'
+      canvas.style.visibility = 'visible'
+    })
     .catch(function (err) { console.error(err) })
 }
 
@@ -51,4 +60,18 @@ async function transcode (bytes) {
   src.start()
 
   return offline.startRendering()
+}
+
+async function render (buffer) {
+  const canvas = document.getElementById('canvas')
+
+  return new Promise((resolve, reject) => {
+    goRender((err, png) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(png)
+      }
+    }, buffer, canvas)
+  })
 }
