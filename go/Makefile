@@ -6,7 +6,7 @@ clean:
 	go clean
 
 format: 
-	go fmt ./...
+	gofmt -l -w .
 
 debug: build
 	go test ./... 

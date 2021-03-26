@@ -37,11 +37,11 @@ func taps(this js.Value, inputs []js.Value) interface{} {
 
 		beats := taps2beats.Taps2Beats(taps2beats.Floats2Seconds(taps), 0.0)
 
-		if len(beats.Beats) > 1 && beats.Variance != nil && *beats.Variance < 0.1 {			
-			cleaned,err := beats.Clean()
+		if len(beats.Beats) > 1 && beats.Variance != nil && *beats.Variance < 0.1 {
+			cleaned, err := beats.Clean()
 			if err != nil {
-					callback.Invoke(js.Null(), err.Error())
-					return
+				callback.Invoke(js.Null(), err.Error())
+				return
 			}
 
 			if quantize {
