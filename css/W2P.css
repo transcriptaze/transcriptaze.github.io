@@ -2,7 +2,13 @@
   --picker-border: var(--solarize-base1);
 }
 
-div#container {
+p#blurb {
+  text-align: center;
+}
+
+p#blurb a {
+  color: var(--solarize-blue);
+  font-size: 1em;
 }
 
 div#spectrogram {
