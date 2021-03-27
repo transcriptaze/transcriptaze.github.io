@@ -8,12 +8,16 @@ import (
 	"encoding/binary"
 	"fmt"
 	"image"
+	"image/color"
 	"syscall/js"
 
 	"github.com/transcriptaze/wav2png/wav2png"
 )
 
 const VERSION = "v0.1.0"
+
+var BACKGROUND = color.NRGBA{R: 0x00, G: 0x00, B: 0x00, A: 0xff}
+var GRID = color.NRGBA{R: 0x00, G: 0x80, B: 0x00, A: 0xff}
 
 func main() {
 	c := make(chan bool)
@@ -43,9 +47,14 @@ func render(this js.Value, inputs []js.Value) interface{} {
 		fmt.Printf(" samples:     %v\n", len(samples))
 		fmt.Printf(" canvas:      %v\n", canvas)
 
-		if png := wav2png.Grid(640, 390, 0); png != nil {
-			pngToCanvas(canvas, png)
-		}
+		w := 640
+		h := 390
+		img := image.NewNRGBA(image.Rect(0, 0, int(w), int(h)))
+
+		wav2png.Fill(img, BACKGROUND)
+		wav2png.Grid(img, GRID)
+
+		pngToCanvas(canvas, img)
 
 		callback.Invoke(js.Null(), js.Null())
 	}()
