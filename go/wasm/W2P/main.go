@@ -16,8 +16,8 @@ import (
 
 const VERSION = "v0.1.0"
 
-var BACKGROUND = color.NRGBA{R: 0x00, G: 0x00, B: 0x00, A: 0xff}
-var GRID = color.NRGBA{R: 0x00, G: 0x80, B: 0x00, A: 0xff}
+var BACKGROUND = wav2png.NewSolidFill(color.NRGBA{R: 0x00, G: 0x00, B: 0x00, A: 255})
+var GRID = wav2png.NewSquareGrid(color.NRGBA{R: 0x00, G: 0x80, B: 0x00, A: 255}, 64, 0)
 
 func main() {
 	c := make(chan bool)
