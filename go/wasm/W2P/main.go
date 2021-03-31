@@ -10,6 +10,7 @@ import (
 	"image"
 	"image/color"
 	"image/draw"
+	"image/png"
 	"syscall/js"
 	"time"
 
@@ -32,7 +33,6 @@ func main() {
 func render(this js.Value, inputs []js.Value) interface{} {
 	callback := inputs[0]
 	buffer := inputs[1]
-	canvas := inputs[2]
 
 	go func() {
 		sampleRate := buffer.Get("sampleRate").Float()
@@ -47,7 +47,6 @@ func render(this js.Value, inputs []js.Value) interface{} {
 		fmt.Printf(" duration:    %v\n", duration)
 		fmt.Printf(" channels:    %v\n", channels)
 		fmt.Printf(" samples:     %v\n", len(samples))
-		fmt.Printf(" canvas:      %v\n", canvas)
 
 		w := 640
 		h := 390
@@ -64,9 +63,11 @@ func render(this js.Value, inputs []js.Value) interface{} {
 		rect := image.Rect(0, 0, w, h)
 		draw.Draw(img, rect, antialiased, xy, draw.Over)
 
-		pngToCanvas(canvas, img)
+		var b bytes.Buffer
 
-		callback.Invoke(js.Null(), js.Null())
+		png.Encode(&b, img)
+
+		callback.Invoke(js.Null(), bytesToArrayBuffer(b.Bytes()))
 	}()
 
 	return nil
@@ -84,41 +85,11 @@ func float32ArrayToSlice(array js.Value) []float32 {
 	return floats
 }
 
-func pngToCanvas(canvas js.Value, img *image.NRGBA) {
-	bounds := img.Bounds()
-	w := bounds.Max.X - bounds.Min.X
-	h := bounds.Max.Y - bounds.Min.Y
+func bytesToArrayBuffer(bytes []byte) js.Value {
+	var array js.Value = js.Global().Get("ArrayBuffer").New(len(bytes))
+	var u8array js.Value = js.Global().Get("Uint8Array").New(array)
 
-	u8array := js.Global().Get("Uint8Array").New(len(img.Pix))
-	context := canvas.Call("getContext", "2d")
-	data := context.Call("createImageData", w, h)
-	js.CopyBytesToJS(u8array, img.Pix)
-	data.Get("data").Call("set", u8array)
-	context.Call("putImageData", data, 0, 0, 0, 0, w, h)
+	js.CopyBytesToJS(u8array, bytes)
+
+	return array
 }
-
-// func grid(width, height, padding uint) *image.NRGBA {
-// 	w := width + 2*padding
-// 	h := height + 2*padding
-// 	img := image.NewNRGBA(image.Rect(0, 0, int(w), int(h)))
-//
-// 	for y := uint(0); y < h; y++ {
-// 		for x := uint(0); x < w; x++ {
-// 			img.Set(int(x), int(y), color.NRGBA{R: 0x22, G: 0x22, B: 0x22, A: 255})
-// 		}
-// 	}
-//
-// 	for _, y := range []uint{1, 63, 127, 128, 191, 254} {
-// 		for x := uint(0); x < width; x++ {
-// 			img.Set(int(x+padding), int(y+padding), color.NRGBA{R: 0x00, G: 0x80, B: 0x00, A: 255})
-// 		}
-// 	}
-//
-// 	for x := uint(0); x <= width; x += 64 {
-// 		for y := uint(1); y < height-1; y++ {
-// 			img.Set(int(x+padding), int(y+padding), color.NRGBA{R: 0x00, G: 0x80, B: 0x00, A: 255})
-// 		}
-// 	}
-//
-// 	return img
-// }

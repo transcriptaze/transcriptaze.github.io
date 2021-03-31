@@ -7,7 +7,6 @@
 - [ ] Grid settings
 - [ ] Anti-alias settings
 - [ ] Palette
-- [ ] Download
 - [ ] Clear/load buttons
 - [ ] Padding
 - [ ] Full size PNG
@@ -16,6 +15,7 @@
 - [ ] Fill settings
 - [ ] Loading windmill
 
+- [x] Make PNG downloadable
 - [x] Separate antialias and render passes
 
 ### T2B

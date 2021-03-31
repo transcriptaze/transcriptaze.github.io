@@ -37,14 +37,23 @@ export function onPicked (event) {
 
 function load (blob) {
   const picker = document.getElementById('picker')
-  const canvas = document.getElementById('canvas')
+  const waveform = document.getElementById('png')
 
   return blob.arrayBuffer()
     .then(b => transcode(b))
     .then(b => render(b))
     .then(b => {
       picker.style.visibility = 'hidden'
-      canvas.style.visibility = 'visible'
+      waveform.style.visibility = 'visible'
+
+      const array = new Uint8Array(b)
+      const png = new Blob( [ array ], { type: "image/png" } )
+      const url = URL.createObjectURL(png)
+
+      waveform.src = url
+      // waveform.onload = function() {
+      //    URL.revokeObjectURL(this.src);
+      // }
     })
     .catch(function (err) { console.error(err) })
 }
@@ -63,8 +72,6 @@ async function transcode (bytes) {
 }
 
 async function render (buffer) {
-  const canvas = document.getElementById('canvas')
-
   return new Promise((resolve, reject) => {
     goRender((err, png) => {
       if (err) {
@@ -72,6 +79,6 @@ async function render (buffer) {
       } else {
         resolve(png)
       }
-    }, buffer, canvas)
+    }, buffer)
   })
 }
