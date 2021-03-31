@@ -9,7 +9,9 @@ import (
 	"fmt"
 	"image"
 	"image/color"
+	"image/draw"
 	"syscall/js"
+	"time"
 
 	"github.com/transcriptaze/wav2png/wav2png"
 )
@@ -38,7 +40,7 @@ func render(this js.Value, inputs []js.Value) interface{} {
 		duration := buffer.Get("duration").Float()
 		channels := buffer.Get("numberOfChannels").Int()
 		data := buffer.Call("getChannelData", 0)
-		samples := float32ArrayToSlice(data)
+		samples := float32ArrayToSlice(data.Get("buffer"))
 
 		fmt.Printf(" sample rate: %v\n", sampleRate)
 		fmt.Printf(" length:      %v\n", length)
@@ -50,9 +52,17 @@ func render(this js.Value, inputs []js.Value) interface{} {
 		w := 640
 		h := 390
 		img := image.NewNRGBA(image.Rect(0, 0, int(w), int(h)))
+		dt := time.Duration(duration * float64(time.Second))
 
 		wav2png.Fill(img, BACKGROUND)
 		wav2png.Grid(img, GRID)
+
+		waveform := wav2png.Render(dt, samples, w, h)
+		antialiased := wav2png.Antialias(waveform, wav2png.Soft)
+
+		xy := image.Pt(0, 0)
+		rect := image.Rect(0, 0, w, h)
+		draw.Draw(img, rect, antialiased, xy, draw.Over)
 
 		pngToCanvas(canvas, img)
 
