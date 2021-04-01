@@ -2,19 +2,28 @@
 
 ### W2P
 
-- [ ] Pass width and height as parameters
 - [ ] Segment of audio
 - [ ] Grid settings
+      - size
+      - colour
+      - overlay/underlay
 - [ ] Anti-alias settings
+      - none
+      - vertical
+      - horizontal
+      - soft
 - [ ] Palette
 - [ ] Clear/load buttons
-- [ ] Padding
-- [ ] Full size PNG
+- [ ] Zoom PNG
 - [ ] Presets
 - [ ] Size settings
 - [ ] Fill settings
 - [ ] Loading windmill
+- [ ] (optionally) show audio info
+- [ ] (?) history
 
+- [x] Padding
+- [x] Pass width and height as parameters
 - [x] Make PNG downloadable
 - [x] Separate antialias and render passes
 

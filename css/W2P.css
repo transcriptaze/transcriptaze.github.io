@@ -11,7 +11,7 @@ p#blurb a {
   font-size: 1em;
 }
 
-div#spectrogram {
+div#wave {
   width: 640px;
   height: 390px;
   display: flex;

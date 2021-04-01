@@ -38,22 +38,30 @@ export function onPicked (event) {
 function load (blob) {
   const picker = document.getElementById('picker')
   const waveform = document.getElementById('png')
+  const width = waveform.width
+  const height = waveform.height
+  const padding = 4
+
+  if (waveform.src !== '') {
+    URL.revokeObjectURL(waveform.src)
+  }
 
   return blob.arrayBuffer()
     .then(b => transcode(b))
-    .then(b => render(b))
+    .then(b => render(b, width, height, padding))
     .then(b => {
+      const array = new Uint8Array(b)
+      const png = new Blob([array], { type: 'image/png' })
+      const url = URL.createObjectURL(png)
+      const w = waveform.width
+      const h = waveform.width * height / width
+
       picker.style.visibility = 'hidden'
+      waveform.style.width = `${w}px`
+      waveform.style.height = `${h}px`
       waveform.style.visibility = 'visible'
 
-      const array = new Uint8Array(b)
-      const png = new Blob( [ array ], { type: "image/png" } )
-      const url = URL.createObjectURL(png)
-
       waveform.src = url
-      // waveform.onload = function() {
-      //    URL.revokeObjectURL(this.src);
-      // }
     })
     .catch(function (err) { console.error(err) })
 }
@@ -71,7 +79,7 @@ async function transcode (bytes) {
   return offline.startRendering()
 }
 
-async function render (buffer) {
+async function render (buffer, width, height, padding) {
   return new Promise((resolve, reject) => {
     goRender((err, png) => {
       if (err) {
@@ -79,6 +87,6 @@ async function render (buffer) {
       } else {
         resolve(png)
       }
-    }, buffer)
+    }, buffer, width, height, padding)
   })
 }

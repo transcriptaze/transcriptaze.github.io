@@ -20,7 +20,10 @@ import (
 const VERSION = "v0.1.0"
 
 var BACKGROUND = wav2png.NewSolidFill(color.NRGBA{R: 0x00, G: 0x00, B: 0x00, A: 255})
-var GRID = wav2png.NewSquareGrid(color.NRGBA{R: 0x00, G: 0x80, B: 0x00, A: 255}, 64, 0)
+var GRID_COLOUR = color.NRGBA{R: 0x00, G: 0x80, B: 0x00, A: 255}
+
+const GRID_SIZE = 64
+const PADDING = 0
 
 func main() {
 	c := make(chan bool)
@@ -33,6 +36,13 @@ func main() {
 func render(this js.Value, inputs []js.Value) interface{} {
 	callback := inputs[0]
 	buffer := inputs[1]
+	width := inputs[2].Int()
+	height := inputs[3].Int()
+	padding := inputs[4].Int()
+
+	if padding < 0 {
+		padding = 0
+	}
 
 	go func() {
 		sampleRate := buffer.Get("sampleRate").Float()
@@ -48,20 +58,21 @@ func render(this js.Value, inputs []js.Value) interface{} {
 		fmt.Printf(" channels:    %v\n", channels)
 		fmt.Printf(" samples:     %v\n", len(samples))
 
-		w := 640
-		h := 390
-		img := image.NewNRGBA(image.Rect(0, 0, int(w), int(h)))
 		dt := time.Duration(duration * float64(time.Second))
+		gridspec := wav2png.NewSquareGrid(GRID_COLOUR, GRID_SIZE, uint(padding))
+		w := width - 2*padding
+		h := height - 2*padding
 
+		img := image.NewNRGBA(image.Rect(0, 0, width, height))
 		wav2png.Fill(img, BACKGROUND)
-		wav2png.Grid(img, GRID)
+		wav2png.Grid(img, gridspec)
 
 		waveform := wav2png.Render(dt, samples, w, h)
 		antialiased := wav2png.Antialias(waveform, wav2png.Soft)
 
-		xy := image.Pt(0, 0)
-		rect := image.Rect(0, 0, w, h)
-		draw.Draw(img, rect, antialiased, xy, draw.Over)
+		origin := image.Pt(0, 0)
+		rect := image.Rect(padding, padding, w, h)
+		draw.Draw(img, rect, antialiased, origin, draw.Over)
 
 		var b bytes.Buffer
 
