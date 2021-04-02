@@ -2,6 +2,8 @@
 
 ### W2P
 
+- [ ] Fix wav2png.draw
+- [ ] Size settings
 - [ ] Segment of audio
 - [ ] Grid settings
       - size
@@ -16,7 +18,6 @@
 - [ ] Clear/load buttons
 - [ ] Zoom PNG
 - [ ] Presets
-- [ ] Size settings
 - [ ] Fill settings
 - [ ] Loading windmill
 - [ ] (optionally) show audio info

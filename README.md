@@ -13,6 +13,10 @@ Implementation project for the estimation code:
 
 - [taps2beats](https://github.com/transcriptaze/taps2beats). 
 
+#### `wav2png`
+
+NOTE: 'zoomable' PNG's need to be enabled in the Firefox [experimental settings](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/showModal)
+
 #### Issues and Feature Requests
 
 Please create an issue in the [transcriptaze](https://github.com/transcriptaze/transcriptaze) _github_ repository.

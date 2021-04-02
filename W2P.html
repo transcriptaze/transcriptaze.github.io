@@ -69,13 +69,25 @@
                 <img onclick="return onPick(event)" src="../images/audio.png" />
               </div>
               <div>
-                <img id="png" />
+                <img id="png" onclick="zoom(event)" />                
               </div>
             </div>
 
             <div id="controls" class="panel">
               CONTROLS
             </div>
+
+            <!-- ENLARGED PNG VIEW -->
+            <dialog id="zoom">
+              <img id="zoomed" draggable="false"/>                
+              <div>
+              <form method="dialog">
+                <menu>
+                  <button id="close" value="cancel">X</button>
+                </menu>
+              </form>
+              </div>
+            </dialog>
 
           </div>
         </div>
@@ -108,6 +120,12 @@
     Promise.all([complete]).then((v) => {
       console.log("'k, ready at last")
     })
+  </script>
+
+  <script type="text/javascript">
+    function zoom(event) {
+       document.getElementById('zoom').showModal()
+    }
   </script>
 
 </html>

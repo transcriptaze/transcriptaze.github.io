@@ -38,8 +38,10 @@ export function onPicked (event) {
 function load (blob) {
   const picker = document.getElementById('picker')
   const waveform = document.getElementById('png')
-  const width = waveform.width
-  const height = waveform.height
+  const zoom = document.getElementById('zoom')
+  const zoomed = document.getElementById('zoomed')
+  const width = 2 * waveform.width
+  const height = 2 * waveform.height
   const padding = 4
 
   if (waveform.src !== '') {
@@ -57,11 +59,23 @@ function load (blob) {
       const h = waveform.width * height / width
 
       picker.style.visibility = 'hidden'
+
       waveform.style.width = `${w}px`
       waveform.style.height = `${h}px`
       waveform.style.visibility = 'visible'
-
       waveform.src = url
+
+      const zw = 3 * w / 2
+      const zh = 3 * h / 2
+
+      zoom.style.width = `${zw}px`
+      zoom.style.height = `${zh}px`
+      zoom.style.marginLeft = `${-zw / 2}px`
+      zoom.style.marginTop = `${-zh / 2}px`
+
+      zoomed.src = url
+      zoomed.style.width = `${zw}px`
+      zoomed.style.height = `${zh}px`
     })
     .catch(function (err) { console.error(err) })
 }
