@@ -1,0 +1,410 @@
+#container {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto auto auto auto;
+  grid-template-areas: "url unused1" "video help" "controls data" "taps data";
+  column-gap: 6px;
+  row-gap: 1px;
+
+  text-align: center;
+  margin: auto;
+
+  padding: 4px;
+  background: var(--panel);
+  box-shadow: -1px -1px 2px 0 #fdf6e3, 1px 1px 4px 0 #93a1a1;
+}
+
+div#file {
+  display: flex;
+  grid-area: url;
+  visibility: hidden;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  margin-left: var(--pad-left);
+}
+
+div#video {
+  display: block;
+  grid-area: video;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+  margin-left: var(--pad-left);
+  overflow: none;
+  border: none;
+}
+
+div#help {
+  grid-area: help;
+  outline: none;
+  display: block;
+  visibility: visible;
+}
+
+div#controls {
+  grid-area: controls;
+  visibility: hidden;
+  outline: none;
+  margin-left: var(--pad-left);
+}
+
+div#data {
+  grid-area: data;
+  visibility: hidden;
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+div#taps {
+  grid-area: taps;
+  visibility: hidden;
+  margin-left: var(--pad-left);
+  margin-bottom: 0.8em;
+}
+
+div.url {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+div.url input#url {
+  background: transparent;
+}
+
+div.url input#url::placeholder {
+  color: var(--hint);
+  font-style: italic;
+  font-size: 0.9em;
+}
+
+div.url input#url[readonly] {
+  color: var(--hint);
+  font-style: italic;
+}
+
+div.url button#load {
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-left: 8px;
+  padding-right: 8px;
+  margin-left: 4px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+}
+
+div.url button#load img {
+  width: 20px;
+  height: 20px;
+}
+
+#player {
+  display: inline-block;
+  width: 640px; 
+  height: 390px; 
+  vertical-align:top;
+  opacity: 1;
+  transition: opacity 15s ease;
+}
+
+#windmill {
+  background: transparent; 
+}
+
+.overlay {
+  background: #222222; 
+  width: 640px; 
+  height: 390px; 
+  position: absolute; 
+  left: 0x; 
+  top: 0px; 
+  z-index: 1;
+  visibility: visible;
+  text-align: center;
+}
+
+.hidden {
+  opacity: 0;
+}
+
+.overlay img {
+  position: relative; 
+  top: 50%; 
+  transform: translateY(-50%);
+  width: 80px;
+}
+
+#help .help {
+  width: 128px;  
+  outline: none;
+}
+
+.help p {  
+  color: var(--help);
+  font-size: 0.8em;
+  font-style: italic;  
+  text-align: left;
+  margin-left: 12px;
+  margin-right: 12px;
+  margin-top: 24px;
+}
+
+.help p.basic {
+  display: none;
+}
+
+.help p.cued {
+  display: none;
+}
+
+.help p.playing {
+  display: none;
+}
+
+#help[data-state="hint"] .help p.basic {
+  display: block;
+}
+
+#help[data-state="cued"] .help p.cued {
+  display: block;
+}
+
+#help[data-state="playing"] .help p.playing {
+  display: block;
+}
+
+div.controls {
+  display: grid;
+  clear: both; 
+  grid-template-columns: min-content 1fr min-content min-content min-content min-content;
+  grid-template-areas: "slider slider slider slider slider slider" "taps taps taps taps taps taps" "looping middle quantize interpolate offset bpm";
+  grid-column-gap: 2px;
+}
+
+div.slider {
+  grid-area: slider;
+  clear: none;
+}
+
+input.info {
+  width: 4em;
+  padding: 2px 4px 2px 4px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  font-size: 0.7em;
+  text-align: center;
+}
+
+input.info::placeholder {
+  color: var(--hint);
+  font-style: italic;
+}
+
+label#quantize {
+  grid-area: quantize;
+}
+
+label#interpolate {
+  grid-area: interpolate;
+}
+
+input#to {
+  grid-area: to;
+}
+
+input#offset {
+  grid-area: offset;
+  outline: none;
+}
+
+input#bpm {
+  grid-area: bpm;
+  outline: none;
+}
+
+div#looping {
+  grid-area: looping;  
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+label.checktext {
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  visibility: hidden;
+}
+
+label.checktext input[type="checkbox"] {
+  display: none;
+}
+
+label.checktext input[type="checkbox"] ~ span {
+  color: var(--hint);
+  font-size: 0.65em;
+  font-family: sans-serif;
+  font-style: italic;
+  padding-left: 4px;
+  padding-right: 4px;  
+}
+
+label.checktext input[type="checkbox"]:checked ~ span {
+  color: #444444;
+  font-style: normal;
+}
+
+label#loop {
+  cursor: pointer;  
+  margin-right: 4px;
+}
+
+label#loop input[type="checkbox"] {
+  display: none;
+}
+
+label#loop img {
+  width: 20px;
+  height: 20px;
+  padding: 2px 2px 2px 4px;
+  margin: auto;
+}
+
+label#loop img.yes {
+  display: none;
+}
+
+label#loop img.no {
+  display: block;
+  filter: invert(100%) sepia(30%) saturate(7%) hue-rotate(292deg) brightness(81%) contrast(103%);
+}
+
+label#loop input[type="checkbox"]:checked ~ img.yes {
+  display: block;
+}
+
+label#loop input[type="checkbox"]:checked ~ img.no {
+  display: none;
+}
+
+input#delay {
+  width: 4em;
+  padding: 2px 4px 2px 4px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  text-align: center;
+  margin-left: 4px;
+  outline: none;
+}
+
+input#delay::placeholder {
+  color: var(--hint);
+  font-style: italic;
+  font-size: 0.9em;
+}
+
+input#delay::-webkit-inner-spin-button, 
+input#delay::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+div#taps {
+  display: none;
+  grid-area: taps;
+}
+
+div#all {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+div#zoomed {
+  display: none;
+  flex-flow: column nowrap;
+  margin-top: 1px;
+}
+
+div#all canvas {
+  background: var(--taps-all-background);
+}
+
+div#zoomed canvas {
+  background: var(--taps-zoomed-background);
+}
+
+canvas.taps {
+  width: 640px;
+  height: 5px;
+  margin-top: 1px;
+  margin-bottom: 1px;
+  border: 0.5px solid #c0c0c080;
+  border-radius: 2px;
+}
+
+div#message {
+  display: none;
+  margin-top: 4px;
+  justify-content: center;
+  align-items: center;
+}
+
+div#message p {
+  margin: auto;
+  font-family: sans-serif;
+  font-size: 0.6em;
+  text-align: center;
+  color: var(--hint);
+}
+
+div#data {
+ display: flex;
+ flex-flow: row nowrap;
+ justify-content: center;
+ align-items: flex-end;
+}
+
+div#data button {
+  border: none;
+  margin-left: 4px;
+  margin-right: 4px;
+  margin-top: 4px;
+}
+
+div#data button img {
+  width: 28px;
+  height: 28px;
+  padding-top: 2px;
+  padding-bottom: 0px;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#windmill {
+  background:#000000d0; 
+  display: none;
+}
+
+.windmill {
+  display: block;
+  visibility: visible;
+}
+
+.windmill:before {
+  content: "";
+  box-sizing: border-box;
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  left: 270px;
+  top: 145px;
+  border-radius: 50%;
+  border-top: 3px solid var(--solarize-blue);
+  border-right: 3px solid transparent;
+  animation: windmill 0.9s linear infinite;
+}
+
+@keyframes windmill {
+  to {
+    transform: rotate(360deg);
+  }
+}
+

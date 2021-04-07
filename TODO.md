@@ -2,11 +2,12 @@
 
 ### W2P
 
-- [ ] Fix wav2png.draw
+- [ ] Fix grid
 - [ ] Size settings
 - [ ] Segment of audio
 - [ ] Grid settings
-      - size
+      - none/square/rectangular
+      - 'smart' e.g. flip between no. of lines/size
       - colour
       - overlay/underlay
 - [ ] Anti-alias settings
