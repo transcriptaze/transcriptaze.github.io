@@ -97,6 +97,16 @@ div#controls {
 }
 
 div#picker {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 95%;
+  border-right: 1px solid lightgray;
+  margin-left: 8px;
+  margin-right: 8px;
+  margin-top: 32px;
+  margin-bottom: 32px;
 }
 
 div#picker img {

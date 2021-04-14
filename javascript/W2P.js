@@ -69,8 +69,14 @@ function load (blob) {
       const array = new Uint8Array(b)
       const png = new Blob([array], { type: 'image/png' })
       const url = URL.createObjectURL(png)
-      const w = waveform.width
-      const h = waveform.width * height / width
+
+      let w = waveform.width
+      let h = waveform.width * height / width
+
+      if (h > waveform.height) {
+        h = waveform.height
+        w = waveform.height * width/height
+      }
 
       waveform.style.width = `${w}px`
       waveform.style.height = `${h}px`

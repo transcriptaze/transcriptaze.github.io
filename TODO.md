@@ -3,11 +3,10 @@
 ### W2P
 
 - [ ] Size settings
-      -- aspect ratio for 1024 x 800
-      -- separator line between sizes and load area
       -- save/restore custom size
       -- redraw on change size
 
+- [ ] Loading windmill
 - [ ] Fix grid
 - [ ] Segment of audio
 - [ ] Grid settings
@@ -25,7 +24,6 @@
 - [ ] Zoom PNG
 - [ ] Presets
 - [ ] Fill settings
-- [ ] Loading windmill
 - [ ] (optionally) show audio info
 - [ ] (?) history
 
