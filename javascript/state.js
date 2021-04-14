@@ -1,4 +1,3 @@
-import { state } from './T2B.js'
 import { initialiseComboBox } from './combobox.js'
 
 const tags = {
@@ -52,8 +51,6 @@ export const State = function () {
       this.titles.set('ZPIMomJP4kY', 'Happy Birthday - Bluesy Fingerstyle Guitar')
       this.titles.set('iFGhlOL4twQ', 'Chuck Loeb - Billy\'s song (cover)')
     }
-
-    setPickList()
   }
 
   this.addVideo = function (vid) {
@@ -63,7 +60,20 @@ export const State = function () {
       this.history = new Set(Array.from(lru).slice(0, 8))
 
       window.localStorage.setItem(tags.history, JSON.stringify(Array.from(this.history)))
-      lookup(this.apikey, vid.trim())
+    }
+  }
+
+  this.setVideoTitle = function (vid, title) {
+    const key = vid.trim()
+
+    if (key !== '') {
+      if (this.titles.has(key)) {
+        this.titles.set(key, title.trim())
+
+        const blob = JSON.stringify(Array.from(this.titles.entries()))
+
+        window.localStorage.setItem(tags.titles, blob)
+      }
     }
   }
 
@@ -72,80 +82,4 @@ export const State = function () {
 
     window.localStorage.setItem(tags.apikey, this.apikey)
   }
-}
-
-async function lookup (apikey, vid) {
-  if (apikey !== '' || vid !== '') {
-    const url = 'https://www.googleapis.com/youtube/v3/videos?part=snippet&id=' + vid.trim() + '&fields=items(id,snippet)&key=' + apikey
-    const request = new Request(url, {
-      method: 'GET',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      redirect: 'follow',
-      referrerPolicy: 'no-referrer'
-    })
-
-    const get = fetch(request)
-      .then(response => {
-        if (response.ok) {
-          return response.json()
-        } else if (response.statusText !== '') {
-          throw new Error('YouTube video title request failed (' + response.status + ' ' + response.statusText + ')')
-        } else {
-          throw new Error('YouTube video title request failed (' + response.status + ')')
-        }
-      }).then(object => {
-        if (object.items.length > 0) {
-          return object.items[0].snippet.title
-        }
-
-        return ''
-      }).catch(err => {
-        console.log(err.toString())
-        return ''
-      })
-
-    const title = await get
-    if (title.trim() !== '') {
-      const lru = new Map([[vid, title.trim()], ...Array.from(state.titles)])
-
-      state.titles = new Map(Array.from(lru).slice(0, 25))
-
-      window.localStorage.setItem(tags.titles, JSON.stringify(Array.from(state.titles.entries())))
-      setPickList()
-    }
-  }
-}
-
-function setPickList () {
-  const none = document.createElement('li')
-  none.id = 'none'
-  none.setAttribute('role', 'option')
-  none.dataset.url = ''
-  none.appendChild(document.createTextNode('(none)'))
-
-  const items = [none]
-  state.history.forEach(vid => {
-    const li = document.createElement('li')
-    let title = 'https://www.youtube.com/watch?v=' + vid
-
-    if (state.titles.has(vid)) {
-      title = state.titles.get(vid)
-    }
-
-    li.id = vid
-    li.setAttribute('role', 'option')
-    li.dataset.url = 'https://www.youtube.com/watch?v=' + vid
-    li.appendChild(document.createTextNode(title))
-
-    items.push(li)
-  })
-
-  const list = document.getElementById('cb1-listbox')
-  const clone = list.cloneNode()
-
-  clone.replaceChildren(...items)
-  list.replaceWith(clone)
-  initialiseComboBox('picklist')
 }

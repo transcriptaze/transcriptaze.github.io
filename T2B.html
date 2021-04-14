@@ -221,7 +221,7 @@
     import { state,
       onPlayerReady, onPlayerStateChange, 
       onURL, onLoad, onKey, onDoubleClick,
-      onLoop, onQuantize, onInterpolate, onExport, onClear } from './javascript/T2B.js'
+      onLoop, onQuantize, onInterpolate, onExport, onClear, setPickList } from './javascript/T2B.js'
 
     window.state = state
     window.onPlayerReady = onPlayerReady
@@ -236,7 +236,8 @@
     window.onExport = onExport
     window.onClear = onClear
 
-    window.state.restore()
+    state.restore()
+    setPickList()
 
     document.addEventListener('keydown', event => {
       onKey(event)

@@ -2,6 +2,7 @@
 
 import { State } from './state.js'
 import { Slider } from './slider.js'
+import { initialiseComboBox } from './combobox.js'
 
 export const state = new State()
 
@@ -37,12 +38,15 @@ export function onPlayerStateChange (event) {
       if (!local.loaded) {
         local.loaded = true
         const duration = player.getDuration()
+        const vid = getPlayerVideoID()
 
         local.start.init(0, duration, 0)
         local.end.init(0, duration, duration)
         local.taps.duration = duration
 
-        state.addVideo(getPlayerVideoID())
+        state.addVideo(vid)
+        lookup(state.apikey, vid)
+
         cue(false)
         drawSlider()
       }
@@ -125,6 +129,38 @@ export function onLoad (event) {
     player.mute()
     player.loadVideoById({ videoId: vid, startSeconds: 0, endSeconds: 0.1 })
   }
+}
+
+export function setPickList () {
+  const none = document.createElement('li')
+  none.id = 'none'
+  none.setAttribute('role', 'option')
+  none.dataset.url = ''
+  none.appendChild(document.createTextNode('(none)'))
+
+  const items = [none]
+  state.history.forEach(vid => {
+    const li = document.createElement('li')
+    let title = 'https://www.youtube.com/watch?v=' + vid
+
+    if (state.titles.has(vid)) {
+      title = state.titles.get(vid)
+    }
+
+    li.id = vid
+    li.setAttribute('role', 'option')
+    li.dataset.url = 'https://www.youtube.com/watch?v=' + vid
+    li.appendChild(document.createTextNode(title))
+
+    items.push(li)
+  })
+
+  const list = document.getElementById('cb1-listbox')
+  const clone = list.cloneNode()
+
+  clone.replaceChildren(...items)
+  list.replaceWith(clone)
+  initialiseComboBox('picklist')
 }
 
 function onSetStart (t, released) {
@@ -576,3 +612,45 @@ function format (t) {
 
   return String(minutes) + ':' + String(seconds).padStart(2, '0')
 }
+
+async function lookup (apikey, vid) {
+  if (apikey !== '' || vid !== '') {
+    const url = 'https://www.googleapis.com/youtube/v3/videos?part=snippet&id=' + vid.trim() + '&fields=items(id,snippet)&key=' + apikey
+    const request = new Request(url, {
+      method: 'GET',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer'
+    })
+
+    const get = fetch(request)
+      .then(response => {
+        if (response.ok) {
+          return response.json()
+        } else if (response.statusText !== '') {
+          throw new Error('YouTube video title request failed (' + response.status + ' ' + response.statusText + ')')
+        } else {
+          throw new Error('YouTube video title request failed (' + response.status + ')')
+        }
+      }).then(object => {
+        if (object.items.length > 0) {
+          return object.items[0].snippet.title
+        }
+
+        return ''
+      }).catch(err => {
+        console.log(err.toString())
+        return ''
+      })
+
+    const title = await get
+
+    if (title.trim() !== '') {
+      state.setVideoTitle(vid, title)
+      setPickList()
+    }
+  }
+}
+
