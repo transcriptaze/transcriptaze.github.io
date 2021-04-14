@@ -35,16 +35,28 @@ export function onPicked (event) {
   }
 }
 
+export function onSize (event) {
+  const v = document.querySelector('input[name="size"]:checked').value
+  const custom = document.getElementById('custom')
+
+  if (v === 'custom') {
+    custom.style.visibility = 'visible'
+    custom.focus()
+  } else {
+    custom.style.visibility = 'hidden'
+  }
+}
+
 function load (blob) {
   const controls = document.getElementById('controls')
-  const sizes = document.getElementById('sizes')
   const picker = document.getElementById('picker')
   const waveform = document.getElementById('png')
   const zoom = document.getElementById('zoom')
   const zoomed = document.getElementById('zoomed')
   const padding = 3
-  const width = waveform.width
-  const height = waveform.height
+  const wh = size()
+  const width = wh.width
+  const height = wh.height
 
   if (waveform.src !== '') {
     URL.revokeObjectURL(waveform.src)
@@ -79,7 +91,6 @@ function load (blob) {
 
       picker.style.visibility = 'hidden'
       controls.style.display = 'block'
-      sizes.style.display = 'block'
     })
     .catch(function (err) { console.error(err) })
 }
@@ -107,4 +118,23 @@ async function render (buffer, width, height, padding) {
       }
     }, buffer, width, height, padding)
   })
+}
+
+function size () {
+  let v = document.querySelector('input[name="size"]:checked').value
+  if (v === 'custom') {
+      v = document.getElementById('custom').value
+  }
+
+  const re = /([0-9]+)\s*x\s*([0-9]+)/
+  const match = re.exec(v)
+
+  if (match) {
+    const w = parseInt(match[1], 10)
+    const h = parseInt(match[2], 10)
+
+    return { width: w, height: h }
+  }
+
+  return { width: 645, height: 392 }
 }

@@ -2,8 +2,13 @@
 
 ### W2P
 
-- [ ] Fix grid
 - [ ] Size settings
+      -- aspect ratio for 1024 x 800
+      -- separator line between sizes and load area
+      -- save/restore custom size
+      -- redraw on change size
+
+- [ ] Fix grid
 - [ ] Segment of audio
 - [ ] Grid settings
       - none/square/rectangular

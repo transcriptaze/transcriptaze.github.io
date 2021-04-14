@@ -75,32 +75,35 @@
 
             <div id="sizes" class="panel">
               <div class="size">
-                <input id="sz0" type="radio" name="size" class="size" value="645x392" checked />
+                <input id="sz0" type="radio" name="size" class="size" value="645x392" onchange="onSize(event)" checked />
                 <label for="sz0">645 x 392</label>
               </div>
               <div class="size">
-                <input id="sz1" type="radio" name="size" class="size" value="640x480" />
+                <input id="sz1" type="radio" name="size" class="size" value="640x480" onchange="onSize(event)" />
                 <label for="sz1">640 x 480</label>
               </div>
               <div class="size">
-                <input id="sz2" type="radio" name="size" class="size" value="800x600" />
+                <input id="sz2" type="radio" name="size" class="size" value="800x600" onchange="onSize(event)" />
                 <label for="sz2">800 x 600</label>
               </div>
               <div class="size">
-                <input id="sz3" type="radio" name="size" class="size" value="1024x800" />
+                <input id="sz3" type="radio" name="size" class="size" value="1024x800" onchange="onSize(event)" />
                 <label for="sz3">1024 x 800</label>
               </div>
               <div class="size">
-                <input id="sz4" type="radio" name="size" class="size" value="1280x800" />
+                <input id="sz4" type="radio" name="size" class="size" value="1280x800" onchange="onSize(event)" />
                 <label for="sz4">1280 x 800</label>
               </div>
               <div class="size">
-                <input id="sz5" type="radio" name="size" class="size" value="2048x1640" />
+                <input id="sz5" type="radio" name="size" class="size" value="2048x1640" onchange="onSize(event)" />
                 <label for="sz5">2048 x 1640</label>
               </div>
               <div class="size">
-                <input id="szx" type="radio" name="size" class="size" value="custom" />
-                <label for="szx">Custom</label>
+                <input id="szx" type="radio" name="size" class="size" value="custom" onchange="onSize(event)" />
+                <label for="szx">custom</label>
+              </div>
+              <div class="size">
+                <input id="custom" type="text" value="" placeholder="480 x 292" />
               </div>
             </div>
 
@@ -135,12 +138,13 @@
   <!-- SCRIPTS -->
  
   <script type="module">
-    import { onDrop, onDragOver, onPick, onPicked } from './javascript/W2P.js'
+    import { onDrop, onDragOver, onPick, onPicked, onSize } from './javascript/W2P.js'
 
     window.onDrop = onDrop
     window.onDragOver = onDragOver
     window.onPick = onPick
     window.onPicked = onPicked
+    window.onSize = onSize
   </script>
 
   <script type="text/javascript">

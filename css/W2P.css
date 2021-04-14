@@ -39,8 +39,7 @@ div#wave {
 
 div#sizes {
   grid-area: sizes;
-  display: none;
-  flex-direction: column;
+  display: block;
   visibility: visible;
   text-align: left;
   padding-top: 8px;
@@ -61,6 +60,33 @@ div#sizes {
   font-size: 0.8em;
   padding-left: 4px;
   font-family: sans-serif;
+}
+
+#szx + label {
+  font-size: 1em;
+  font-variant: small-caps;
+}
+
+#custom {  
+  width: 72px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 4px;
+  padding-right: 4px;
+  margin-left: 16px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  font-size: 0.75em;
+  color: gray;
+  outline: none;
+  border: 1px solid gray;
+  border-radius: 3px;
+  visibility: hidden;
+}
+
+#custom::placeholder {  
+  font-style: italic;
+  color: gray;
 }
 
 div#controls {
