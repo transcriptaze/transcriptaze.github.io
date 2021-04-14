@@ -223,8 +223,6 @@
       onURL, onLoad, onKey, onDoubleClick,
       onLoop, onQuantize, onInterpolate, onExport, onClear } from './javascript/T2B.js'
 
-    import { onApiKey } from './javascript/state.js'
-
     window.state = state
     window.onPlayerReady = onPlayerReady
     window.onPlayerStateChange = onPlayerStateChange
@@ -237,7 +235,6 @@
     window.onInterpolate = onInterpolate
     window.onExport = onExport
     window.onClear = onClear
-    window.onApiKey = onApiKey
 
     window.state.restore()
 
@@ -265,6 +262,12 @@
     function onYouTubeStateChange (event) {
       if (window.onPlayerStateChange) {
         window.onPlayerStateChange(event)
+      }
+    }
+
+    function onApiKey (event) {
+      if (event.key === 'Enter') {
+        state.setApiKey(document.getElementById('apikey').value)
       }
     }
 

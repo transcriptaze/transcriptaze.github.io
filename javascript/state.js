@@ -63,7 +63,7 @@ export const State = function () {
       this.history = new Set(Array.from(lru).slice(0, 8))
 
       window.localStorage.setItem(tags.history, JSON.stringify(Array.from(this.history)))
-      lookup(state.apikey, vid.trim())
+      lookup(this.apikey, vid.trim())
     }
   }
 
@@ -115,12 +115,6 @@ async function lookup (apikey, vid) {
       window.localStorage.setItem(tags.titles, JSON.stringify(Array.from(state.titles.entries())))
       setPickList()
     }
-  }
-}
-
-export function onApiKey (event) {
-  if (event.key === 'Enter') {
-    state.setApiKey(document.getElementById('apikey').value)
   }
 }
 
