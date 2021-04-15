@@ -1,6 +1,14 @@
 /* global goRender */
 
-const AudioContext = window.AudioContext || window.webkitAudioContext
+import { State } from './state.js'
+
+const state = new State()
+
+export function initialise () {
+  state.restore('W2P')
+
+  document.getElementById('custom').value = state.W2P.customSize
+}
 
 export function onDrop (event) {
   event.preventDefault()
@@ -75,7 +83,7 @@ function load (blob) {
 
       if (h > waveform.height) {
         h = waveform.height
-        w = waveform.height * width/height
+        w = waveform.height * width / height
       }
 
       waveform.style.width = `${w}px`
@@ -102,6 +110,7 @@ function load (blob) {
 }
 
 async function transcode (bytes) {
+  const AudioContext = window.AudioContext || window.webkitAudioContext
   const ctx = new AudioContext()
   const buffer = await ctx.decodeAudioData(bytes)
   const offline = new OfflineAudioContext(1, 44100 * buffer.duration, 44100)
@@ -127,11 +136,13 @@ async function render (buffer, width, height, padding) {
 }
 
 function size () {
-  let v = document.querySelector('input[name="size"]:checked').value
+  const option = document.querySelector('input[name="size"]:checked')
+  let v = option.value
   if (v === 'custom') {
-      v = document.getElementById('custom').value
+    v = document.getElementById('custom').value
   }
 
+  const png = document.getElementById('png')
   const re = /([0-9]+)\s*x\s*([0-9]+)/
   const match = re.exec(v)
 
@@ -139,8 +150,14 @@ function size () {
     const w = parseInt(match[1], 10)
     const h = parseInt(match[2], 10)
 
-    return { width: w, height: h }
+    if (w > 0 && w <= 8192 && h > 0 && h <= 8192) {
+      if (option.value === 'custom') {
+        state.setCustomSize(v)
+      }
+
+      return { width: w, height: h }
+    }
   }
 
-  return { width: 645, height: 392 }
+  return { width: png.width, height: png.height }
 }

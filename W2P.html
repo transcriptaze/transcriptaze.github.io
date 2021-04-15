@@ -100,7 +100,7 @@
               </div>
               <div class="size">
                 <input id="szx" type="radio" name="size" class="size" value="custom" onchange="onSize(event)" />
-                <label for="szx">custom</label>
+                <label for="szx">CUSTOM</label>
               </div>
               <div class="size">
                 <input id="custom" type="text" value="" placeholder="480 x 292" />
@@ -138,13 +138,17 @@
   <!-- SCRIPTS -->
  
   <script type="module">
-    import { onDrop, onDragOver, onPick, onPicked, onSize } from './javascript/W2P.js'
+    import { initialise,
+             onDrop, onDragOver, onPick, onPicked, onSize 
+          } from './javascript/W2P.js'
 
     window.onDrop = onDrop
     window.onDragOver = onDragOver
     window.onPick = onPick
     window.onPicked = onPicked
     window.onSize = onSize
+
+    initialise()
   </script>
 
   <script type="text/javascript">

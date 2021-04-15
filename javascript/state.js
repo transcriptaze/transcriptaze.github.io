@@ -1,9 +1,11 @@
-import { initialiseComboBox } from './combobox.js'
-
 const tags = {
   apikey: 'T2B.apikey',
   history: 'T2B.history',
-  titles: 'T2B.titles'
+  titles: 'T2B.titles',
+
+  W2P: {
+    customSize: 'W2P.customSize'
+  }
 }
 
 export const State = function () {
@@ -11,45 +13,19 @@ export const State = function () {
   this.titles = new Map()
   this.apikey = 'AIzaSyCmyt_fgo-FJRnYST53tdwE9K9Nn-UO-ZA'
 
-  this.restore = function () {
-    this.history.clear()
-    this.titles.clear()
+  this.W2P = {
+    customSize: ''
+  }
 
-    // Restore API key
-    let blob = window.localStorage.getItem(tags.apikey)
-    if (blob !== null) {
-      this.apikey = blob.trim()
-    }
+  this.restore = function (page) {
+    switch (page) {
+      case 'T2B':
+        restoreT2B(this)
+        break
 
-    // Restore history
-    try {
-      blob = window.localStorage.getItem(tags.history)
-      if (blob !== null) {
-        JSON.parse(blob).forEach(vid => this.history.add(vid))
-      }
-    } catch (err) {
-      // IGNORE
-    }
-
-    try {
-      blob = window.localStorage.getItem(tags.titles)
-      if (blob !== null) {
-        JSON.parse(blob).forEach(([k, v]) => {
-          this.titles.set(k, v)
-        })
-      }
-    } catch (err) {
-      // IGNORE
-    }
-
-    if (this.history.size === 0) {
-      this.history.add('CKI7MnfBYJA')
-      this.history.add('ZPIMomJP4kY')
-      this.history.add('iFGhlOL4twQ')
-
-      this.titles.set('CKI7MnfBYJA', 'Winter Song | Sara Bareilles & Ingrid Michaelson (Harp Cover)')
-      this.titles.set('ZPIMomJP4kY', 'Happy Birthday - Bluesy Fingerstyle Guitar')
-      this.titles.set('iFGhlOL4twQ', 'Chuck Loeb - Billy\'s song (cover)')
+      case 'W2P':
+        restoreW2P(this)
+        break
     }
   }
 
@@ -81,5 +57,63 @@ export const State = function () {
     this.apikey = key.trim()
 
     window.localStorage.setItem(tags.apikey, this.apikey)
+  }
+
+  this.setCustomSize = function (size) {
+    this.W2P.customSize = size.trim()
+
+    window.localStorage.setItem(tags.W2P.customSize, this.W2P.customSize)
+  }
+}
+
+function restoreT2B (state) {
+  state.history.clear()
+  state.titles.clear()
+
+  // Restore T2B API key
+  let blob = window.localStorage.getItem(tags.apikey)
+  if (blob !== null) {
+    state.apikey = blob.trim()
+  }
+
+  // Restore T2B history
+  try {
+    blob = window.localStorage.getItem(tags.history)
+    if (blob !== null) {
+      JSON.parse(blob).forEach(vid => state.history.add(vid))
+    }
+  } catch (err) {
+    // IGNORE
+  }
+
+  try {
+    blob = window.localStorage.getItem(tags.titles)
+    if (blob !== null) {
+      JSON.parse(blob).forEach(([k, v]) => {
+        state.titles.set(k, v)
+      })
+    }
+  } catch (err) {
+    // IGNORE
+  }
+
+  if (state.history.size === 0) {
+    state.history.add('CKI7MnfBYJA')
+    state.history.add('ZPIMomJP4kY')
+    state.history.add('iFGhlOL4twQ')
+
+    state.titles.set('CKI7MnfBYJA', 'Winter Song | Sara Bareilles & Ingrid Michaelson (Harp Cover)')
+    state.titles.set('ZPIMomJP4kY', 'Happy Birthday - Bluesy Fingerstyle Guitar')
+    state.titles.set('iFGhlOL4twQ', 'Chuck Loeb - Billy\'s song (cover)')
+  }
+}
+
+function restoreW2P (state) {
+  state.W2P.customSize = ''
+
+  // Restore W2P custom size
+  const blob = window.localStorage.getItem(tags.W2P.customSize)
+  if (blob !== null) {
+    state.W2P.customSize = blob.trim()
   }
 }

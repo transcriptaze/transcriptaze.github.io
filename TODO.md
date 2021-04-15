@@ -3,7 +3,6 @@
 ### W2P
 
 - [ ] Size settings
-      -- save/restore custom size
       -- redraw on change size
 
 - [ ] Loading windmill
