@@ -98,6 +98,7 @@ div#controls {
 
 div#picker {
   display: flex;
+  flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
   width: 100%;
@@ -110,8 +111,17 @@ div#picker {
 }
 
 div#picker img {
+  margin-top: auto;
+  margin-bottom: auto;
   padding: 16px;
   border: none;
+}
+
+div#message {
+  color: var(--solarize-red);
+  font-size: 0.8em;
+  font-family: sans-serif;
+  visibility: hidden;
 }
 
 #png {
@@ -122,6 +132,7 @@ div#picker img {
   width: 645px;
   height: 392px;
   visibility: hidden;  
+  border-radius: 2px;
 }     
 
 dialog#zoom {

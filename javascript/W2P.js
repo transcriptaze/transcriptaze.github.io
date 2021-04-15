@@ -1,4 +1,4 @@
-/* global goRender */
+/* global goStore, goRender */
 
 import { State } from './state.js'
 
@@ -56,6 +56,7 @@ export function onSize (event) {
 }
 
 function load (blob) {
+  const message = document.getElementById('message')
   const controls = document.getElementById('controls')
   const picker = document.getElementById('picker')
   const waveform = document.getElementById('png')
@@ -72,7 +73,8 @@ function load (blob) {
 
   return blob.arrayBuffer()
     .then(b => transcode(b))
-    .then(b => render(b, width, height, padding))
+    .then(b => store(b))
+    .then(b => render(width, height, padding))
     .then(b => {
       const array = new Uint8Array(b)
       const png = new Blob([array], { type: 'image/png' })
@@ -106,7 +108,12 @@ function load (blob) {
       picker.style.visibility = 'hidden'
       controls.style.display = 'block'
     })
-    .catch(function (err) { console.error(err) })
+    .catch(function (err) {
+      console.error(err)
+
+      message.innerText = err
+      message.style.visibility = 'visible'
+    })
 }
 
 async function transcode (bytes) {
@@ -123,7 +130,19 @@ async function transcode (bytes) {
   return offline.startRendering()
 }
 
-async function render (buffer, width, height, padding) {
+async function store (buffer) {
+  return new Promise((resolve, reject) => {
+    goStore((err) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve()
+      }
+    }, buffer)
+  })
+}
+
+async function render (width, height, padding) {
   return new Promise((resolve, reject) => {
     goRender((err, png) => {
       if (err) {
@@ -131,7 +150,7 @@ async function render (buffer, width, height, padding) {
       } else {
         resolve(png)
       }
-    }, buffer, width, height, padding)
+    }, width, height, padding)
   })
 }
 

@@ -4,6 +4,7 @@
 
 - [ ] Size settings
       -- redraw on change size
+      -- save/restore size preference
 
 - [ ] Loading windmill
 - [ ] Fix grid
