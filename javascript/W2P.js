@@ -4,7 +4,11 @@ import { State } from './state.js'
 
 const state = new State()
 
+let loaded = false
+
 export function initialise () {
+  loaded = false
+
   state.restore('W2P')
 
   document.getElementById('custom').value = state.W2P.customSize
@@ -52,6 +56,26 @@ export function onSize (event) {
     custom.focus()
   } else {
     custom.style.visibility = 'hidden'
+    if (loaded) {
+      redraw(size())
+    }
+  }
+}
+
+export function onCustomSize (event) {
+  if (loaded && event.type === 'keydown' && event.key === 'Enter') {
+    const v = document.getElementById('custom').value
+    const re = /([0-9]+)\s*x\s*([0-9]+)/
+    const match = re.exec(v)
+
+    if (match) {
+      const w = parseInt(match[1], 10)
+      const h = parseInt(match[2], 10)
+
+      if (w > 0 && w <= 8192 && h > 0 && h <= 8192) {
+        redraw(size())
+      }
+    }
   }
 }
 
@@ -60,12 +84,10 @@ function load (blob) {
   const controls = document.getElementById('controls')
   const picker = document.getElementById('picker')
   const waveform = document.getElementById('png')
-  const zoom = document.getElementById('zoom')
-  const zoomed = document.getElementById('zoomed')
-  const padding = 3
   const wh = size()
   const width = wh.width
   const height = wh.height
+  const padding = 3
 
   if (waveform.src !== '') {
     URL.revokeObjectURL(waveform.src)
@@ -78,42 +100,77 @@ function load (blob) {
     .then(b => {
       const array = new Uint8Array(b)
       const png = new Blob([array], { type: 'image/png' })
-      const url = URL.createObjectURL(png)
 
-      let w = waveform.width
-      let h = waveform.width * height / width
-
-      if (h > waveform.height) {
-        h = waveform.height
-        w = waveform.height * width / height
-      }
-
-      waveform.style.width = `${w}px`
-      waveform.style.height = `${h}px`
-      waveform.style.visibility = 'visible'
-      waveform.src = url
-
-      const zw = 3 * w / 2
-      const zh = 3 * h / 2
-
-      zoom.style.width = `${zw}px`
-      zoom.style.height = `${zh}px`
-      zoom.style.marginLeft = `${-zw / 2}px`
-      zoom.style.marginTop = `${-zh / 2}px`
-
-      zoomed.src = url
-      zoomed.style.width = `${zw}px`
-      zoomed.style.height = `${zh}px`
+      draw(png, wh)
 
       picker.style.visibility = 'hidden'
       controls.style.display = 'block'
+      loaded = true
     })
     .catch(function (err) {
       console.error(err)
-
       message.innerText = err
       message.style.visibility = 'visible'
     })
+}
+
+function redraw (wh) {
+  const waveform = document.getElementById('png')
+  const width = wh.width
+  const height = wh.height
+  const padding = 3
+
+  if (waveform.src !== '') {
+    URL.revokeObjectURL(waveform.src)
+  }
+
+  return render(width, height, padding)
+    .then(b => {
+      const array = new Uint8Array(b)
+      const png = new Blob([array], { type: 'image/png' })
+
+      draw(png, wh)
+    })
+    .catch(function (err) {
+      console.error(err)
+    })
+}
+
+function draw (png, size) {
+  const waveform = document.getElementById('png')
+  const zoom = document.getElementById('zoom')
+  const zoomed = document.getElementById('zoomed')
+  const width = size.width
+  const height = size.height
+  const url = URL.createObjectURL(png)
+
+  const ww = 645 // waveform.width
+  const wh = 392 // waveform.height
+
+  let w = ww
+  let h = ww * height / width
+
+  if (h > wh) {
+    h = wh
+    w = wh * width / height
+  }
+
+  waveform.style.width = `${w}px`
+  waveform.style.height = `${h}px`
+  waveform.style.visibility = 'visible'
+  waveform.src = url
+
+  const zw = 3 * w / 2
+  const zh = 3 * h / 2
+
+  zoom.style.width = `${zw}px`
+  zoom.style.height = `${zh}px`
+  zoom.style.marginLeft = `${-zw / 2}px`
+  zoom.style.marginTop = `${-zh / 2}px`
+
+  zoomed.src = url
+  zoomed.style.width = `${zw}px`
+  zoomed.style.height = `${zh}px`
 }
 
 async function transcode (bytes) {

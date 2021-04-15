@@ -104,7 +104,7 @@
                 <label for="szx">CUSTOM</label>
               </div>
               <div class="size">
-                <input id="custom" type="text" value="" placeholder="480 x 292" />
+                <input id="custom" type="text" value="" placeholder="480 x 292" onchange="onCustomSize(event)" onkeydown="onCustomSize(event)" />
               </div>
             </div>
 
@@ -140,7 +140,7 @@
  
   <script type="module">
     import { initialise,
-             onDrop, onDragOver, onPick, onPicked, onSize 
+             onDrop, onDragOver, onPick, onPicked, onSize, onCustomSize
           } from './javascript/W2P.js'
 
     window.onDrop = onDrop
@@ -148,6 +148,7 @@
     window.onPick = onPick
     window.onPicked = onPicked
     window.onSize = onSize
+    window.onCustomSize = onCustomSize
 
     initialise()
   </script>

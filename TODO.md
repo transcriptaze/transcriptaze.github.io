@@ -2,11 +2,11 @@
 
 ### W2P
 
-- [ ] Size settings
-      -- redraw on change size
-      -- save/restore size preference
-
 - [ ] Loading windmill
+- [ ] Size settings
+      -- save/restore size preference
+      -- windmill while redrawing
+
 - [ ] Fix grid
 - [ ] Segment of audio
 - [ ] Grid settings
