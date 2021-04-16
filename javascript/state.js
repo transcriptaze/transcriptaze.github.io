@@ -1,19 +1,25 @@
 const tags = {
-  apikey: 'T2B.apikey',
-  history: 'T2B.history',
-  titles: 'T2B.titles',
+  T2B: {
+    apikey: 'T2B.apikey',
+    history: 'T2B.history',
+    titles: 'T2B.titles'
+  },
 
   W2P: {
+    size: 'W2P.size',
     customSize: 'W2P.customSize'
   }
 }
 
 export const State = function () {
-  this.history = new Set()
-  this.titles = new Map()
-  this.apikey = 'AIzaSyCmyt_fgo-FJRnYST53tdwE9K9Nn-UO-ZA'
+  this.T2B = {
+    history: new Set(),
+    titles: new Map(),
+    apikey: 'AIzaSyCmyt_fgo-FJRnYST53tdwE9K9Nn-UO-ZA'
+  }
 
   this.W2P = {
+    size: '645x392',
     customSize: ''
   }
 
@@ -31,11 +37,11 @@ export const State = function () {
 
   this.addVideo = function (vid) {
     if (vid.trim() !== '') {
-      const lru = new Set([vid.trim(), ...Array.from(this.history)])
+      const lru = new Set([vid.trim(), ...Array.from(this.T2B.history)])
 
-      this.history = new Set(Array.from(lru).slice(0, 8))
+      this.T2B.history = new Set(Array.from(lru).slice(0, 8))
 
-      window.localStorage.setItem(tags.history, JSON.stringify(Array.from(this.history)))
+      window.localStorage.setItem(tags.T2B.history, JSON.stringify(Array.from(this.T2B.history)))
     }
   }
 
@@ -43,20 +49,26 @@ export const State = function () {
     const key = vid.trim()
 
     if (key !== '') {
-      if (this.titles.has(key)) {
-        this.titles.set(key, title.trim())
+      if (this.T2B.titles.has(key)) {
+        this.T2B.titles.set(key, title.trim())
 
-        const blob = JSON.stringify(Array.from(this.titles.entries()))
+        const blob = JSON.stringify(Array.from(this.T2B.titles.entries()))
 
-        window.localStorage.setItem(tags.titles, blob)
+        window.localStorage.setItem(tags.T2B.titles, blob)
       }
     }
   }
 
   this.setApiKey = function (key) {
-    this.apikey = key.trim()
+    this.T2B.apikey = key.trim()
 
-    window.localStorage.setItem(tags.apikey, this.apikey)
+    window.localStorage.setItem(tags.T2B.apikey, this.T2B.apikey)
+  }
+
+  this.setSize = function (size) {
+    this.W2P.size = size.trim()
+
+    window.localStorage.setItem(tags.W2P.size, this.W2P.size)
   }
 
   this.setCustomSize = function (size) {
@@ -67,44 +79,44 @@ export const State = function () {
 }
 
 function restoreT2B (state) {
-  state.history.clear()
-  state.titles.clear()
+  state.T2B.history.clear()
+  state.T2B.titles.clear()
 
   // Restore T2B API key
-  let blob = window.localStorage.getItem(tags.apikey)
+  let blob = window.localStorage.getItem(tags.T2B.apikey)
   if (blob !== null) {
-    state.apikey = blob.trim()
+    state.T2B.apikey = blob.trim()
   }
 
   // Restore T2B history
   try {
-    blob = window.localStorage.getItem(tags.history)
+    blob = window.localStorage.getItem(tags.T2B.history)
     if (blob !== null) {
-      JSON.parse(blob).forEach(vid => state.history.add(vid))
+      JSON.parse(blob).forEach(vid => state.T2B.history.add(vid))
     }
   } catch (err) {
     // IGNORE
   }
 
   try {
-    blob = window.localStorage.getItem(tags.titles)
+    blob = window.localStorage.getItem(tags.T2B.titles)
     if (blob !== null) {
       JSON.parse(blob).forEach(([k, v]) => {
-        state.titles.set(k, v)
+        state.T2B.titles.set(k, v)
       })
     }
   } catch (err) {
     // IGNORE
   }
 
-  if (state.history.size === 0) {
-    state.history.add('CKI7MnfBYJA')
-    state.history.add('ZPIMomJP4kY')
-    state.history.add('iFGhlOL4twQ')
+  if (state.T2B.history.size === 0) {
+    state.T2B.history.add('CKI7MnfBYJA')
+    state.T2B.history.add('ZPIMomJP4kY')
+    state.T2B.history.add('iFGhlOL4twQ')
 
-    state.titles.set('CKI7MnfBYJA', 'Winter Song | Sara Bareilles & Ingrid Michaelson (Harp Cover)')
-    state.titles.set('ZPIMomJP4kY', 'Happy Birthday - Bluesy Fingerstyle Guitar')
-    state.titles.set('iFGhlOL4twQ', 'Chuck Loeb - Billy\'s song (cover)')
+    state.T2B.titles.set('CKI7MnfBYJA', 'Winter Song | Sara Bareilles & Ingrid Michaelson (Harp Cover)')
+    state.T2B.titles.set('ZPIMomJP4kY', 'Happy Birthday - Bluesy Fingerstyle Guitar')
+    state.T2B.titles.set('iFGhlOL4twQ', 'Chuck Loeb - Billy\'s song (cover)')
   }
 }
 
