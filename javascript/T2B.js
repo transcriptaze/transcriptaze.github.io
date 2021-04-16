@@ -45,7 +45,7 @@ export function onPlayerStateChange (event) {
         local.taps.duration = duration
 
         state.addVideo(vid)
-        lookup(state.apikey, vid)
+        lookup(state.T2B.apikey, vid)
 
         cue(false)
         drawSlider()
@@ -139,12 +139,12 @@ export function setPickList () {
   none.appendChild(document.createTextNode('(none)'))
 
   const items = [none]
-  state.history.forEach(vid => {
+  state.T2B.history.forEach(vid => {
     const li = document.createElement('li')
     let title = 'https://www.youtube.com/watch?v=' + vid
 
-    if (state.titles.has(vid)) {
-      title = state.titles.get(vid)
+    if (state.T2B.titles.has(vid)) {
+      title = state.T2B.titles.get(vid)
     }
 
     li.id = vid
@@ -295,8 +295,8 @@ export function onExport (event) {
     taps: local.taps.taps
   }
 
-  if (state.titles.has(vid)) {
-    object.title = state.titles.get(vid)
+  if (state.T2B.titles.has(vid)) {
+    object.title = state.T2B.titles.get(vid)
   }
 
   if (local.taps.beats != null) {

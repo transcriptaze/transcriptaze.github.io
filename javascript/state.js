@@ -121,10 +121,17 @@ function restoreT2B (state) {
 }
 
 function restoreW2P (state) {
+  state.W2P.size = '645x392'
   state.W2P.customSize = ''
 
+  // Restore W2P size
+  let blob = window.localStorage.getItem(tags.W2P.size)
+  if (blob !== null) {
+    state.W2P.size = blob.trim()
+  }
+
   // Restore W2P custom size
-  const blob = window.localStorage.getItem(tags.W2P.customSize)
+  blob = window.localStorage.getItem(tags.W2P.customSize)
   if (blob !== null) {
     state.W2P.customSize = blob.trim()
   }

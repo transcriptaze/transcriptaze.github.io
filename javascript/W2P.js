@@ -12,6 +12,7 @@ export function initialise () {
   state.restore('W2P')
 
   document.getElementById('custom').value = state.W2P.customSize
+  document.querySelector(`input[name="size"][value="${state.W2P.size}"]`).checked = true
 }
 
 export function onDrop (event) {
@@ -230,6 +231,9 @@ function size () {
       if (option.value === 'custom') {
         state.setCustomSize(v)
       }
+
+      console.log('set size', option.value)
+      state.setSize(option.value)
 
       return { width: w, height: h }
     }
