@@ -225,6 +225,41 @@ div#banner input::placeholder {
   color: var(--text);
 }
 
+#windmill {
+  background: transparent; 
+}
+
+#windmill {
+  background:#000000d0; 
+  display: none;
+}
+
+.windmill {
+  display: block;
+  visibility: visible;
+  z-index: 2;
+}
+
+.windmill:before {
+  content: "";
+  box-sizing: border-box;
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  left: 270px;
+  top: 145px;
+  border-radius: 50%;
+  border-top: 3px solid var(--solarize-blue);
+  border-right: 3px solid transparent;
+  animation: windmill 0.9s linear infinite;
+}
+
+@keyframes windmill {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 nav {
   grid-area: left;
   margin: 0px 8px 8px 8px;

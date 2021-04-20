@@ -105,10 +105,6 @@ div.url button#load img {
   transition: opacity 15s ease;
 }
 
-#windmill {
-  background: transparent; 
-}
-
 .overlay {
   background: #222222; 
   width: 640px; 
@@ -376,35 +372,5 @@ div#data button img {
   padding-bottom: 0px;
   padding-left: 4px;
   padding-right: 4px;
-}
-
-#windmill {
-  background:#000000d0; 
-  display: none;
-}
-
-.windmill {
-  display: block;
-  visibility: visible;
-}
-
-.windmill:before {
-  content: "";
-  box-sizing: border-box;
-  width: 100px;
-  height: 100px;
-  position: absolute;
-  left: 270px;
-  top: 145px;
-  border-radius: 50%;
-  border-top: 3px solid var(--solarize-blue);
-  border-right: 3px solid transparent;
-  animation: windmill 0.9s linear infinite;
-}
-
-@keyframes windmill {
-  to {
-    transform: rotate(360deg);
-  }
 }
 

@@ -51,14 +51,20 @@ export function onPicked (event) {
 export function onSize (event) {
   const v = document.querySelector('input[name="size"]:checked').value
   const custom = document.getElementById('custom')
+  const loading = document.getElementById('loading')
+  const windmill = document.getElementById('windmill')
 
   if (v === 'custom') {
     custom.style.visibility = 'visible'
     custom.focus()
   } else {
     custom.style.visibility = 'hidden'
+
     if (loaded) {
-      redraw(size())
+      busy()
+      new Promise((resolve) => setTimeout(resolve, 100))
+          .then(b => { redraw(size()) })
+          .finally(unbusy)
     }
   }
 }
@@ -74,8 +80,11 @@ export function onCustomSize (event) {
       const h = parseInt(match[2], 10)
 
       if (w > 0 && w <= 8192 && h > 0 && h <= 8192) {
-        redraw(size())
-      }
+        busy()
+        new Promise((resolve) => setTimeout(resolve, 100))
+            .then(b => { redraw(size()) })
+            .finally(unbusy)
+        }
     }
   }
 }
@@ -94,7 +103,9 @@ function load (blob) {
     URL.revokeObjectURL(waveform.src)
   }
 
-  return blob.arrayBuffer()
+  busy()
+  return sleep(100)
+    .then(b => blob.arrayBuffer())
     .then(b => transcode(b))
     .then(b => store(b))
     .then(b => render(width, height, padding))
@@ -113,6 +124,7 @@ function load (blob) {
       message.innerText = err
       message.style.visibility = 'visible'
     })
+    .finally(unbusy)
 }
 
 function redraw (wh) {
@@ -240,4 +252,25 @@ function size () {
   }
 
   return { width: png.width, height: png.height }
+}
+
+function busy () {
+  const loading = document.getElementById('loading')
+  const windmill = document.getElementById('windmill')
+
+  loading.style.visibility = 'visible'
+  windmill.style.visibility = 'visible'
+  windmill.style.display = 'block'
+}
+
+function unbusy () {
+  const loading = document.getElementById('loading')
+  const windmill = document.getElementById('windmill')
+
+  loading.style.visibility = 'hidden'
+  windmill.style.display = 'none'
+}
+
+function sleep (time) {
+  return new Promise((resolve) => setTimeout(resolve, time));
 }

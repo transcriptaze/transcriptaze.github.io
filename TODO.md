@@ -2,12 +2,8 @@
 
 ### W2P
 
-- [ ] Loading windmill
-- [ ] Size settings
-      -- windmill while redrawing
-
 - [ ] Fix grid
-- [ ] Segment of audio
+- [ ] Clear/load buttons
 - [ ] Grid settings
       - none/square/rectangular
       - 'smart' e.g. flip between no. of lines/size
@@ -18,14 +14,16 @@
       - vertical
       - horizontal
       - soft
+- [ ] Segment of audio
 - [ ] Palette
-- [ ] Clear/load buttons
 - [ ] Zoom PNG
 - [ ] Presets
 - [ ] Fill settings
 - [ ] (optionally) show audio info
 - [ ] (?) history
 
+- [x] Loading windmill
+- [x] Size settings
 - [x] Padding
 - [x] Pass width and height as parameters
 - [x] Make PNG downloadable
