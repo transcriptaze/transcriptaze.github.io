@@ -2,7 +2,6 @@
 
 ### W2P
 
-- [ ] Clear/load buttons
 - [ ] Grid settings
       - none/square/rectangular
       - 'smart' e.g. flip between no. of lines/size
@@ -21,6 +20,8 @@
 - [ ] (optionally) show audio info
 - [ ] (?) history
 
+- [x] Export button
+- [x] Clear button
 - [x] Fix grid
 - [x] Loading windmill
 - [x] Size settings

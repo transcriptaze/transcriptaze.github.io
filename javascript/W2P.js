@@ -44,7 +44,7 @@ export function onPicked (event) {
   const files = event.target.files
 
   if ((files.length > 0) && (files[0] !== undefined)) {
-    load(files[0])
+    load(files[0].name, files[0])
   }
 }
 
@@ -87,16 +87,38 @@ export function onCustomSize (event) {
   }
 }
 
+export function onExport (event) {
+  const waveform = document.getElementById('png')
+  const link = document.getElementById('download')
+  const audiofile = waveform.dataset.filename
+  let filename = 'waveform.png'
+
+  if (audiofile && audiofile !== '') {
+    const match = /(.*?)(?:\.[^.]*)$/.exec(audiofile)
+    if (match && match.length > 1 && match[1].trim() != '') {
+      filename = match[1].trim() + '.png'
+    }
+  }
+
+  if (waveform.src !== '') {
+    link.href = waveform.src
+    link.download = filename
+    link.click()
+  }
+}
+
 export function onClear (event) {
   const message = document.getElementById('message')
   const controls = document.getElementById('controls')
   const picker = document.getElementById('picker')
   const waveform = document.getElementById('png')
   const zoomed = document.getElementById('zoomed')
+  const save = document.getElementById('export')
   const clear = document.getElementById('clear')
 
   if (waveform.src !== '') {
     URL.revokeObjectURL(waveform.src)
+    waveform.dataset.name = ''
   }
 
   if (zoomed.src !== '') {
@@ -108,6 +130,7 @@ export function onClear (event) {
   controls.style.display = 'none'
   message.innerText = ''
   message.style.visibility = 'hidden'
+  save.disabled = true
   clear.disabled = true
 
   loaded = false
@@ -125,11 +148,12 @@ export function onClear (event) {
   })
 }
 
-function load (blob) {
+function load (name, blob) {
   const message = document.getElementById('message')
   const controls = document.getElementById('controls')
   const picker = document.getElementById('picker')
   const waveform = document.getElementById('png')
+  const save = document.getElementById('export')
   const clear = document.getElementById('clear')
   const wh = size()
   const width = wh.width
@@ -152,8 +176,10 @@ function load (blob) {
 
       draw(png, wh)
 
+      waveform.dataset.filename = name
       picker.style.visibility = 'hidden'
       controls.style.display = 'block'
+      save.disabled = false
       clear.disabled = false
       loaded = true
     })

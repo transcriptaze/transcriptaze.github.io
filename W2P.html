@@ -156,7 +156,7 @@
  
   <script type="module">
     import { initialise,
-             onDrop, onDragOver, onPick, onPicked, onSize, onCustomSize, onClear
+             onDrop, onDragOver, onPick, onPicked, onSize, onCustomSize, onExport, onClear
           } from './javascript/W2P.js'
 
     window.onDrop = onDrop
@@ -165,6 +165,7 @@
     window.onPicked = onPicked
     window.onSize = onSize
     window.onCustomSize = onCustomSize
+    window.onExport = onExport
     window.onClear = onClear
 
     initialise()
