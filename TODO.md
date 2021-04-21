@@ -2,7 +2,6 @@
 
 ### W2P
 
-- [ ] Fix grid
 - [ ] Clear/load buttons
 - [ ] Grid settings
       - none/square/rectangular
@@ -22,6 +21,7 @@
 - [ ] (optionally) show audio info
 - [ ] (?) history
 
+- [x] Fix grid
 - [x] Loading windmill
 - [x] Size settings
 - [x] Padding

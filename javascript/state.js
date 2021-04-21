@@ -121,7 +121,7 @@ function restoreT2B (state) {
 }
 
 function restoreW2P (state) {
-  state.W2P.size = '645x392'
+  state.W2P.size = '641x386'
   state.W2P.customSize = ''
 
   // Restore W2P size

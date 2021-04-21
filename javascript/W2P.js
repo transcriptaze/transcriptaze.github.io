@@ -51,8 +51,6 @@ export function onPicked (event) {
 export function onSize (event) {
   const v = document.querySelector('input[name="size"]:checked').value
   const custom = document.getElementById('custom')
-  const loading = document.getElementById('loading')
-  const windmill = document.getElementById('windmill')
 
   if (v === 'custom') {
     custom.style.visibility = 'visible'
@@ -63,8 +61,8 @@ export function onSize (event) {
     if (loaded) {
       busy()
       new Promise((resolve) => setTimeout(resolve, 100))
-          .then(b => { redraw(size()) })
-          .finally(unbusy)
+        .then(b => { redraw(size()) })
+        .finally(unbusy)
     }
   }
 }
@@ -82,9 +80,9 @@ export function onCustomSize (event) {
       if (w > 0 && w <= 8192 && h > 0 && h <= 8192) {
         busy()
         new Promise((resolve) => setTimeout(resolve, 100))
-            .then(b => { redraw(size()) })
-            .finally(unbusy)
-        }
+          .then(b => { redraw(size()) })
+          .finally(unbusy)
+      }
     }
   }
 }
@@ -97,7 +95,7 @@ function load (blob) {
   const wh = size()
   const width = wh.width
   const height = wh.height
-  const padding = 3
+  const padding = 2
 
   if (waveform.src !== '') {
     URL.revokeObjectURL(waveform.src)
@@ -131,7 +129,7 @@ function redraw (wh) {
   const waveform = document.getElementById('png')
   const width = wh.width
   const height = wh.height
-  const padding = 3
+  const padding = 2
 
   if (waveform.src !== '') {
     URL.revokeObjectURL(waveform.src)
@@ -158,7 +156,7 @@ function draw (png, size) {
   const url = URL.createObjectURL(png)
 
   const ww = 645 // waveform.width
-  const wh = 392 // waveform.height
+  const wh = 390 // waveform.height
 
   let w = ww
   let h = ww * height / width
@@ -272,5 +270,5 @@ function unbusy () {
 }
 
 function sleep (time) {
-  return new Promise((resolve) => setTimeout(resolve, time));
+  return new Promise((resolve) => setTimeout(resolve, time))
 }

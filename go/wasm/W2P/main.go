@@ -92,7 +92,7 @@ func render(this js.Value, inputs []js.Value) interface{} {
 			return
 		}
 
-		gridspec := wav2png.NewSquareGrid(GRID_COLOUR, GRID_SIZE, uint(padding))
+		gridspec := wav2png.NewSquareGrid(GRID_COLOUR, GRID_SIZE, padding)
 		w := width - 2*padding
 		h := height - 2*padding
 
