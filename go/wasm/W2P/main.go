@@ -40,6 +40,7 @@ func main() {
 
 	js.Global().Set("goStore", js.FuncOf(store))
 	js.Global().Set("goRender", js.FuncOf(render))
+	js.Global().Set("goClear", js.FuncOf(clear))
 
 	<-c
 }
@@ -112,6 +113,17 @@ func render(this js.Value, inputs []js.Value) interface{} {
 		png.Encode(&b, img)
 
 		callback.Invoke(js.Null(), bytesToArrayBuffer(b.Bytes()))
+	}()
+
+	return nil
+}
+
+func clear(this js.Value, inputs []js.Value) interface{} {
+	callback := inputs[0]
+
+	go func() {
+		wav = nil
+		callback.Invoke(js.Null())
 	}()
 
 	return nil

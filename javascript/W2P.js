@@ -1,4 +1,4 @@
-/* global goStore, goRender */
+/* global goStore, goRender, goClear */
 
 import { State } from './state.js'
 
@@ -87,11 +87,50 @@ export function onCustomSize (event) {
   }
 }
 
+export function onClear (event) {
+  const message = document.getElementById('message')
+  const controls = document.getElementById('controls')
+  const picker = document.getElementById('picker')
+  const waveform = document.getElementById('png')
+  const zoomed = document.getElementById('zoomed')
+  const clear = document.getElementById('clear')
+
+  if (waveform.src !== '') {
+    URL.revokeObjectURL(waveform.src)
+  }
+
+  if (zoomed.src !== '') {
+    URL.revokeObjectURL(zoomed.src)
+  }
+
+  picker.style.visibility = 'visible'
+  waveform.style.visibility = 'hidden'
+  controls.style.display = 'none'
+  message.innerText = ''
+  message.style.visibility = 'hidden'
+  clear.disabled = true
+
+  loaded = false
+
+  new Promise((resolve, reject) => {
+    goClear((err) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(true)
+      }
+    })
+  }).catch(function (err) {
+      console.error(err)
+  })
+}
+
 function load (blob) {
   const message = document.getElementById('message')
   const controls = document.getElementById('controls')
   const picker = document.getElementById('picker')
   const waveform = document.getElementById('png')
+  const clear = document.getElementById('clear')
   const wh = size()
   const width = wh.width
   const height = wh.height
@@ -115,6 +154,7 @@ function load (blob) {
 
       picker.style.visibility = 'hidden'
       controls.style.display = 'block'
+      clear.disabled = false
       loaded = true
     })
     .catch(function (err) {

@@ -117,6 +117,17 @@
                 <input type="checkbox" checked>grid</button>
             </div>
 
+            <!-- BUTTONS -->
+            <div id="buttons" class="panel">
+              <a id="download" style="display: none;"></a>
+              <button id="export" type="button" onclick="onExport(event)" disabled>
+                <img src="images/file-export-solid.svg" />
+              </button>
+              <button id="clear" type="button" onclick="onClear(event)" disabled>
+                <img src="images/trash-solid.svg" />
+              </button>
+            </div>
+
             <!-- ENLARGED PNG VIEW -->
             <dialog id="zoom">
               <img id="zoomed" draggable="false"/>                
@@ -145,7 +156,7 @@
  
   <script type="module">
     import { initialise,
-             onDrop, onDragOver, onPick, onPicked, onSize, onCustomSize
+             onDrop, onDragOver, onPick, onPicked, onSize, onCustomSize, onClear
           } from './javascript/W2P.js'
 
     window.onDrop = onDrop
@@ -154,6 +165,7 @@
     window.onPicked = onPicked
     window.onSize = onSize
     window.onCustomSize = onCustomSize
+    window.onClear = onClear
 
     initialise()
   </script>
