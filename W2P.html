@@ -114,7 +114,14 @@
             </div>
 
             <div id="controls" class="panel">
-                <input type="checkbox" checked>grid</button>
+              <input id="nogrid" type="radio" name="grid" value="none" />
+              <label for="nogrid"><img src="images/grid-none.svg" draggable="false" /></label>
+                
+              <input id="square" type="radio" name="grid" value="square" checked />
+              <label for="square"><img src="images/grid-square.svg" draggable="false" /></label>
+                
+              <input id="rectangular" type="radio" name="grid" value="rectangular" />
+              <label for="rectangular"><img src="images/grid-rectangular.svg" draggable="false" /></label>
             </div>
 
             <!-- BUTTONS -->

@@ -95,7 +95,7 @@ export function onExport (event) {
 
   if (audiofile && audiofile !== '') {
     const match = /(.*?)(?:\.[^.]*)$/.exec(audiofile)
-    if (match && match.length > 1 && match[1].trim() != '') {
+    if (match && match.length > 1 && match[1].trim() !== '') {
       filename = match[1].trim() + '.png'
     }
   }
@@ -109,7 +109,6 @@ export function onExport (event) {
 
 export function onClear (event) {
   const message = document.getElementById('message')
-  const controls = document.getElementById('controls')
   const picker = document.getElementById('picker')
   const waveform = document.getElementById('png')
   const zoomed = document.getElementById('zoomed')
@@ -127,7 +126,6 @@ export function onClear (event) {
 
   picker.style.visibility = 'visible'
   waveform.style.visibility = 'hidden'
-  controls.style.display = 'none'
   message.innerText = ''
   message.style.visibility = 'hidden'
   save.disabled = true
@@ -144,13 +142,12 @@ export function onClear (event) {
       }
     })
   }).catch(function (err) {
-      console.error(err)
+    console.error(err)
   })
 }
 
 function load (name, blob) {
   const message = document.getElementById('message')
-  const controls = document.getElementById('controls')
   const picker = document.getElementById('picker')
   const waveform = document.getElementById('png')
   const save = document.getElementById('export')
@@ -178,7 +175,6 @@ function load (name, blob) {
 
       waveform.dataset.filename = name
       picker.style.visibility = 'hidden'
-      controls.style.display = 'block'
       save.disabled = false
       clear.disabled = false
       loaded = true
