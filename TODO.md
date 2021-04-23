@@ -3,7 +3,6 @@
 ### W2P
 
 - [ ] Grid settings
-      - redraw on grid changed
       - none/square/rectangular
       - colour
       - overlay/underlay
@@ -17,6 +16,7 @@
 - [ ] Palette
 - [ ] Fill settings
 - [ ] Segment of audio
+- [ ] Optimize draw/redraw
 - [ ] (optionally) show audio info
 - [ ] (?) presets
 - [ ] (?) history

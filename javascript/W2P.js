@@ -61,7 +61,7 @@ export function onSize (event) {
     if (loaded) {
       busy()
       new Promise((resolve) => setTimeout(resolve, 100))
-        .then(b => { redraw(size()) })
+        .then(b => redraw())
         .finally(unbusy)
     }
   }
@@ -80,7 +80,7 @@ export function onCustomSize (event) {
       if (w > 0 && w <= 8192 && h > 0 && h <= 8192) {
         busy()
         new Promise((resolve) => setTimeout(resolve, 100))
-          .then(b => { redraw(size()) })
+          .then(b => redraw())
           .finally(unbusy)
       }
     }
@@ -90,23 +90,12 @@ export function onCustomSize (event) {
 export function onGrid (event) {
   const v = document.querySelector('input[name="grid"]:checked').value
 
-  console.log(v)
-  // const v = document.querySelector('input[name="size"]:checked').value
-  // const custom = document.getElementById('custom')
-
-  // if (v === 'custom') {
-  //   custom.style.visibility = 'visible'
-  //   custom.focus()
-  // } else {
-  //   custom.style.visibility = 'hidden'
-
-  //   if (loaded) {
-  //     busy()
-  //     new Promise((resolve) => setTimeout(resolve, 100))
-  //       .then(b => { redraw(size()) })
-  //       .finally(unbusy)
-  //   }
-  // }
+  if (loaded) {
+    busy()
+    new Promise((resolve) => setTimeout(resolve, 100))
+      .then(b => redraw())
+      .finally(unbusy)
+  }
 }
 
 export function onExport (event) {
@@ -208,7 +197,8 @@ function load (name, blob) {
     .finally(unbusy)
 }
 
-function redraw (wh) {
+function redraw () {
+  const wh = size()
   const waveform = document.getElementById('png')
   const width = wh.width
   const height = wh.height
@@ -324,7 +314,6 @@ function size () {
         state.setCustomSize(v)
       }
 
-      console.log('set size', option.value)
       state.setSize(option.value)
 
       return { width: w, height: h }
@@ -334,15 +323,15 @@ function size () {
   return { width: png.width, height: png.height }
 }
 
-function grid() {
+function grid () {
   const v = document.querySelector('input[name="grid"]:checked').value
 
   switch (v) {
     case 'none':
-      return { type: 'none', padding:2 }
+      return { type: 'none', padding: 2 }
 
     default:
-      return { type: 'square', size:64, padding:2 }
+      return { type: 'square', size: 64, padding: 2 }
   }
 }
 
