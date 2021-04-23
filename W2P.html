@@ -122,6 +122,8 @@
                 
               <input id="rectangular" type="radio" name="grid" value="rectangular" onchange="onGrid(event)" />
               <label for="rectangular"><img src="images/grid-rectangular.svg" draggable="false" /></label>
+
+              <input id="padding" type="number" min-value="-16" max-value="32" value="2" placeholder="padding" onchange="onPadding(event)" onkeydown="onPadding(event)" />
             </div>
 
             <!-- BUTTONS -->
@@ -163,7 +165,7 @@
  
   <script type="module">
     import { initialise,
-             onDrop, onDragOver, onPick, onPicked, onSize, onCustomSize, onGrid, onExport, onClear
+             onDrop, onDragOver, onPick, onPicked, onSize, onCustomSize, onGrid, onPadding, onExport, onClear
           } from './javascript/W2P.js'
 
     window.onDrop = onDrop
@@ -173,6 +175,7 @@
     window.onSize = onSize
     window.onCustomSize = onCustomSize
     window.onGrid = onGrid
+    window.onPadding = onPadding
     window.onExport = onExport
     window.onClear = onClear
 

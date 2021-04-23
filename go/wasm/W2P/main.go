@@ -79,9 +79,21 @@ func store(this js.Value, inputs []js.Value) interface{} {
 
 func render(this js.Value, inputs []js.Value) interface{} {
 	callback := inputs[0]
-	width := inputs[1].Int()
-	height := inputs[2].Int()
-	gridspec := grid(inputs[3])
+	width := 645
+	height := 390
+	gridspec := wav2png.NewSquareGrid(GRID_COLOUR, GRID_SIZE, 2)
+
+	if len(inputs) > 1 && !inputs[1].IsNaN() {
+		width = inputs[1].Int()
+	}
+
+	if len(inputs) > 2 && !inputs[2].IsNaN() {
+		height = inputs[2].Int()
+	}
+
+	if len(inputs) > 3 {
+		gridspec = grid(inputs[3])
+	}
 
 	go func() {
 		if wav == nil {
@@ -132,7 +144,11 @@ func clear(this js.Value, inputs []js.Value) interface{} {
 func grid(object js.Value) wav2png.GridSpec {
 	if !object.IsNull() {
 		grid := object.Get("type").String()
-		padding := object.Get("padding").Int()
+		padding := 0
+
+		if !object.Get("padding").IsNaN() {
+			padding = object.Get("padding").Int()
+		}
 
 		switch grid {
 		case "none":

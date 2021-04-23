@@ -77,7 +77,7 @@ export function onCustomSize (event) {
       const w = parseInt(match[1], 10)
       const h = parseInt(match[2], 10)
 
-      if (w > 0 && w <= 8192 && h > 0 && h <= 8192) {
+      if (w >= 64 && w <= 8192 && h > 64 && h <= 8192) {
         busy()
         new Promise((resolve) => setTimeout(resolve, 100))
           .then(b => redraw())
@@ -95,6 +95,20 @@ export function onGrid (event) {
     new Promise((resolve) => setTimeout(resolve, 100))
       .then(b => redraw())
       .finally(unbusy)
+  }
+}
+
+export function onPadding (event) {
+  if (loaded && event.type === 'keydown' && event.key === 'Enter') {
+    const v = document.getElementById('padding').value
+    const padding = parseInt(v, 10)
+
+    if (padding >= -16 && padding <= 32) {
+      busy()
+      new Promise((resolve) => setTimeout(resolve, 100))
+        .then(b => redraw())
+        .finally(unbusy)
+    }
   }
 }
 
@@ -325,13 +339,19 @@ function size () {
 
 function grid () {
   const v = document.querySelector('input[name="grid"]:checked').value
+  const p = document.getElementById('padding').value
+  
+  let padding = parseInt(p, 10)
+  // if (isNaN(padding)) {
+  //   padding = 0
+  // }
 
   switch (v) {
     case 'none':
-      return { type: 'none', padding: 2 }
+      return { type: 'none', padding: padding }
 
     default:
-      return { type: 'square', size: 64, padding: 2 }
+      return { type: 'square', size: 64, padding: padding }
   }
 }
 
