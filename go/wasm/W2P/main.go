@@ -81,11 +81,7 @@ func render(this js.Value, inputs []js.Value) interface{} {
 	callback := inputs[0]
 	width := inputs[1].Int()
 	height := inputs[2].Int()
-	padding := inputs[3].Int()
-
-	if padding < 0 {
-		padding = 0
-	}
+	gridspec := grid(inputs[3])
 
 	go func() {
 		if wav == nil {
@@ -93,9 +89,13 @@ func render(this js.Value, inputs []js.Value) interface{} {
 			return
 		}
 
-		gridspec := wav2png.NewSquareGrid(GRID_COLOUR, GRID_SIZE, padding)
-		w := width - 2*padding
-		h := height - 2*padding
+		padding := gridspec.Padding()
+		if padding < 0 {
+			padding = 0
+		}
+
+		w := width - padding
+		h := height - padding
 
 		img := image.NewNRGBA(image.Rect(0, 0, width, height))
 		wav2png.Fill(img, BACKGROUND)
@@ -127,6 +127,23 @@ func clear(this js.Value, inputs []js.Value) interface{} {
 	}()
 
 	return nil
+}
+
+func grid(object js.Value) wav2png.GridSpec {
+	if !object.IsNull() {
+		grid := object.Get("type").String()
+		padding := object.Get("padding").Int()
+
+		switch grid {
+		case "none":
+			return wav2png.NewNoGrid(padding)
+
+		case "square":
+			return wav2png.NewSquareGrid(GRID_COLOUR, GRID_SIZE, padding)
+		}
+	}
+
+	return wav2png.NewSquareGrid(GRID_COLOUR, GRID_SIZE, 2)
 }
 
 func float32ArrayToSlice(array js.Value) []float32 {

@@ -114,13 +114,13 @@
             </div>
 
             <div id="controls" class="panel">
-              <input id="nogrid" type="radio" name="grid" value="none" />
+              <input id="nogrid" type="radio" name="grid" value="none" onchange="onGrid(event)" />
               <label for="nogrid"><img src="images/grid-none.svg" draggable="false" /></label>
                 
-              <input id="square" type="radio" name="grid" value="square" checked />
+              <input id="square" type="radio" name="grid" value="square" onchange="onGrid(event)" checked />
               <label for="square"><img src="images/grid-square.svg" draggable="false" /></label>
                 
-              <input id="rectangular" type="radio" name="grid" value="rectangular" />
+              <input id="rectangular" type="radio" name="grid" value="rectangular" onchange="onGrid(event)" />
               <label for="rectangular"><img src="images/grid-rectangular.svg" draggable="false" /></label>
             </div>
 
@@ -163,7 +163,7 @@
  
   <script type="module">
     import { initialise,
-             onDrop, onDragOver, onPick, onPicked, onSize, onCustomSize, onExport, onClear
+             onDrop, onDragOver, onPick, onPicked, onSize, onCustomSize, onGrid, onExport, onClear
           } from './javascript/W2P.js'
 
     window.onDrop = onDrop
@@ -172,6 +172,7 @@
     window.onPicked = onPicked
     window.onSize = onSize
     window.onCustomSize = onCustomSize
+    window.onGrid = onGrid
     window.onExport = onExport
     window.onClear = onClear
 

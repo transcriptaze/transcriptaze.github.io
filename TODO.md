@@ -3,23 +3,25 @@
 ### W2P
 
 - [ ] Grid settings
+      - redraw on grid changed
       - none/square/rectangular
-      - 'smart' e.g. flip between no. of lines/size
       - colour
       - overlay/underlay
+      - save as preference
+
 - [ ] Anti-alias settings
       - none
       - vertical
       - horizontal
       - soft
-- [ ] Segment of audio
 - [ ] Palette
-- [ ] Zoom PNG
-- [ ] Presets
 - [ ] Fill settings
+- [ ] Segment of audio
 - [ ] (optionally) show audio info
+- [ ] (?) presets
 - [ ] (?) history
 
+- [x] Zoom
 - [x] Export button
 - [x] Clear button
 - [x] Fix grid

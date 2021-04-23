@@ -87,6 +87,28 @@ export function onCustomSize (event) {
   }
 }
 
+export function onGrid (event) {
+  const v = document.querySelector('input[name="grid"]:checked').value
+
+  console.log(v)
+  // const v = document.querySelector('input[name="size"]:checked').value
+  // const custom = document.getElementById('custom')
+
+  // if (v === 'custom') {
+  //   custom.style.visibility = 'visible'
+  //   custom.focus()
+  // } else {
+  //   custom.style.visibility = 'hidden'
+
+  //   if (loaded) {
+  //     busy()
+  //     new Promise((resolve) => setTimeout(resolve, 100))
+  //       .then(b => { redraw(size()) })
+  //       .finally(unbusy)
+  //   }
+  // }
+}
+
 export function onExport (event) {
   const waveform = document.getElementById('png')
   const link = document.getElementById('download')
@@ -155,7 +177,6 @@ function load (name, blob) {
   const wh = size()
   const width = wh.width
   const height = wh.height
-  const padding = 2
 
   if (waveform.src !== '') {
     URL.revokeObjectURL(waveform.src)
@@ -166,7 +187,7 @@ function load (name, blob) {
     .then(b => blob.arrayBuffer())
     .then(b => transcode(b))
     .then(b => store(b))
-    .then(b => render(width, height, padding))
+    .then(b => render(width, height, grid()))
     .then(b => {
       const array = new Uint8Array(b)
       const png = new Blob([array], { type: 'image/png' })
@@ -191,13 +212,12 @@ function redraw (wh) {
   const waveform = document.getElementById('png')
   const width = wh.width
   const height = wh.height
-  const padding = 2
 
   if (waveform.src !== '') {
     URL.revokeObjectURL(waveform.src)
   }
 
-  return render(width, height, padding)
+  return render(width, height, grid())
     .then(b => {
       const array = new Uint8Array(b)
       const png = new Blob([array], { type: 'image/png' })
@@ -272,7 +292,7 @@ async function store (buffer) {
   })
 }
 
-async function render (width, height, padding) {
+async function render (width, height, grid) {
   return new Promise((resolve, reject) => {
     goRender((err, png) => {
       if (err) {
@@ -280,7 +300,7 @@ async function render (width, height, padding) {
       } else {
         resolve(png)
       }
-    }, width, height, padding)
+    }, width, height, grid)
   })
 }
 
@@ -312,6 +332,18 @@ function size () {
   }
 
   return { width: png.width, height: png.height }
+}
+
+function grid() {
+  const v = document.querySelector('input[name="grid"]:checked').value
+
+  switch (v) {
+    case 'none':
+      return { type: 'none', padding:2 }
+
+    default:
+      return { type: 'square', size:64, padding:2 }
+  }
 }
 
 function busy () {
