@@ -77,7 +77,7 @@ export function onCustomSize (event) {
       const w = parseInt(match[1], 10)
       const h = parseInt(match[2], 10)
 
-      if (w >= 64 && w <= 8192 && h > 64 && h <= 8192) {
+      if (!isNaN(w) && !isNaN(h) && w >= 64 && w <= 8192 && h > 64 && h <= 8192) {
         busy()
         new Promise((resolve) => setTimeout(resolve, 100))
           .then(b => redraw())
@@ -88,8 +88,6 @@ export function onCustomSize (event) {
 }
 
 export function onGrid (event) {
-  const v = document.querySelector('input[name="grid"]:checked').value
-
   if (loaded) {
     busy()
     new Promise((resolve) => setTimeout(resolve, 100))
@@ -103,12 +101,30 @@ export function onPadding (event) {
     const v = document.getElementById('padding').value
     const padding = parseInt(v, 10)
 
-    if (padding >= -16 && padding <= 32) {
+    if (!isNaN(padding) && padding >= -16 && padding <= 32) {
       busy()
       new Promise((resolve) => setTimeout(resolve, 100))
         .then(b => redraw())
         .finally(unbusy)
     }
+  }
+}
+
+export function onGridColour (event) {
+  if (loaded) {
+    busy()
+    new Promise((resolve) => setTimeout(resolve, 100))
+      .then(b => redraw())
+      .finally(unbusy)
+  }
+}
+
+export function onGridAlpha (event) {
+  if (loaded) {
+    busy()
+    new Promise((resolve) => setTimeout(resolve, 100))
+      .then(b => redraw())
+      .finally(unbusy)
   }
 }
 
@@ -340,18 +356,28 @@ function size () {
 function grid () {
   const v = document.querySelector('input[name="grid"]:checked').value
   const p = document.getElementById('padding').value
-  
+  const c = document.getElementById('colour').value
+  const a = document.getElementById('alpha').value
+
   let padding = parseInt(p, 10)
-  // if (isNaN(padding)) {
-  //   padding = 0
-  // }
+  if (isNaN(padding)) {
+    padding = 0
+  }
+
+  let colour = c + 'ff'
+  const alpha = parseInt(a, 10)
+  if (!isNaN(alpha) && alpha < 16) {
+    colour = c + '0' + alpha.toString(16)
+  } else if (!isNaN(alpha) && alpha < 255) {
+    colour = c + alpha.toString(16)
+  }
 
   switch (v) {
     case 'none':
       return { type: 'none', padding: padding }
 
     default:
-      return { type: 'square', size: 64, padding: padding }
+      return { type: 'square', colour: colour, size: 64, padding: padding }
   }
 }
 

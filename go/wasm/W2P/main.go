@@ -11,6 +11,8 @@ import (
 	"image/color"
 	"image/draw"
 	"image/png"
+	"regexp"
+	"strings"
 	"syscall/js"
 	"time"
 
@@ -145,9 +147,24 @@ func grid(object js.Value) wav2png.GridSpec {
 	if !object.IsNull() {
 		grid := object.Get("type").String()
 		padding := 0
+		colour := GRID_COLOUR
 
 		if !object.Get("padding").IsNaN() {
 			padding = object.Get("padding").Int()
+		}
+
+		if !object.Get("colour").IsNull() && !object.Get("colour").IsUndefined() {
+			s := strings.ToLower(object.Get("colour").String())
+			if regexp.MustCompile("#[[:xdigit:]]{8}").MatchString(s) {
+				red := uint8(0)
+				green := uint8(0x80)
+				blue := uint8(0)
+				alpha := uint8(0xff)
+
+				if _, err := fmt.Sscanf(s, "#%02x%02x%02x%02x", &red, &green, &blue, &alpha); err == nil {
+					colour = color.NRGBA{R: red, G: green, B: blue, A: alpha}
+				}
+			}
 		}
 
 		switch grid {
@@ -155,7 +172,7 @@ func grid(object js.Value) wav2png.GridSpec {
 			return wav2png.NewNoGrid(padding)
 
 		case "square":
-			return wav2png.NewSquareGrid(GRID_COLOUR, GRID_SIZE, padding)
+			return wav2png.NewSquareGrid(colour, GRID_SIZE, padding)
 		}
 	}
 

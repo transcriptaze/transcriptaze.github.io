@@ -4,7 +4,6 @@
 
 - [ ] Grid settings
       - none/square/rectangular
-      - colour
       - overlay/underlay
       - save as preference
 

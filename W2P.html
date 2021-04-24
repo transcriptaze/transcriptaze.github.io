@@ -124,6 +124,9 @@
               <label for="rectangular"><img src="images/grid-rectangular.svg" draggable="false" /></label>
 
               <input id="padding" type="number" min-value="-16" max-value="32" value="2" placeholder="padding" onchange="onPadding(event)" onkeydown="onPadding(event)" />
+
+              <input id="colour" type="color" value="#008000" placeholder="colour" onchange="onGridColour(event)" />
+              <input id="alpha"  type="range" min="0" max="256" step="32" value="255"  onchange="onGridAlpha(event)" >
             </div>
 
             <!-- BUTTONS -->
@@ -165,7 +168,10 @@
  
   <script type="module">
     import { initialise,
-             onDrop, onDragOver, onPick, onPicked, onSize, onCustomSize, onGrid, onPadding, onExport, onClear
+             onDrop, onDragOver, onPick, onPicked, 
+             onSize, onCustomSize, 
+             onGrid, onPadding, onGridColour, onGridAlpha,
+             onExport, onClear
           } from './javascript/W2P.js'
 
     window.onDrop = onDrop
@@ -176,6 +182,8 @@
     window.onCustomSize = onCustomSize
     window.onGrid = onGrid
     window.onPadding = onPadding
+    window.onGridColour = onGridColour
+    window.onGridAlpha = onGridAlpha
     window.onExport = onExport
     window.onClear = onClear
 

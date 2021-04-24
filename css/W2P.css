@@ -213,6 +213,34 @@ div#message {
   color: var(--hint);
 }
 
+#colour {
+  width: 48px;
+  height: 18px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  padding-left: 2px;
+  padding-right: 2px;
+  margin-bottom: 2px;
+  margin-left: 4px;
+  outline: none;
+  border: 1px solid gray;
+  border-radius: 2px;
+}
+
+#alpha {
+  width: 80px;
+  height: 18px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  padding-left: 0px;
+  padding-right: 0px;
+  margin-bottom: 2px;
+  margin-left: 4px;
+  outline: none;
+  border: 1px solid gray;
+  border-radius: 2px;
+}
+
 dialog#zoom {
   position: absolute;
   top: 50%;
