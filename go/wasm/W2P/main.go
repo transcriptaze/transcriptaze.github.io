@@ -148,13 +148,14 @@ func grid(object js.Value) wav2png.GridSpec {
 		grid := object.Get("type").String()
 		padding := 0
 		colour := GRID_COLOUR
+		size := GRID_SIZE
 
-		if !object.Get("padding").IsNaN() {
-			padding = object.Get("padding").Int()
+		if p := object.Get("padding"); !p.IsNaN() {
+			padding = p.Int()
 		}
 
-		if !object.Get("colour").IsNull() && !object.Get("colour").IsUndefined() {
-			s := strings.ToLower(object.Get("colour").String())
+		if c := object.Get("colour"); !c.IsNull() && !c.IsUndefined() {
+			s := strings.ToLower(c.String())
 			if regexp.MustCompile("#[[:xdigit:]]{8}").MatchString(s) {
 				red := uint8(0)
 				green := uint8(0x80)
@@ -167,12 +168,18 @@ func grid(object js.Value) wav2png.GridSpec {
 			}
 		}
 
+		if sz := object.Get("size"); !sz.IsNull() && !sz.IsUndefined() {
+			if v := sz.Get("size"); !v.IsNaN() && v.Int() > 16 && v.Int() < 1024 {
+				size = v.Int()
+			}
+		}
+
 		switch grid {
 		case "none":
 			return wav2png.NewNoGrid(padding)
 
 		case "square":
-			return wav2png.NewSquareGrid(colour, GRID_SIZE, padding)
+			return wav2png.NewSquareGrid(colour, uint(size), padding)
 		}
 	}
 

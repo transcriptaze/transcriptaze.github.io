@@ -127,6 +127,8 @@
 
               <input id="colour" type="color" value="#008000" placeholder="colour" onchange="onGridColour(event)" />
               <input id="alpha"  type="range" min="0" max="256" step="32" value="255"  onchange="onGridAlpha(event)" >
+
+              <input id="gridsize" type="text" value="~64" placeholder="size" onchange="onGridSize(event)" onkeydown="onGridSize(event)" />
             </div>
 
             <!-- BUTTONS -->
@@ -170,7 +172,7 @@
     import { initialise,
              onDrop, onDragOver, onPick, onPicked, 
              onSize, onCustomSize, 
-             onGrid, onPadding, onGridColour, onGridAlpha,
+             onGrid, onPadding, onGridColour, onGridAlpha, onGridSize,
              onExport, onClear
           } from './javascript/W2P.js'
 
@@ -184,6 +186,7 @@
     window.onPadding = onPadding
     window.onGridColour = onGridColour
     window.onGridAlpha = onGridAlpha
+    window.onGridSize = onGridSize
     window.onExport = onExport
     window.onClear = onClear
 

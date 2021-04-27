@@ -3,9 +3,11 @@
 ### W2P
 
 - [ ] Grid settings
-      - none/square/rectangular
+      - 'fit'
+      - rectangular
       - overlay/underlay
       - save as preference
+      - unify grid event handlers
 
 - [ ] Anti-alias settings
       - none

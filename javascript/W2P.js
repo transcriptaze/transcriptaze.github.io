@@ -120,7 +120,16 @@ export function onGridColour (event) {
 }
 
 export function onGridAlpha (event) {
-  if (loaded) {
+  if (loaded && event.type === 'keydown' && event.key === 'Enter') {
+    busy()
+    new Promise((resolve) => setTimeout(resolve, 100))
+      .then(b => redraw())
+      .finally(unbusy)
+  }
+}
+
+export function onGridSize (event) {
+  if (loaded && event.type === 'keydown' && event.key === 'Enter') {
     busy()
     new Promise((resolve) => setTimeout(resolve, 100))
       .then(b => redraw())
@@ -358,12 +367,15 @@ function grid () {
   const p = document.getElementById('padding').value
   const c = document.getElementById('colour').value
   const a = document.getElementById('alpha').value
+  const s = document.getElementById('gridsize').value
 
+  // padding
   let padding = parseInt(p, 10)
   if (isNaN(padding)) {
     padding = 0
   }
 
+  // colour
   let colour = c + 'ff'
   const alpha = parseInt(a, 10)
   if (!isNaN(alpha) && alpha < 16) {
@@ -372,12 +384,38 @@ function grid () {
     colour = c + alpha.toString(16)
   }
 
+  // size
+  let gridsize = 64
+  let fit = '~'
+
+  const sz = size()
+  if (Math.min(sz.width, sz.height) <= 320) {
+    gridsize = 32
+  } else if (Math.min(sz.width, sz.height) <= 1024) {
+    gridsize = 64
+  } else {
+    gridsize = 128
+  }
+
+  const match = /([~=><≥≤])?\s*([0-9]+)/.exec(s)
+  if (match) {
+    if (match[1]) {
+      fit = match[1]
+    }
+
+    const v = parseInt(match[2], 10)
+    if (!isNaN(v) && v >= 16 && v <= 1024) {
+      gridsize = v
+    }
+  }
+
+  // grid
   switch (v) {
     case 'none':
       return { type: 'none', padding: padding }
 
     default:
-      return { type: 'square', colour: colour, size: 64, padding: padding }
+      return { type: 'square', colour: colour, size: { size: gridsize, fit: fit }, padding: padding }
   }
 }
 
