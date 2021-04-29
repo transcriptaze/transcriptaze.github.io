@@ -385,27 +385,22 @@ function grid () {
   }
 
   // size
-  let gridsize = 64
-  let fit = '~'
+  let gridsize = '~64'
 
   const sz = size()
   if (Math.min(sz.width, sz.height) <= 320) {
-    gridsize = 32
+    gridsize = '~32'
   } else if (Math.min(sz.width, sz.height) <= 1024) {
-    gridsize = 64
+    gridsize = '~64'
   } else {
-    gridsize = 128
+    gridsize = '~128'
   }
 
   const match = /([~=><≥≤])?\s*([0-9]+)/.exec(s)
   if (match) {
-    if (match[1]) {
-      fit = match[1]
-    }
-
     const v = parseInt(match[2], 10)
     if (!isNaN(v) && v >= 16 && v <= 1024) {
-      gridsize = v
+      gridsize = s
     }
   }
 
@@ -415,7 +410,7 @@ function grid () {
       return { type: 'none', padding: padding }
 
     default:
-      return { type: 'square', colour: colour, size: { size: gridsize, fit: fit }, padding: padding }
+      return { type: 'square', colour: colour, size: gridsize, padding: padding }
   }
 }
 

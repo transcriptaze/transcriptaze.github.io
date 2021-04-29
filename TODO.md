@@ -3,7 +3,6 @@
 ### W2P
 
 - [ ] Grid settings
-      - 'fit'
       - rectangular
       - overlay/underlay
       - save as preference

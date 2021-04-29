@@ -12,6 +12,7 @@ import (
 	"image/draw"
 	"image/png"
 	"regexp"
+	"strconv"
 	"strings"
 	"syscall/js"
 	"time"
@@ -25,6 +26,7 @@ var BACKGROUND = wav2png.NewSolidFill(color.NRGBA{R: 0x00, G: 0x00, B: 0x00, A: 
 var GRID_COLOUR = color.NRGBA{R: 0x00, G: 0x80, B: 0x00, A: 255}
 
 const GRID_SIZE = 64
+const GRID_FIT = wav2png.Approximate
 const PADDING = 0
 
 type audio struct {
@@ -83,7 +85,7 @@ func render(this js.Value, inputs []js.Value) interface{} {
 	callback := inputs[0]
 	width := 645
 	height := 390
-	gridspec := wav2png.NewSquareGrid(GRID_COLOUR, GRID_SIZE, 2)
+	gridspec := wav2png.NewSquareGrid(GRID_COLOUR, GRID_SIZE, 2, GRID_FIT)
 
 	if len(inputs) > 1 && !inputs[1].IsNaN() {
 		width = inputs[1].Int()
@@ -149,6 +151,7 @@ func grid(object js.Value) wav2png.GridSpec {
 		padding := 0
 		colour := GRID_COLOUR
 		size := GRID_SIZE
+		fit := GRID_FIT
 
 		if p := object.Get("padding"); !p.IsNaN() {
 			padding = p.Int()
@@ -169,8 +172,28 @@ func grid(object js.Value) wav2png.GridSpec {
 		}
 
 		if sz := object.Get("size"); !sz.IsNull() && !sz.IsUndefined() {
-			if v := sz.Get("size"); !v.IsNaN() && v.Int() > 16 && v.Int() < 1024 {
-				size = v.Int()
+			matched := regexp.MustCompile(`([~=><≥≤])?\s*([0-9]+)`).FindStringSubmatch(sz.String())
+			if matched != nil && len(matched) == 3 {
+				if v, err := strconv.ParseInt(matched[2], 10, 32); err == nil && v >= 16 && v <= 1024 {
+					size = int(v)
+				}
+
+				switch matched[1] {
+				case "~":
+					fit = wav2png.Approximate
+				case "=":
+					fit = wav2png.Exact
+				case ">":
+					fit = wav2png.AtLeast
+					size += 1
+				case "<":
+					fit = wav2png.AtMost
+					size -= 1
+				case "≥":
+					fit = wav2png.AtLeast
+				case "≤":
+					fit = wav2png.AtMost
+				}
 			}
 		}
 
@@ -179,11 +202,11 @@ func grid(object js.Value) wav2png.GridSpec {
 			return wav2png.NewNoGrid(padding)
 
 		case "square":
-			return wav2png.NewSquareGrid(colour, uint(size), padding)
+			return wav2png.NewSquareGrid(colour, uint(size), padding, fit)
 		}
 	}
 
-	return wav2png.NewSquareGrid(GRID_COLOUR, GRID_SIZE, 2)
+	return wav2png.NewSquareGrid(GRID_COLOUR, GRID_SIZE, 2, GRID_FIT)
 }
 
 func float32ArrayToSlice(array js.Value) []float32 {
