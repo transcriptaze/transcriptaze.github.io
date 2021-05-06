@@ -12,7 +12,11 @@ export function initialise () {
   state.restore('W2P')
 
   document.getElementById('custom').value = state.W2P.customSize
-  document.querySelector(`input[name="size"][value="${state.W2P.size}"]`).checked = true
+  
+  const element = document.querySelector(`input[name="size"][value="${state.W2P.size}"]`)
+  if (element) {
+    element.checked = true
+  }
 }
 
 export function onDrop (event) {
