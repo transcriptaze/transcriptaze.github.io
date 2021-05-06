@@ -27,6 +27,7 @@ var GRID_COLOUR = color.NRGBA{R: 0x00, G: 0x80, B: 0x00, A: 255}
 
 const GRID_SIZE = 64
 const GRID_FIT = wav2png.Approximate
+const GRID_OVERLAY = false
 const PADDING = 0
 
 type audio struct {
@@ -85,7 +86,7 @@ func render(this js.Value, inputs []js.Value) interface{} {
 	callback := inputs[0]
 	width := 645
 	height := 390
-	gridspec := wav2png.NewSquareGrid(GRID_COLOUR, GRID_SIZE, 2, GRID_FIT)
+	gridspec := wav2png.NewSquareGrid(GRID_COLOUR, GRID_SIZE, 2, GRID_FIT, GRID_OVERLAY)
 
 	if len(inputs) > 1 && !inputs[1].IsNaN() {
 		width = inputs[1].Int()
@@ -114,15 +115,23 @@ func render(this js.Value, inputs []js.Value) interface{} {
 		h := height - padding
 
 		img := image.NewNRGBA(image.Rect(0, 0, width, height))
-		wav2png.Fill(img, BACKGROUND)
-		wav2png.Grid(img, gridspec)
-
+		grid := wav2png.Grid(gridspec, width, height)
 		waveform := wav2png.Render(wav.duration, wav.samples, w, h)
 		antialiased := wav2png.Antialias(waveform, wav2png.Soft)
 
 		origin := image.Pt(0, 0)
 		rect := image.Rect(padding, padding, w, h)
-		draw.Draw(img, rect, antialiased, origin, draw.Over)
+		rectg := img.Bounds()
+
+		wav2png.Fill(img, BACKGROUND)
+
+		if gridspec.Overlay() {
+			draw.Draw(img, rect, antialiased, origin, draw.Over)
+			draw.Draw(img, rectg, grid, origin, draw.Over)
+		} else {
+			draw.Draw(img, rectg, grid, origin, draw.Over)
+			draw.Draw(img, rect, antialiased, origin, draw.Over)
+		}
 
 		var b bytes.Buffer
 
@@ -152,6 +161,7 @@ func grid(object js.Value) wav2png.GridSpec {
 		colour := GRID_COLOUR
 		size := GRID_SIZE
 		fit := GRID_FIT
+		overlay := GRID_OVERLAY
 
 		if p := object.Get("padding"); !p.IsNaN() {
 			padding = p.Int()
@@ -197,16 +207,20 @@ func grid(object js.Value) wav2png.GridSpec {
 			}
 		}
 
+		if o := object.Get("overlay"); !o.IsNull() && !o.IsUndefined() {
+			overlay = o.Bool()
+		}
+
 		switch grid {
 		case "none":
 			return wav2png.NewNoGrid(padding)
 
 		case "square":
-			return wav2png.NewSquareGrid(colour, uint(size), padding, fit)
+			return wav2png.NewSquareGrid(colour, uint(size), padding, fit, overlay)
 		}
 	}
 
-	return wav2png.NewSquareGrid(GRID_COLOUR, GRID_SIZE, 2, GRID_FIT)
+	return wav2png.NewSquareGrid(GRID_COLOUR, GRID_SIZE, 2, GRID_FIT, GRID_OVERLAY)
 }
 
 func float32ArrayToSlice(array js.Value) []float32 {

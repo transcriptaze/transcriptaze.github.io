@@ -3,8 +3,8 @@
 ### W2P
 
 - [ ] Grid settings
+      - fix layout so that clear/export belong to right panel and grid controls take up less vertical space
       - rectangular
-      - overlay/underlay
       - save as preference
       - unify grid event handlers
 

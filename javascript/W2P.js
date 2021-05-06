@@ -120,7 +120,7 @@ export function onGridColour (event) {
 }
 
 export function onGridAlpha (event) {
-  if (loaded && event.type === 'keydown' && event.key === 'Enter') {
+  if (loaded) {
     busy()
     new Promise((resolve) => setTimeout(resolve, 100))
       .then(b => redraw())
@@ -130,6 +130,15 @@ export function onGridAlpha (event) {
 
 export function onGridSize (event) {
   if (loaded && event.type === 'keydown' && event.key === 'Enter') {
+    busy()
+    new Promise((resolve) => setTimeout(resolve, 100))
+      .then(b => redraw())
+      .finally(unbusy)
+  }
+}
+
+export function onGridOverlay (event) {
+  if (loaded) {
     busy()
     new Promise((resolve) => setTimeout(resolve, 100))
       .then(b => redraw())
@@ -368,6 +377,7 @@ function grid () {
   const c = document.getElementById('colour').value
   const a = document.getElementById('alpha').value
   const s = document.getElementById('gridsize').value
+  const o = document.getElementById('overlay')
 
   // padding
   let padding = parseInt(p, 10)
@@ -404,13 +414,19 @@ function grid () {
     }
   }
 
+  // overlay
+  let overlay = false
+  if (o.checked) {
+    overlay = true
+  }
+
   // grid
   switch (v) {
     case 'none':
       return { type: 'none', padding: padding }
 
     default:
-      return { type: 'square', colour: colour, size: gridsize, padding: padding }
+      return { type: 'square', colour: colour, size: gridsize, padding: padding, overlay: overlay }
   }
 }
 

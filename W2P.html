@@ -129,6 +129,9 @@
               <input id="alpha"  type="range" min="0" max="256" step="32" value="255"  onchange="onGridAlpha(event)" >
 
               <input id="gridsize" type="text" value="~64" placeholder="size" onchange="onGridSize(event)" onkeydown="onGridSize(event)" />
+
+              <input id="overlay" type="checkbox" onchange="onGridOverlay(event)" />
+              <label for="overlay">overlay</label>
             </div>
 
             <!-- BUTTONS -->
@@ -172,7 +175,7 @@
     import { initialise,
              onDrop, onDragOver, onPick, onPicked, 
              onSize, onCustomSize, 
-             onGrid, onPadding, onGridColour, onGridAlpha, onGridSize,
+             onGrid, onPadding, onGridColour, onGridAlpha, onGridSize, onGridOverlay,
              onExport, onClear
           } from './javascript/W2P.js'
 
@@ -187,6 +190,7 @@
     window.onGridColour = onGridColour
     window.onGridAlpha = onGridAlpha
     window.onGridSize = onGridSize
+    window.onGridOverlay = onGridOverlay
     window.onExport = onExport
     window.onClear = onClear
 
