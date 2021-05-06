@@ -347,8 +347,13 @@ async function render (width, height, grid) {
 }
 
 function size () {
+  let v = "645x390" 
+
   const option = document.querySelector('input[name="size"]:checked')
-  let v = option.value
+  if (option) {
+    v = option.value    
+  }
+
   if (v === 'custom') {
     v = document.getElementById('custom').value
   }
