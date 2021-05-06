@@ -21,6 +21,19 @@ const local = {
   }
 }
 
+export function onAccept (event) {
+  state.acceptCookies()
+  
+  const footer = document.querySelector('footer')
+  if (footer) {
+    if (state.global.hideCookiesMessage) {
+      footer.style.visibility = 'hidden'
+    } else {
+      footer.style.visibility = 'visible'
+    }
+  }
+}
+
 export function onPlayerReady (event) {
   document.getElementById('file').style.visibility = 'visible'
   document.getElementById('url').readOnly = false

@@ -17,6 +17,28 @@ export function initialise () {
   if (element) {
     element.checked = true
   }
+
+  const footer = document.querySelector('footer')
+  if (footer) {
+    if (state.global.hideCookiesMessage) {
+      footer.style.visibility = 'hidden'
+    } else {
+      footer.style.visibility = 'visible'
+    }
+  }
+}
+
+export function onAccept (event) {
+  state.acceptCookies()
+  
+  const footer = document.querySelector('footer')
+  if (footer) {
+    if (state.global.hideCookiesMessage) {
+      footer.style.visibility = 'hidden'
+    } else {
+      footer.style.visibility = 'visible'
+    }
+  }
 }
 
 export function onDrop (event) {

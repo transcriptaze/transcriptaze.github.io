@@ -2,8 +2,6 @@
 
 ### W2P
 
-- [ ] Dismissable cookie message
-
 - [ ] Grid settings
       - save as preference
       - unify grid event handlers
@@ -19,6 +17,7 @@
 - [ ] Optimize draw/redraw
 - [ ] (optionally) show audio info
 
+- [x] Dismissable cookie message
 - [x] Zoom
 - [x] Export button
 - [x] Clear button

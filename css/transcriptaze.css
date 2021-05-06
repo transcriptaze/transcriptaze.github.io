@@ -278,9 +278,31 @@ footer {
   background: var(--solarize-base2);
   height: auto;
   overflow: hidden;
-  padding: 6px 0px 6px 0px;
+  display: flex;
+  justify-content: center;
+  visibility: hidden;
+}
+
+footer p {
+  flex-grow: 1;
   text-align: center;
+  padding: 6px 0px 6px 0px;
   font-size: 0.8em;
-  color: var(--hint);
+  color: var(--hint);  
+}
+
+footer #accept {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  margin-left: 32px;
+  margin-right: 32px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 12px;
+  padding-right: 12px;
+  border: 1px solid var(--solarize-red);
+  border-radius: 3px;
+  font-size: 0.8em;
+  color: var(--hint);  
 }
 

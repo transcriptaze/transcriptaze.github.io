@@ -1,4 +1,6 @@
 const tags = {
+  global: 'global',
+
   T2B: {
     apikey: 'T2B.apikey',
     history: 'T2B.history',
@@ -12,6 +14,10 @@ const tags = {
 }
 
 export const State = function () {
+  this.global = {
+    hideCookiesMessage: false
+  },
+
   this.T2B = {
     history: new Set(),
     titles: new Map(),
@@ -24,6 +30,13 @@ export const State = function () {
   }
 
   this.restore = function (page) {
+    // Restore global preferences
+    let blob = window.localStorage.getItem(tags.global)
+    if (blob !== null) {
+      this.global = JSON.parse(blob)
+    }
+
+    // Restore page preferences
     switch (page) {
       case 'T2B':
         restoreT2B(this)
@@ -33,6 +46,12 @@ export const State = function () {
         restoreW2P(this)
         break
     }
+  }
+
+  this.acceptCookies = function () {
+      this.global.hideCookiesMessage = true
+
+      window.localStorage.setItem(tags.global, JSON.stringify(this.global))
   }
 
   this.addVideo = function (vid) {
