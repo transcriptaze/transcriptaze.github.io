@@ -12,7 +12,7 @@ export function initialise () {
   state.restore('W2P')
 
   document.getElementById('custom').value = state.W2P.customSize
-  
+
   const element = document.querySelector(`input[name="size"][value="${state.W2P.size}"]`)
   if (element) {
     element.checked = true
@@ -92,6 +92,36 @@ export function onCustomSize (event) {
 }
 
 export function onGrid (event) {
+  const v = document.querySelector('input[name="grid"]:checked')
+
+  if (v && v.value) {
+    switch (v.value) {
+      case 'none':
+        document.getElementById('colour').style.display = 'none'
+        document.getElementById('alpha').style.display = 'none'
+        document.getElementById('gridsize').style.display = 'none'
+        document.getElementById('overlay').style.display = 'none'
+        document.querySelector('#overlay + label').style.display = 'none'
+        break
+
+      case 'square':
+        document.getElementById('colour').style.display = 'block'
+        document.getElementById('alpha').style.display = 'block'
+        document.getElementById('gridsize').style.display = 'block'
+        document.getElementById('overlay').style.display = 'block'
+        document.querySelector('#overlay + label').style.display = 'block'
+        break
+
+      case 'rectangular':
+        document.getElementById('colour').style.display = 'block'
+        document.getElementById('alpha').style.display = 'block'
+        document.getElementById('gridsize').style.display = 'block'
+        document.getElementById('overlay').style.display = 'block'
+        document.querySelector('#overlay + label').style.display = 'block'
+        break
+    }     
+  }
+
   if (loaded) {
     busy()
     new Promise((resolve) => setTimeout(resolve, 100))
@@ -347,11 +377,11 @@ async function render (width, height, grid) {
 }
 
 function size () {
-  let v = "645x390" 
+  let v = '645x390'
 
   const option = document.querySelector('input[name="size"]:checked')
   if (option) {
-    v = option.value    
+    v = option.value
   }
 
   if (v === 'custom') {

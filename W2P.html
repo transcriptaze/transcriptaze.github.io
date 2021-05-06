@@ -139,15 +139,13 @@
               <input id="rectangular" type="radio" name="grid" value="rectangular" onchange="onGrid(event)" />
               <label for="rectangular"><img src="images/grid-rectangular.svg" draggable="false" /></label>
 
-              <input id="padding" type="number" min-value="-16" max-value="32" value="2" placeholder="padding" onchange="onPadding(event)" onkeydown="onPadding(event)" />
+              <input id="padding" type="number" min-value="-16" max-value="32" value="2" placeholder="padding" title="padding" onchange="onPadding(event)" onkeydown="onPadding(event)" />
 
-              <input id="colour" type="color" value="#008000" placeholder="colour" onchange="onGridColour(event)" />
-              <input id="alpha"  type="range" min="0" max="256" step="32" value="255"  onchange="onGridAlpha(event)" >
-
-              <input id="gridsize" type="text" value="~64" placeholder="size" onchange="onGridSize(event)" onkeydown="onGridSize(event)" />
-
-              <input id="overlay" type="checkbox" onchange="onGridOverlay(event)" />
-              <label for="overlay">overlay</label>
+              <input id="colour" type="color" value="#008000" placeholder="colour" title="grid colour" onchange="onGridColour(event)" />
+              <input id="alpha"  type="range" min="0" max="256" step="32" value="255" title="grid transparency" onchange="onGridAlpha(event)" >
+              <input id="gridsize" type="text" value="~64" placeholder="size" title="grid size" onchange="onGridSize(event)" onkeydown="onGridSize(event)" />
+              <input id="overlay" type="checkbox" title="draws grid above wave" onchange="onGridOverlay(event)" />
+              <label for="overlay" title="draws grid above wave">overlay</label>
             </div>
 
             <!-- ENLARGED PNG VIEW -->
@@ -168,8 +166,7 @@
 
       <!-- FOOTER -->
       <footer>
-       Somebody (possibly Github) seems to unavoidably add cookies to this page. Also, your settings and history, 
-       such as they are, are kept in browser local storage.
+       Please be aware that there may be 3rd party cookies (e.g. YouTube) on this website. Also, your settings and history, such as they are, are kept in browser local storage.
       </footer>
     </div>
   </body>
