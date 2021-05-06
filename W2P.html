@@ -79,38 +79,54 @@
               </div>
             </div>
 
-            <div id="sizes" class="panel">
-              <div class="size">
-                <input id="sz0" type="radio" name="size" class="size" value="645x390" onchange="onSize(event)" />
-                <label for="sz0">645 x 390</label>
+            <div id="right" class="panel">
+              
+              <!-- SIZES -->
+              <div id="sizes">
+                <div class="size">
+                  <input id="sz0" type="radio" name="size" class="size" value="645x390" onchange="onSize(event)" />
+                  <label for="sz0">645 x 390</label>
+                </div>
+                <div class="size">
+                  <input id="sz1" type="radio" name="size" class="size" value="640x480" onchange="onSize(event)" />
+                  <label for="sz1">640 x 480</label>
+                </div>
+                <div class="size">
+                  <input id="sz2" type="radio" name="size" class="size" value="800x600" onchange="onSize(event)" />
+                  <label for="sz2">800 x 600</label>
+                </div>
+                <div class="size">
+                  <input id="sz3" type="radio" name="size" class="size" value="1024x800" onchange="onSize(event)" />
+                  <label for="sz3">1024 x 800</label>
+                </div>
+                <div class="size">
+                  <input id="sz4" type="radio" name="size" class="size" value="1280x800" onchange="onSize(event)" />
+                  <label for="sz4">1280 x 800</label>
+                </div>
+                <div class="size">
+                  <input id="sz5" type="radio" name="size" class="size" value="2048x1640" onchange="onSize(event)" />
+                  <label for="sz5">2048 x 1640</label>
+                </div>
+                <div class="size">
+                  <input id="szx" type="radio" name="size" class="size" value="custom" onchange="onSize(event)" />
+                  <label for="szx">CUSTOM</label>
+                </div>
+                <div class="size">
+                  <input id="custom" type="text" value="" placeholder="480 x 292" onchange="onCustomSize(event)" onkeydown="onCustomSize(event)" />
+                </div>
               </div>
-              <div class="size">
-                <input id="sz1" type="radio" name="size" class="size" value="640x480" onchange="onSize(event)" />
-                <label for="sz1">640 x 480</label>
+
+              <!-- BUTTONS -->
+              <div id="buttons" class="panel">
+                <a id="download" style="display: none;"></a>
+                <button id="export" type="button" onclick="onExport(event)" disabled>
+                  <img src="images/file-export-solid.svg" />
+                </button>
+                <button id="clear" type="button" onclick="onClear(event)" disabled>
+                  <img src="images/trash-solid.svg" />
+                </button>
               </div>
-              <div class="size">
-                <input id="sz2" type="radio" name="size" class="size" value="800x600" onchange="onSize(event)" />
-                <label for="sz2">800 x 600</label>
-              </div>
-              <div class="size">
-                <input id="sz3" type="radio" name="size" class="size" value="1024x800" onchange="onSize(event)" />
-                <label for="sz3">1024 x 800</label>
-              </div>
-              <div class="size">
-                <input id="sz4" type="radio" name="size" class="size" value="1280x800" onchange="onSize(event)" />
-                <label for="sz4">1280 x 800</label>
-              </div>
-              <div class="size">
-                <input id="sz5" type="radio" name="size" class="size" value="2048x1640" onchange="onSize(event)" />
-                <label for="sz5">2048 x 1640</label>
-              </div>
-              <div class="size">
-                <input id="szx" type="radio" name="size" class="size" value="custom" onchange="onSize(event)" />
-                <label for="szx">CUSTOM</label>
-              </div>
-              <div class="size">
-                <input id="custom" type="text" value="" placeholder="480 x 292" onchange="onCustomSize(event)" onkeydown="onCustomSize(event)" />
-              </div>
+
             </div>
 
             <div id="controls" class="panel">
@@ -132,17 +148,6 @@
 
               <input id="overlay" type="checkbox" onchange="onGridOverlay(event)" />
               <label for="overlay">overlay</label>
-            </div>
-
-            <!-- BUTTONS -->
-            <div id="buttons" class="panel">
-              <a id="download" style="display: none;"></a>
-              <button id="export" type="button" onclick="onExport(event)" disabled>
-                <img src="images/file-export-solid.svg" />
-              </button>
-              <button id="clear" type="button" onclick="onClear(event)" disabled>
-                <img src="images/trash-solid.svg" />
-              </button>
             </div>
 
             <!-- ENLARGED PNG VIEW -->
