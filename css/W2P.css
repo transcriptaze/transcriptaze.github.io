@@ -253,6 +253,14 @@ div#sizes {
   margin-bottom: 2px;
 }
 
+#gridwh {
+  width: 64px;
+  margin-left: 8px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  display: none;
+}
+
 dialog#zoom {
   position: absolute;
   top: 50%;

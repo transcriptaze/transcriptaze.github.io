@@ -26,6 +26,8 @@ var BACKGROUND = wav2png.NewSolidFill(color.NRGBA{R: 0x00, G: 0x00, B: 0x00, A: 
 var GRID_COLOUR = color.NRGBA{R: 0x00, G: 0x80, B: 0x00, A: 255}
 
 const GRID_SIZE = 64
+const GRID_WIDTH = 64
+const GRID_HEIGHT = 48
 const GRID_FIT = wav2png.Approximate
 const GRID_OVERLAY = false
 const PADDING = 0
@@ -86,7 +88,7 @@ func render(this js.Value, inputs []js.Value) interface{} {
 	callback := inputs[0]
 	width := 645
 	height := 390
-	gridspec := wav2png.NewSquareGrid(GRID_COLOUR, GRID_SIZE, 2, GRID_FIT, GRID_OVERLAY)
+	var gridspec wav2png.GridSpec = wav2png.NewSquareGrid(GRID_COLOUR, GRID_SIZE, 2, GRID_FIT, GRID_OVERLAY)
 
 	if len(inputs) > 1 && !inputs[1].IsNaN() {
 		width = inputs[1].Int()
@@ -160,6 +162,8 @@ func grid(object js.Value) wav2png.GridSpec {
 		padding := 0
 		colour := GRID_COLOUR
 		size := GRID_SIZE
+		width := GRID_WIDTH
+		height := GRID_HEIGHT
 		fit := GRID_FIT
 		overlay := GRID_OVERLAY
 
@@ -182,12 +186,7 @@ func grid(object js.Value) wav2png.GridSpec {
 		}
 
 		if sz := object.Get("size"); !sz.IsNull() && !sz.IsUndefined() {
-			matched := regexp.MustCompile(`([~=><≥≤])?\s*([0-9]+)`).FindStringSubmatch(sz.String())
-			if matched != nil && len(matched) == 3 {
-				if v, err := strconv.ParseInt(matched[2], 10, 32); err == nil && v >= 16 && v <= 1024 {
-					size = int(v)
-				}
-
+			if matched := regexp.MustCompile(`([~=><≥≤]).*`).FindStringSubmatch(sz.String()); matched != nil && len(matched) == 2 {
 				switch matched[1] {
 				case "~":
 					fit = wav2png.Approximate
@@ -205,6 +204,22 @@ func grid(object js.Value) wav2png.GridSpec {
 					fit = wav2png.AtMost
 				}
 			}
+
+			if matched := regexp.MustCompile(`([~=><≥≤])?\s*([0-9]+)`).FindStringSubmatch(sz.String()); matched != nil && len(matched) == 3 {
+				if v, err := strconv.ParseInt(matched[2], 10, 32); err == nil && v >= 16 && v <= 1024 {
+					size = int(v)
+				}
+			}
+
+			if matched := regexp.MustCompile(`([~=><≥≤])?\s*([0-9]+)x([0-9]+)`).FindStringSubmatch(sz.String()); matched != nil && len(matched) == 4 {
+				if v, err := strconv.ParseInt(matched[2], 10, 32); err == nil && v >= 16 && v <= 1024 {
+					width = int(v)
+				}
+
+				if v, err := strconv.ParseInt(matched[3], 10, 32); err == nil && v >= 16 && v <= 1024 {
+					height = int(v)
+				}
+			}
 		}
 
 		if o := object.Get("overlay"); !o.IsNull() && !o.IsUndefined() {
@@ -217,6 +232,9 @@ func grid(object js.Value) wav2png.GridSpec {
 
 		case "square":
 			return wav2png.NewSquareGrid(colour, uint(size), padding, fit, overlay)
+
+		case "rectangular":
+			return wav2png.NewRectangularGrid(colour, uint(width), uint(height), padding, fit, overlay)
 		}
 	}
 

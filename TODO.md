@@ -5,7 +5,6 @@
 - [ ] Dismissable cookie message
 
 - [ ] Grid settings
-      - rectangular
       - save as preference
       - unify grid event handlers
 
@@ -19,8 +18,6 @@
 - [ ] Segment of audio
 - [ ] Optimize draw/redraw
 - [ ] (optionally) show audio info
-- [ ] (?) presets
-- [ ] (?) history
 
 - [x] Zoom
 - [x] Export button

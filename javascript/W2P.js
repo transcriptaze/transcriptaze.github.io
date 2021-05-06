@@ -100,6 +100,7 @@ export function onGrid (event) {
         document.getElementById('colour').style.display = 'none'
         document.getElementById('alpha').style.display = 'none'
         document.getElementById('gridsize').style.display = 'none'
+        document.getElementById('gridwh').style.display = 'none'
         document.getElementById('overlay').style.display = 'none'
         document.querySelector('#overlay + label').style.display = 'none'
         break
@@ -108,6 +109,7 @@ export function onGrid (event) {
         document.getElementById('colour').style.display = 'block'
         document.getElementById('alpha').style.display = 'block'
         document.getElementById('gridsize').style.display = 'block'
+        document.getElementById('gridwh').style.display = 'none'
         document.getElementById('overlay').style.display = 'block'
         document.querySelector('#overlay + label').style.display = 'block'
         break
@@ -115,7 +117,8 @@ export function onGrid (event) {
       case 'rectangular':
         document.getElementById('colour').style.display = 'block'
         document.getElementById('alpha').style.display = 'block'
-        document.getElementById('gridsize').style.display = 'block'
+        document.getElementById('gridsize').style.display = 'none'
+        document.getElementById('gridwh').style.display = 'block'
         document.getElementById('overlay').style.display = 'block'
         document.querySelector('#overlay + label').style.display = 'block'
         break
@@ -416,7 +419,9 @@ function grid () {
   const c = document.getElementById('colour').value
   const a = document.getElementById('alpha').value
   const s = document.getElementById('gridsize').value
+  const wh = document.getElementById('gridwh').value
   const o = document.getElementById('overlay')
+  const sz = size()
 
   // padding
   let padding = parseInt(p, 10)
@@ -436,7 +441,6 @@ function grid () {
   // size
   let gridsize = '~64'
 
-  const sz = size()
   if (Math.min(sz.width, sz.height) <= 320) {
     gridsize = '~32'
   } else if (Math.min(sz.width, sz.height) <= 1024) {
@@ -445,11 +449,31 @@ function grid () {
     gridsize = '~128'
   }
 
-  const match = /([~=><≥≤])?\s*([0-9]+)/.exec(s)
+  let match = /([~=><≥≤])?\s*([0-9]+)/.exec(s)
   if (match) {
     const v = parseInt(match[2], 10)
     if (!isNaN(v) && v >= 16 && v <= 1024) {
-      gridsize = s
+      gridsize = s.replace(/\s/g,'')
+    }
+  }
+
+  // width x height
+  let gridwh = '~64x48'
+
+  if (Math.min(sz.width, sz.height) <= 320) {
+    gridwh = '~32x32'
+  } else if (Math.min(sz.width, sz.height) <= 1024) {
+    gridwh = '~64x48'
+  } else {
+    gridwh = '~128x80'
+  }
+
+  match = /([~=><≥≤])?\s*([0-9]+)\s*x\s*([0-9]+)/.exec(wh)
+  if (match) {
+    const w = parseInt(match[2], 10)
+    const h = parseInt(match[2], 10)
+    if (!isNaN(w) && w >= 16 && w <= 1024) {
+      gridwh = wh.replace(/\s/g,'')
     }
   }
 
@@ -463,6 +487,12 @@ function grid () {
   switch (v) {
     case 'none':
       return { type: 'none', padding: padding }
+
+    case 'square':
+      return { type: 'square', colour: colour, size: gridsize, padding: padding, overlay: overlay }
+
+    case 'rectangular':
+      return { type: 'rectangular', colour: colour, size: gridwh, padding: padding, overlay: overlay }
 
     default:
       return { type: 'square', colour: colour, size: gridsize, padding: padding, overlay: overlay }
