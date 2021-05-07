@@ -25,7 +25,7 @@ export function initialise () {
   document.getElementById('gridwh').value = state.W2P.grid.wh
   document.getElementById('overlay').checked = state.W2P.grid.overlay
 
-  switch(state.W2P.grid.type) {
+  switch (state.W2P.grid.type) {
     case 'none':
       document.getElementById('nogrid').click()
       break
@@ -168,7 +168,7 @@ export function onGrid (event) {
         document.getElementById('overlay').style.display = 'block'
         document.querySelector('#overlay + label').style.display = 'block'
         break
-    }     
+    }
   }
 
   if (loaded) {
@@ -472,7 +472,7 @@ function grid () {
   if (match) {
     const v = parseInt(match[2], 10)
     if (!isNaN(v) && v >= 16 && v <= 1024) {
-      gridsize = s.replace(/\s/g,'')
+      gridsize = s.replace(/\s/g, '')
     }
   }
 
@@ -491,8 +491,8 @@ function grid () {
   if (match) {
     const w = parseInt(match[2], 10)
     const h = parseInt(match[2], 10)
-    if (!isNaN(w) && w >= 16 && w <= 1024) {
-      gridwh = wh.replace(/\s/g,'')
+    if (!isNaN(w) && w >= 16 && w <= 1024 && !isNaN(h) && h >= 16 && h <= 1024) {
+      gridwh = wh.replace(/\s/g, '')
     }
   }
 

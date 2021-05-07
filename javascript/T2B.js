@@ -23,7 +23,7 @@ const local = {
 
 export function onAccept (event) {
   state.acceptCookies()
-  
+
   const footer = document.querySelector('footer')
   if (footer) {
     if (state.global.hideCookiesMessage) {

@@ -17,7 +17,7 @@ const tags = {
 export const State = function () {
   this.global = {
     hideCookiesMessage: false
-  },
+  }
 
   this.T2B = {
     history: new Set(),
@@ -41,7 +41,7 @@ export const State = function () {
 
   this.restore = function (page) {
     // Restore global preferences
-    let blob = window.localStorage.getItem(tags.global)
+    const blob = window.localStorage.getItem(tags.global)
     if (blob !== null) {
       this.global = JSON.parse(blob)
     }
@@ -59,9 +59,9 @@ export const State = function () {
   }
 
   this.acceptCookies = function () {
-      this.global.hideCookiesMessage = true
+    this.global.hideCookiesMessage = true
 
-      window.localStorage.setItem(tags.global, JSON.stringify(this.global))
+    window.localStorage.setItem(tags.global, JSON.stringify(this.global))
   }
 
   this.addVideo = function (vid) {
