@@ -2,10 +2,6 @@
 
 ### W2P
 
-- [ ] Grid settings
-      - save as preference
-      - unify grid event handlers
-
 - [ ] Anti-alias settings
       - none
       - vertical
@@ -17,6 +13,7 @@
 - [ ] Optimize draw/redraw
 - [ ] (optionally) show audio info
 
+- [x] Grid settings
 - [x] Dismissable cookie message
 - [x] Zoom
 - [x] Export button

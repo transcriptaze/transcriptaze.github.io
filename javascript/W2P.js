@@ -18,6 +18,30 @@ export function initialise () {
     element.checked = true
   }
 
+  document.getElementById('padding').value = state.W2P.grid.padding
+  document.getElementById('colour').value = state.W2P.grid.colour
+  document.getElementById('alpha').value = state.W2P.grid.alpha
+  document.getElementById('gridsize').value = state.W2P.grid.size
+  document.getElementById('gridwh').value = state.W2P.grid.wh
+  document.getElementById('overlay').checked = state.W2P.grid.overlay
+
+  switch(state.W2P.grid.type) {
+    case 'none':
+      document.getElementById('nogrid').click()
+      break
+
+    case 'square':
+      document.getElementById('square').click()
+      break
+
+    case 'rectangular':
+      document.getElementById('rectangular').click()
+      break
+
+    default:
+      document.getElementById('square').click()
+  }
+
   const footer = document.querySelector('footer')
   if (footer) {
     if (state.global.hideCookiesMessage) {
@@ -30,7 +54,7 @@ export function initialise () {
 
 export function onAccept (event) {
   state.acceptCookies()
-  
+
   const footer = document.querySelector('footer')
   if (footer) {
     if (state.global.hideCookiesMessage) {
@@ -169,35 +193,8 @@ export function onPadding (event) {
   }
 }
 
-export function onGridColour (event) {
-  if (loaded) {
-    busy()
-    new Promise((resolve) => setTimeout(resolve, 100))
-      .then(b => redraw())
-      .finally(unbusy)
-  }
-}
-
-export function onGridAlpha (event) {
-  if (loaded) {
-    busy()
-    new Promise((resolve) => setTimeout(resolve, 100))
-      .then(b => redraw())
-      .finally(unbusy)
-  }
-}
-
-export function onGridSize (event) {
-  if (loaded && event.type === 'keydown' && event.key === 'Enter') {
-    busy()
-    new Promise((resolve) => setTimeout(resolve, 100))
-      .then(b => redraw())
-      .finally(unbusy)
-  }
-}
-
-export function onGridOverlay (event) {
-  if (loaded) {
+export function onGridSetting (event) {
+  if (loaded && (event.type === 'change' || (event.type === 'keydown' && event.key === 'Enter'))) {
     busy()
     new Promise((resolve) => setTimeout(resolve, 100))
       .then(b => redraw())
@@ -506,6 +503,9 @@ function grid () {
   }
 
   // grid
+
+  state.setGrid(v, padding, c, alpha, gridsize, wh, overlay)
+
   switch (v) {
     case 'none':
       return { type: 'none', padding: padding }

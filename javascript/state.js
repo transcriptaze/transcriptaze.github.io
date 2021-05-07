@@ -9,7 +9,8 @@ const tags = {
 
   W2P: {
     size: 'W2P.size',
-    customSize: 'W2P.customSize'
+    customSize: 'W2P.customSize',
+    grid: 'W2P.grid'
   }
 }
 
@@ -26,7 +27,16 @@ export const State = function () {
 
   this.W2P = {
     size: '645x392',
-    customSize: ''
+    customSize: '',
+    grid: {
+      type: 'square',
+      padding: 2,
+      colour: '#008000',
+      alpha: 255,
+      size: '~64',
+      wh: '~64x48',
+      overlay: false
+    }
   }
 
   this.restore = function (page) {
@@ -95,6 +105,18 @@ export const State = function () {
 
     window.localStorage.setItem(tags.W2P.customSize, this.W2P.customSize)
   }
+
+  this.setGrid = function (type, padding, colour, alpha, size, wh, overlay) {
+    this.W2P.grid.type = type
+    this.W2P.grid.padding = padding
+    this.W2P.grid.colour = colour
+    this.W2P.grid.alpha = alpha
+    this.W2P.grid.size = size
+    this.W2P.grid.wh = wh
+    this.W2P.grid.overlay = overlay
+
+    window.localStorage.setItem(tags.W2P.grid, JSON.stringify(this.W2P.grid))
+  }
 }
 
 function restoreT2B (state) {
@@ -153,5 +175,11 @@ function restoreW2P (state) {
   blob = window.localStorage.getItem(tags.W2P.customSize)
   if (blob !== null) {
     state.W2P.customSize = blob.trim()
+  }
+
+  // Restore W2P grid
+  blob = window.localStorage.getItem(tags.W2P.grid)
+  if (blob !== null) {
+    state.W2P.grid = JSON.parse(blob)
   }
 }
