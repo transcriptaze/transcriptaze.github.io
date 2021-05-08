@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+  <defs>
+    <radialGradient id="gradient" x1="32" y1="64" x2="416" y2="448" gradientUnits="userSpaceOnUse">
+      <stop offset="10%"   style="stop-color:rgba(0,0,0,1)" />
+      <stop offset="90%" style="stop-color:rgba(0,0,0,0)" />
+    </radialGradient>
+  </defs>
+
+  <path fill="none" stroke="#444444" stroke-width="32" d="M0,32 l448,0 l0,448 l-448,0 z" />
+
+  <g stroke="url(#gradient)" stroke-width="32" >
+    <line x1="32"  y1="256" x2="416" y2="256" />
+    <line x1="224" y1="64"  x2="224" y2="448" />
+    <line x1="160" y1="128" x2="160" y2="384" />
+    <line x1="288" y1="128" x2="288" y2="384" />
+    <line x1="96"  y1="192" x2="96"  y2="320" />
+    <line x1="352" y1="192" x2="352" y2="320" />
+  </g>
+</svg>

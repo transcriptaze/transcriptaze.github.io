@@ -42,6 +42,27 @@ export function initialise () {
       document.getElementById('square').click()
   }
 
+  switch (state.W2P.antialias.type) {
+    case 'none':
+      document.getElementById('noantialias').click()
+      break
+
+    case 'vertical':
+      document.getElementById('vertical').click()
+      break
+
+    case 'horizontal':
+      document.getElementById('horizontal').click()
+      break
+
+    case 'soft':
+      document.getElementById('soft').click()
+      break
+
+    default:
+      document.getElementById('vertical').click()
+  }
+
   const footer = document.querySelector('footer')
   if (footer) {
     if (state.global.hideCookiesMessage) {
@@ -202,6 +223,15 @@ export function onGridSetting (event) {
   }
 }
 
+export function onAntiAlias (event) {
+  if (loaded) {
+    busy()
+    new Promise((resolve) => setTimeout(resolve, 100))
+      .then(b => redraw())
+      .finally(unbusy)
+  }
+}
+
 export function onExport (event) {
   const waveform = document.getElementById('png')
   const link = document.getElementById('download')
@@ -280,7 +310,7 @@ function load (name, blob) {
     .then(b => blob.arrayBuffer())
     .then(b => transcode(b))
     .then(b => store(b))
-    .then(b => render(width, height, grid()))
+    .then(b => render(width, height))
     .then(b => {
       const array = new Uint8Array(b)
       const png = new Blob([array], { type: 'image/png' })
@@ -311,7 +341,7 @@ function redraw () {
     URL.revokeObjectURL(waveform.src)
   }
 
-  return render(width, height, grid())
+  return render(width, height)
     .then(b => {
       const array = new Uint8Array(b)
       const png = new Blob([array], { type: 'image/png' })
@@ -386,7 +416,7 @@ async function store (buffer) {
   })
 }
 
-async function render (width, height, grid) {
+async function render (width, height) {
   return new Promise((resolve, reject) => {
     goRender((err, png) => {
       if (err) {
@@ -394,7 +424,7 @@ async function render (width, height, grid) {
       } else {
         resolve(png)
       }
-    }, width, height, grid)
+    }, width, height, grid(), antialias())
   })
 }
 
@@ -518,6 +548,29 @@ function grid () {
 
     default:
       return { type: 'square', colour: colour, size: gridsize, padding: padding, overlay: overlay }
+  }
+}
+
+function antialias () {
+  const v = document.querySelector('input[name="antialias"]:checked').value
+
+  state.setAntiAlias(v)
+
+  switch (v) {
+    case 'none':
+      return { type: 'none' }
+
+    case 'vertical':
+      return { type: 'vertical' }
+
+    case 'horizontal':
+      return { type: 'horizontal' }
+
+    case 'soft':
+      return { type: 'soft' }
+
+    default:
+      return { type: 'vertical' }
   }
 }
 

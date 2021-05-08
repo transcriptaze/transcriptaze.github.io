@@ -10,7 +10,8 @@ const tags = {
   W2P: {
     size: 'W2P.size',
     customSize: 'W2P.customSize',
-    grid: 'W2P.grid'
+    grid: 'W2P.grid',
+    antialias: 'W2P.antialias'
   }
 }
 
@@ -36,6 +37,9 @@ export const State = function () {
       size: '~64',
       wh: '~64x48',
       overlay: false
+    },
+    antialias: {
+      type: 'vertical'
     }
   }
 
@@ -117,6 +121,12 @@ export const State = function () {
 
     window.localStorage.setItem(tags.W2P.grid, JSON.stringify(this.W2P.grid))
   }
+
+  this.setAntiAlias = function (type) {
+    this.W2P.antialias.type = type
+
+    window.localStorage.setItem(tags.W2P.antialias, JSON.stringify(this.W2P.antialias))
+  }
 }
 
 function restoreT2B (state) {
@@ -181,5 +191,11 @@ function restoreW2P (state) {
   blob = window.localStorage.getItem(tags.W2P.grid)
   if (blob !== null) {
     state.W2P.grid = JSON.parse(blob)
+  }
+
+  // Restore W2P antialias
+  blob = window.localStorage.getItem(tags.W2P.antialias)
+  if (blob !== null) {
+    state.W2P.antialias = JSON.parse(blob)
   }
 }

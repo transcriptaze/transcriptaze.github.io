@@ -89,6 +89,7 @@ func render(this js.Value, inputs []js.Value) interface{} {
 	width := 645
 	height := 390
 	var gridspec wav2png.GridSpec = wav2png.NewSquareGrid(GRID_COLOUR, GRID_SIZE, 2, GRID_FIT, GRID_OVERLAY)
+	var kernel wav2png.Kernel = wav2png.Soft
 
 	if len(inputs) > 1 && !inputs[1].IsNaN() {
 		width = inputs[1].Int()
@@ -100,6 +101,10 @@ func render(this js.Value, inputs []js.Value) interface{} {
 
 	if len(inputs) > 3 {
 		gridspec = grid(inputs[3])
+	}
+
+	if len(inputs) > 4 {
+		kernel = antialias(inputs[4])
 	}
 
 	go func() {
@@ -119,7 +124,7 @@ func render(this js.Value, inputs []js.Value) interface{} {
 		img := image.NewNRGBA(image.Rect(0, 0, width, height))
 		grid := wav2png.Grid(gridspec, width, height)
 		waveform := wav2png.Render(wav.duration, wav.samples, w, h)
-		antialiased := wav2png.Antialias(waveform, wav2png.Soft)
+		antialiased := wav2png.Antialias(waveform, kernel)
 
 		origin := image.Pt(0, 0)
 		rect := image.Rect(padding, padding, w, h)
@@ -239,6 +244,28 @@ func grid(object js.Value) wav2png.GridSpec {
 	}
 
 	return wav2png.NewSquareGrid(GRID_COLOUR, GRID_SIZE, 2, GRID_FIT, GRID_OVERLAY)
+}
+
+func antialias(object js.Value) wav2png.Kernel {
+	if !object.IsNull() {
+		kernel := object.Get("type").String()
+
+		switch kernel {
+		case "none":
+			return wav2png.None
+
+		case "vertical":
+			return wav2png.Vertical
+
+		case "horizontal":
+			return wav2png.Horizontal
+
+		case "soft":
+			return wav2png.Soft
+		}
+	}
+
+	return wav2png.Soft
 }
 
 func float32ArrayToSlice(array js.Value) []float32 {

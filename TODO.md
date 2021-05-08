@@ -2,17 +2,13 @@
 
 ### W2P
 
-- [ ] Anti-alias settings
-      - none
-      - vertical
-      - horizontal
-      - soft
-- [ ] Palette
 - [ ] Fill settings
+- [ ] Palette
 - [ ] Segment of audio
 - [ ] Optimize draw/redraw
 - [ ] (optionally) show audio info
 
+- [x] Anti-alias settings
 - [x] Grid settings
 - [x] Dismissable cookie message
 - [x] Zoom

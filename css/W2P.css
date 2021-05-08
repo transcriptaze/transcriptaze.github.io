@@ -206,6 +206,12 @@ div#sizes {
   filter: var(--clickable);
 }
 
+div#grid {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+}
+
 #padding {
   width: 48px;
   margin-left: 8px;
@@ -264,6 +270,13 @@ div#sizes {
   font-size: 0.9em;
   font-variant: small-caps;
   display: none;
+}
+
+div#antialias {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  margin-left: 16px;
 }
 
 dialog#zoom {

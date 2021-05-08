@@ -130,23 +130,39 @@
             </div>
 
             <div id="controls" class="panel">
-              <input id="nogrid" type="radio" name="grid" value="none" onchange="onGrid(event)" checked />
-              <label for="nogrid"><img src="images/grid-none.svg" draggable="false" /></label>
+              <div id="grid">
+                <input id="nogrid" type="radio" name="grid" value="none" onchange="onGrid(event)" checked />
+                <label for="nogrid"><img src="images/grid-none.svg" draggable="false" /></label>
                 
-              <input id="square" type="radio" name="grid" value="square" onchange="onGrid(event)" />
-              <label for="square"><img src="images/grid-square.svg" draggable="false" /></label>
+                <input id="square" type="radio" name="grid" value="square" onchange="onGrid(event)" />
+                <label for="square"><img src="images/grid-square.svg" draggable="false" /></label>
                 
-              <input id="rectangular" type="radio" name="grid" value="rectangular" onchange="onGrid(event)" />
-              <label for="rectangular"><img src="images/grid-rectangular.svg" draggable="false" /></label>
+                <input id="rectangular" type="radio" name="grid" value="rectangular" onchange="onGrid(event)" />
+                <label for="rectangular"><img src="images/grid-rectangular.svg" draggable="false" /></label>
 
-              <input id="padding" type="number" min-value="-16" max-value="32" value="2" placeholder="padding" title="padding" onchange="onPadding(event)" onkeydown="onPadding(event)" />
+                <input id="padding" type="number" min-value="-16" max-value="32" value="2" placeholder="padding" title="padding" onchange="onPadding(event)" onkeydown="onPadding(event)" />
 
-              <input id="colour" type="color" value="#008000" placeholder="colour" title="grid colour" onchange="onGridSetting(event)" />
-              <input id="alpha"  type="range" min="0" max="256" step="32" value="255" title="grid transparency" onchange="onGridSetting(event)" >
-              <input id="gridsize" type="text" value="~64" placeholder="size" title="grid size" onchange="onGridSetting(event)" onkeydown="onGridSetting(event)" />
-              <input id="gridwh" type="text" value="~64x48" placeholder="width x height" title="grid width and height" onchange="onGridSetting(event)" onkeydown="onGridSetting(event)" />
-              <input id="overlay" type="checkbox" title="draws grid above wave" onchange="onGridSetting(event)" />
-              <label for="overlay" title="draws grid above wave">overlay</label>
+                <input id="colour" type="color" value="#008000" title="grid colour" onchange="onGridSetting(event)" placeholder="colour" />
+                <input id="alpha" type="range" value="255" title="grid transparency" onchange="onGridSetting(event)" min="0" max="256" step="32"  >
+                <input id="gridsize" type="text" value="~64" placeholder="size" title="grid size" onchange="onGridSetting(event)" onkeydown="onGridSetting(event)" />
+                <input id="gridwh" type="text" value="~64x48" placeholder="width x height" title="grid width and height" onchange="onGridSetting(event)" onkeydown="onGridSetting(event)" />
+                <input id="overlay" type="checkbox" title="draws grid above wave" onchange="onGridSetting(event)" />
+                <label for="overlay" title="draws grid above wave">overlay</label>
+              </div>
+
+              <div id="antialias">
+                <input id="noantialias" type="radio" name="antialias" value="none" onchange="onAntiAlias(event)" />
+                <label for="noantialias"><img src="images/antialias-none.svg" title="anti-aliasing: none" draggable="false" /></label>
+                  
+                <input id="vertical" type="radio" name="antialias" value="vertical" onchange="onAntiAlias(event)" checked />
+                <label for="vertical"><img src="images/antialias-vertical.svg" title="anti-aliasing: vertical" draggable="false" /></label>
+                
+                <input id="horizontal" type="radio" name="antialias" value="horizontal" onchange="onAntiAlias(event)" />
+                <label for="horizontal"><img src="images/antialias-horizontal.svg" title="anti-aliasing: horizontal" draggable="false" /></label>
+                
+                <input id="soft" type="radio" name="antialias" value="soft" onchange="onAntiAlias(event)" />
+                <label for="soft"><img src="images/antialias-both.svg" title="anti-aliasing: soft" draggable="false" /></label>
+              </div>
             </div>
 
             <!-- ENLARGED PNG VIEW -->
@@ -181,7 +197,7 @@
     import { initialise,
              onDrop, onDragOver, onPick, onPicked, onAccept,
              onSize, onCustomSize, 
-             onGrid, onGridSetting, onPadding,
+             onGrid, onGridSetting, onPadding, onAntiAlias,
              onExport, onClear
           } from './javascript/W2P.js'
 
@@ -194,6 +210,7 @@
     window.onCustomSize = onCustomSize
     window.onGrid = onGrid
     window.onGridSetting = onGridSetting
+    window.onAntiAlias = onAntiAlias
     window.onPadding = onPadding
     window.onExport = onExport
     window.onClear = onClear
