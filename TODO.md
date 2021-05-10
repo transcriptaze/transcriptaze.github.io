@@ -2,12 +2,12 @@
 
 ### W2P
 
-- [ ] Move padding out of grid
 - [ ] Palette
 - [ ] Segment of audio
 - [ ] Optimize draw/redraw
 - [ ] (optionally) show audio info
 
+- [x] Move padding out of grid
 - [x] Fill settings
 - [x] Anti-alias settings
 - [x] Grid settings

@@ -312,6 +312,12 @@ function load (name, blob) {
   const wh = size()
   const width = wh.width
   const height = wh.height
+  let padding = 0
+
+  const v = parseInt(document.getElementById('padding').value, 10)
+  if (!isNaN(v) && v >= -16 && v <= 32) {
+      padding = v
+  }
 
   if (waveform.src !== '') {
     URL.revokeObjectURL(waveform.src)
@@ -322,7 +328,7 @@ function load (name, blob) {
     .then(b => blob.arrayBuffer())
     .then(b => transcode(b))
     .then(b => store(b))
-    .then(b => render(width, height))
+    .then(b => render(width, height, padding))
     .then(b => {
       const array = new Uint8Array(b)
       const png = new Blob([array], { type: 'image/png' })
@@ -348,12 +354,18 @@ function redraw () {
   const waveform = document.getElementById('png')
   const width = wh.width
   const height = wh.height
+  let padding = 0
+
+  const v = parseInt(document.getElementById('padding').value, 10)
+  if (!isNaN(v) && v >= -16 && v <= 32) {
+      padding = v
+  }
 
   if (waveform.src !== '') {
     URL.revokeObjectURL(waveform.src)
   }
 
-  return render(width, height)
+  return render(width, height, padding)
     .then(b => {
       const array = new Uint8Array(b)
       const png = new Blob([array], { type: 'image/png' })
@@ -428,7 +440,7 @@ async function store (buffer) {
   })
 }
 
-async function render (width, height) {
+async function render (width, height, padding) {
   return new Promise((resolve, reject) => {
     goRender((err, png) => {
       if (err) {
@@ -436,7 +448,7 @@ async function render (width, height) {
       } else {
         resolve(png)
       }
-    }, width, height, fill(), grid(), antialias())
+    }, width, height, padding, fill(), grid(), antialias())
   })
 }
 

@@ -91,9 +91,10 @@ func render(this js.Value, inputs []js.Value) interface{} {
 	callback := inputs[0]
 	width := 645
 	height := 390
+	padding := 2
 
 	var fillspec wav2png.FillSpec = wav2png.NewSolidFill(FILL_COLOUR)
-	var gridspec wav2png.GridSpec = wav2png.NewSquareGrid(GRID_COLOUR, GRID_SIZE, 2, GRID_FIT, GRID_OVERLAY)
+	var gridspec wav2png.GridSpec = wav2png.NewSquareGrid(GRID_COLOUR, GRID_SIZE, GRID_FIT, GRID_OVERLAY)
 	var kernel wav2png.Kernel = wav2png.Soft
 
 	if len(inputs) > 1 && !inputs[1].IsNaN() {
@@ -104,16 +105,20 @@ func render(this js.Value, inputs []js.Value) interface{} {
 		height = inputs[2].Int()
 	}
 
-	if len(inputs) > 3 {
-		fillspec = fill(inputs[3])
+	if len(inputs) > 3 && !inputs[3].IsNaN() {
+		padding = inputs[3].Int()
 	}
 
 	if len(inputs) > 4 {
-		gridspec = grid(inputs[4])
+		fillspec = fill(inputs[4])
 	}
 
 	if len(inputs) > 5 {
-		kernel = antialias(inputs[5])
+		gridspec = grid(inputs[5])
+	}
+
+	if len(inputs) > 6 {
+		kernel = antialias(inputs[6])
 	}
 
 	go func() {
@@ -122,16 +127,15 @@ func render(this js.Value, inputs []js.Value) interface{} {
 			return
 		}
 
-		padding := gridspec.Padding()
-		if padding < 0 {
-			padding = 0
+		w := width
+		h := height
+		if padding > 0 {
+			w = width - padding
+			h = height - padding
 		}
 
-		w := width - padding
-		h := height - padding
-
 		img := image.NewNRGBA(image.Rect(0, 0, width, height))
-		grid := wav2png.Grid(gridspec, width, height)
+		grid := wav2png.Grid(gridspec, width, height, padding)
 		waveform := wav2png.Render(wav.duration, wav.samples, w, h)
 		antialiased := wav2png.Antialias(waveform, kernel)
 
@@ -204,17 +208,12 @@ func fill(object js.Value) wav2png.FillSpec {
 func grid(object js.Value) wav2png.GridSpec {
 	if !object.IsNull() {
 		grid := object.Get("type").String()
-		padding := 0
 		colour := GRID_COLOUR
 		size := GRID_SIZE
 		width := GRID_WIDTH
 		height := GRID_HEIGHT
 		fit := GRID_FIT
 		overlay := GRID_OVERLAY
-
-		if p := object.Get("padding"); !p.IsNaN() {
-			padding = p.Int()
-		}
 
 		if c := object.Get("colour"); !c.IsNull() && !c.IsUndefined() {
 			s := strings.ToLower(c.String())
@@ -273,17 +272,17 @@ func grid(object js.Value) wav2png.GridSpec {
 
 		switch grid {
 		case "none":
-			return wav2png.NewNoGrid(padding)
+			return wav2png.NewNoGrid()
 
 		case "square":
-			return wav2png.NewSquareGrid(colour, uint(size), padding, fit, overlay)
+			return wav2png.NewSquareGrid(colour, uint(size), fit, overlay)
 
 		case "rectangular":
-			return wav2png.NewRectangularGrid(colour, uint(width), uint(height), padding, fit, overlay)
+			return wav2png.NewRectangularGrid(colour, uint(width), uint(height), fit, overlay)
 		}
 	}
 
-	return wav2png.NewSquareGrid(GRID_COLOUR, GRID_SIZE, 2, GRID_FIT, GRID_OVERLAY)
+	return wav2png.NewSquareGrid(GRID_COLOUR, GRID_SIZE, GRID_FIT, GRID_OVERLAY)
 }
 
 func antialias(object js.Value) wav2png.Kernel {
