@@ -21,7 +21,7 @@ export function initialise () {
   document.getElementById('fillcolour').value = state.W2P.fill.colour
   document.getElementById('fillalpha').value = state.W2P.fill.alpha
 
-  document.getElementById('padding').value = state.W2P.grid.padding
+  document.getElementById('padding').value = state.W2P.padding
   document.getElementById('gridcolour').value = state.W2P.grid.colour
   document.getElementById('gridalpha').value = state.W2P.grid.alpha
   document.getElementById('gridsize').value = state.W2P.grid.size
@@ -172,15 +172,10 @@ export function onFill (event) {
 
 export function onPadding (event) {
   if (loaded && event.type === 'keydown' && event.key === 'Enter') {
-    const v = document.getElementById('padding').value
-    const padding = parseInt(v, 10)
-
-    if (!isNaN(padding) && padding >= -16 && padding <= 32) {
-      busy()
-      new Promise((resolve) => setTimeout(resolve, 100))
-        .then(b => redraw())
-        .finally(unbusy)
-    }
+    busy()
+    new Promise((resolve) => setTimeout(resolve, 100))
+      .then(b => redraw())
+      .finally(unbusy)
   }
 }
 
@@ -312,12 +307,6 @@ function load (name, blob) {
   const wh = size()
   const width = wh.width
   const height = wh.height
-  let padding = 0
-
-  const v = parseInt(document.getElementById('padding').value, 10)
-  if (!isNaN(v) && v >= -16 && v <= 32) {
-      padding = v
-  }
 
   if (waveform.src !== '') {
     URL.revokeObjectURL(waveform.src)
@@ -328,7 +317,7 @@ function load (name, blob) {
     .then(b => blob.arrayBuffer())
     .then(b => transcode(b))
     .then(b => store(b))
-    .then(b => render(width, height, padding))
+    .then(b => render(width, height, padding()))
     .then(b => {
       const array = new Uint8Array(b)
       const png = new Blob([array], { type: 'image/png' })
@@ -354,18 +343,12 @@ function redraw () {
   const waveform = document.getElementById('png')
   const width = wh.width
   const height = wh.height
-  let padding = 0
-
-  const v = parseInt(document.getElementById('padding').value, 10)
-  if (!isNaN(v) && v >= -16 && v <= 32) {
-      padding = v
-  }
 
   if (waveform.src !== '') {
     URL.revokeObjectURL(waveform.src)
   }
 
-  return render(width, height, padding)
+  return render(width, height, padding())
     .then(b => {
       const array = new Uint8Array(b)
       const png = new Blob([array], { type: 'image/png' })
@@ -486,6 +469,18 @@ function size () {
   return { width: png.width, height: png.height }
 }
 
+function padding () {
+  const v = document.getElementById('padding').value
+  const padding = parseInt(v, 10)
+
+  if (!isNaN(padding) && padding >= -16 && padding <= 32) {
+    // state.setPadding(padding)
+    return padding
+  }
+
+  return 2
+}
+
 function fill () {
   const c = document.getElementById('fillcolour').value
   const a = document.getElementById('fillalpha').value
@@ -505,19 +500,12 @@ function fill () {
 
 function grid () {
   const v = document.querySelector('input[name="grid"]:checked').value
-  const p = document.getElementById('padding').value
   const c = document.getElementById('gridcolour').value
   const a = document.getElementById('gridalpha').value
   const s = document.getElementById('gridsize').value
   const wh = document.getElementById('gridwh').value
   const o = document.getElementById('overlay')
   const sz = size()
-
-  // padding
-  let padding = parseInt(p, 10)
-  if (isNaN(padding)) {
-    padding = 0
-  }
 
   // colour
   let colour = c + 'ff'
@@ -575,20 +563,20 @@ function grid () {
 
   // grid
 
-  state.setGrid(v, padding, c, alpha, gridsize, wh, overlay)
+  state.setGrid(v, c, alpha, gridsize, wh, overlay)
 
   switch (v) {
     case 'none':
-      return { type: 'none', padding: padding }
+      return { type: 'none' }
 
     case 'square':
-      return { type: 'square', colour: colour, size: gridsize, padding: padding, overlay: overlay }
+      return { type: 'square', colour: colour, size: gridsize, overlay: overlay }
 
     case 'rectangular':
-      return { type: 'rectangular', colour: colour, size: gridwh, padding: padding, overlay: overlay }
+      return { type: 'rectangular', colour: colour, size: gridwh, overlay: overlay }
 
     default:
-      return { type: 'square', colour: colour, size: gridsize, padding: padding, overlay: overlay }
+      return { type: 'square', colour: colour, size: gridsize, overlay: overlay }
   }
 }
 
