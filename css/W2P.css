@@ -178,6 +178,28 @@ div#sizes {
   visibility: hidden;
 }
 
+#fillcolour {
+  width: 88px;
+  height: 32px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  padding-left: 2px;
+  padding-right: 2px;
+  margin-bottom: 2px;
+  margin-left: 4px;
+}
+
+#fillalpha {
+  width: 96px;
+  height: 18px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  padding-left: 0px;
+  padding-right: 0px;
+  margin-bottom: 16px;
+  margin-left: 4px;
+}
+
 #controls input[type="radio"] {
   display: none;
   -webkit-appearance: none;
@@ -219,7 +241,7 @@ div#grid {
   margin-bottom: 2px;
 }
 
-#colour {
+#gridcolour {
   width: 48px;
   height: 18px;
   padding-top: 0px;
@@ -231,7 +253,7 @@ div#grid {
   display: none;
 }
 
-#alpha {
+#gridalpha {
   width: 80px;
   height: 18px;
   padding-top: 0px;

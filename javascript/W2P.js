@@ -18,9 +18,12 @@ export function initialise () {
     element.checked = true
   }
 
+  document.getElementById('fillcolour').value = state.W2P.fill.colour
+  document.getElementById('fillalpha').value = state.W2P.fill.alpha
+
   document.getElementById('padding').value = state.W2P.grid.padding
-  document.getElementById('colour').value = state.W2P.grid.colour
-  document.getElementById('alpha').value = state.W2P.grid.alpha
+  document.getElementById('gridcolour').value = state.W2P.grid.colour
+  document.getElementById('gridalpha').value = state.W2P.grid.alpha
   document.getElementById('gridsize').value = state.W2P.grid.size
   document.getElementById('gridwh').value = state.W2P.grid.wh
   document.getElementById('overlay').checked = state.W2P.grid.overlay
@@ -158,41 +161,8 @@ export function onCustomSize (event) {
   }
 }
 
-export function onGrid (event) {
-  const v = document.querySelector('input[name="grid"]:checked')
-
-  if (v && v.value) {
-    switch (v.value) {
-      case 'none':
-        document.getElementById('colour').style.display = 'none'
-        document.getElementById('alpha').style.display = 'none'
-        document.getElementById('gridsize').style.display = 'none'
-        document.getElementById('gridwh').style.display = 'none'
-        document.getElementById('overlay').style.display = 'none'
-        document.querySelector('#overlay + label').style.display = 'none'
-        break
-
-      case 'square':
-        document.getElementById('colour').style.display = 'block'
-        document.getElementById('alpha').style.display = 'block'
-        document.getElementById('gridsize').style.display = 'block'
-        document.getElementById('gridwh').style.display = 'none'
-        document.getElementById('overlay').style.display = 'block'
-        document.querySelector('#overlay + label').style.display = 'block'
-        break
-
-      case 'rectangular':
-        document.getElementById('colour').style.display = 'block'
-        document.getElementById('alpha').style.display = 'block'
-        document.getElementById('gridsize').style.display = 'none'
-        document.getElementById('gridwh').style.display = 'block'
-        document.getElementById('overlay').style.display = 'block'
-        document.querySelector('#overlay + label').style.display = 'block'
-        break
-    }
-  }
-
-  if (loaded) {
+export function onFill (event) {
+  if (loaded && (event.type === 'change' || (event.type === 'keydown' && event.key === 'Enter'))) {
     busy()
     new Promise((resolve) => setTimeout(resolve, 100))
       .then(b => redraw())
@@ -211,6 +181,48 @@ export function onPadding (event) {
         .then(b => redraw())
         .finally(unbusy)
     }
+  }
+}
+
+export function onGrid (event) {
+  const v = document.querySelector('input[name="grid"]:checked')
+
+  if (v && v.value) {
+    switch (v.value) {
+      case 'none':
+        document.getElementById('gridcolour').style.display = 'none'
+        document.getElementById('gridalpha').style.display = 'none'
+        document.getElementById('gridsize').style.display = 'none'
+        document.getElementById('gridwh').style.display = 'none'
+        document.getElementById('overlay').style.display = 'none'
+        document.querySelector('#overlay + label').style.display = 'none'
+        break
+
+      case 'square':
+        document.getElementById('gridcolour').style.display = 'block'
+        document.getElementById('gridalpha').style.display = 'block'
+        document.getElementById('gridsize').style.display = 'block'
+        document.getElementById('gridwh').style.display = 'none'
+        document.getElementById('overlay').style.display = 'block'
+        document.querySelector('#overlay + label').style.display = 'block'
+        break
+
+      case 'rectangular':
+        document.getElementById('gridcolour').style.display = 'block'
+        document.getElementById('gridalpha').style.display = 'block'
+        document.getElementById('gridsize').style.display = 'none'
+        document.getElementById('gridwh').style.display = 'block'
+        document.getElementById('overlay').style.display = 'block'
+        document.querySelector('#overlay + label').style.display = 'block'
+        break
+    }
+  }
+
+  if (loaded) {
+    busy()
+    new Promise((resolve) => setTimeout(resolve, 100))
+      .then(b => redraw())
+      .finally(unbusy)
   }
 }
 
@@ -424,7 +436,7 @@ async function render (width, height) {
       } else {
         resolve(png)
       }
-    }, width, height, grid(), antialias())
+    }, width, height, fill(), grid(), antialias())
   })
 }
 
@@ -462,11 +474,28 @@ function size () {
   return { width: png.width, height: png.height }
 }
 
+function fill () {
+  const c = document.getElementById('fillcolour').value
+  const a = document.getElementById('fillalpha').value
+
+  let colour = c + 'ff'
+  const alpha = parseInt(a, 10)
+  if (!isNaN(alpha) && alpha < 16) {
+    colour = c + '0' + alpha.toString(16)
+  } else if (!isNaN(alpha) && alpha < 255) {
+    colour = c + alpha.toString(16)
+  }
+
+  state.setFill('solid', c, alpha)
+
+  return { type: 'solid', colour: colour }
+}
+
 function grid () {
   const v = document.querySelector('input[name="grid"]:checked').value
   const p = document.getElementById('padding').value
-  const c = document.getElementById('colour').value
-  const a = document.getElementById('alpha').value
+  const c = document.getElementById('gridcolour').value
+  const a = document.getElementById('gridalpha').value
   const s = document.getElementById('gridsize').value
   const wh = document.getElementById('gridwh').value
   const o = document.getElementById('overlay')

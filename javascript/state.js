@@ -10,6 +10,7 @@ const tags = {
   W2P: {
     size: 'W2P.size',
     customSize: 'W2P.customSize',
+    fill: 'W2P.fill',
     grid: 'W2P.grid',
     antialias: 'W2P.antialias'
   }
@@ -29,6 +30,11 @@ export const State = function () {
   this.W2P = {
     size: '645x392',
     customSize: '',
+    fill: {
+      type: 'solid',
+      colour: '#000000',
+      alpha: 255
+    },
     grid: {
       type: 'square',
       padding: 2,
@@ -110,6 +116,14 @@ export const State = function () {
     window.localStorage.setItem(tags.W2P.customSize, this.W2P.customSize)
   }
 
+  this.setFill = function (type, colour, alpha) {
+    this.W2P.fill.type = type
+    this.W2P.fill.colour = colour    
+    this.W2P.fill.alpha = alpha
+
+    window.localStorage.setItem(tags.W2P.fill, JSON.stringify(this.W2P.fill))
+  }
+
   this.setGrid = function (type, padding, colour, alpha, size, wh, overlay) {
     this.W2P.grid.type = type
     this.W2P.grid.padding = padding
@@ -185,6 +199,12 @@ function restoreW2P (state) {
   blob = window.localStorage.getItem(tags.W2P.customSize)
   if (blob !== null) {
     state.W2P.customSize = blob.trim()
+  }
+
+  // Restore W2P fill
+  blob = window.localStorage.getItem(tags.W2P.fill)
+  if (blob !== null) {
+    state.W2P.fill = JSON.parse(blob)
   }
 
   // Restore W2P grid

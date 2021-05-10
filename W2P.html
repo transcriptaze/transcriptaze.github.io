@@ -116,6 +116,16 @@
                 </div>
               </div>
 
+              <!-- FILL -->
+              <input id="fillcolour" type="color" value="#000000" 
+                     title="fill colour" 
+                     placeholder="colour" 
+                     onchange="onFill(event)" />
+
+              <input id="fillalpha" type="range" value="255" min="0" max="256" step="32" 
+                     title="grid transparency" 
+                     onchange="onFill(event)" />
+
               <!-- BUTTONS -->
               <div id="buttons" class="panel">
                 <a id="download" style="display: none;"></a>
@@ -142,8 +152,15 @@
 
                 <input id="padding" type="number" min-value="-16" max-value="32" value="2" placeholder="padding" title="padding" onchange="onPadding(event)" onkeydown="onPadding(event)" />
 
-                <input id="colour" type="color" value="#008000" title="grid colour" onchange="onGridSetting(event)" placeholder="colour" />
-                <input id="alpha" type="range" value="255" title="grid transparency" onchange="onGridSetting(event)" min="0" max="256" step="32"  >
+                <input id="gridcolour" type="color" value="#008000" 
+                       title="grid colour" 
+                       placeholder="colour" 
+                       onchange="onGridSetting(event)" />
+                
+                <input id="gridalpha" type="range" value="255" min="0" max="256" step="32"
+                       title="grid transparency" 
+                       onchange="onGridSetting(event)" />
+
                 <input id="gridsize" type="text" value="~64" placeholder="size" title="grid size" onchange="onGridSetting(event)" onkeydown="onGridSetting(event)" />
                 <input id="gridwh" type="text" value="~64x48" placeholder="width x height" title="grid width and height" onchange="onGridSetting(event)" onkeydown="onGridSetting(event)" />
                 <input id="overlay" type="checkbox" title="draws grid above wave" onchange="onGridSetting(event)" />
@@ -197,6 +214,7 @@
     import { initialise,
              onDrop, onDragOver, onPick, onPicked, onAccept,
              onSize, onCustomSize, 
+             onFill,
              onGrid, onGridSetting, onPadding, onAntiAlias,
              onExport, onClear
           } from './javascript/W2P.js'
@@ -208,6 +226,7 @@
     window.onAccept = onAccept
     window.onSize = onSize
     window.onCustomSize = onCustomSize
+    window.onFill = onFill
     window.onGrid = onGrid
     window.onGridSetting = onGridSetting
     window.onAntiAlias = onAntiAlias

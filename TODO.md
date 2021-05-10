@@ -2,12 +2,13 @@
 
 ### W2P
 
-- [ ] Fill settings
+- [ ] Move padding out of grid
 - [ ] Palette
 - [ ] Segment of audio
 - [ ] Optimize draw/redraw
 - [ ] (optionally) show audio info
 
+- [x] Fill settings
 - [x] Anti-alias settings
 - [x] Grid settings
 - [x] Dismissable cookie message

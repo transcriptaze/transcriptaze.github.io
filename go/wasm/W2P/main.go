@@ -22,8 +22,11 @@ import (
 
 const VERSION = "v0.1.0"
 
-var BACKGROUND = wav2png.NewSolidFill(color.NRGBA{R: 0x00, G: 0x00, B: 0x00, A: 255})
-var GRID_COLOUR = color.NRGBA{R: 0x00, G: 0x80, B: 0x00, A: 255}
+var BLACK = color.NRGBA{R: 0x00, G: 0x00, B: 0x00, A: 255}
+var DARKGREEN = color.NRGBA{R: 0x00, G: 0x80, B: 0x00, A: 255}
+
+var FILL_COLOUR = BLACK
+var GRID_COLOUR = DARKGREEN
 
 const GRID_SIZE = 64
 const GRID_WIDTH = 64
@@ -88,6 +91,8 @@ func render(this js.Value, inputs []js.Value) interface{} {
 	callback := inputs[0]
 	width := 645
 	height := 390
+
+	var fillspec wav2png.FillSpec = wav2png.NewSolidFill(FILL_COLOUR)
 	var gridspec wav2png.GridSpec = wav2png.NewSquareGrid(GRID_COLOUR, GRID_SIZE, 2, GRID_FIT, GRID_OVERLAY)
 	var kernel wav2png.Kernel = wav2png.Soft
 
@@ -100,11 +105,15 @@ func render(this js.Value, inputs []js.Value) interface{} {
 	}
 
 	if len(inputs) > 3 {
-		gridspec = grid(inputs[3])
+		fillspec = fill(inputs[3])
 	}
 
 	if len(inputs) > 4 {
-		kernel = antialias(inputs[4])
+		gridspec = grid(inputs[4])
+	}
+
+	if len(inputs) > 5 {
+		kernel = antialias(inputs[5])
 	}
 
 	go func() {
@@ -130,7 +139,7 @@ func render(this js.Value, inputs []js.Value) interface{} {
 		rect := image.Rect(padding, padding, w, h)
 		rectg := img.Bounds()
 
-		wav2png.Fill(img, BACKGROUND)
+		wav2png.Fill(img, fillspec)
 
 		if gridspec.Overlay() {
 			draw.Draw(img, rect, antialiased, origin, draw.Over)
@@ -159,6 +168,37 @@ func clear(this js.Value, inputs []js.Value) interface{} {
 	}()
 
 	return nil
+}
+
+func fill(object js.Value) wav2png.FillSpec {
+	if !object.IsNull() {
+		fill := object.Get("type").String()
+		colour := FILL_COLOUR
+
+		if c := object.Get("colour"); !c.IsNull() && !c.IsUndefined() {
+			s := strings.ToLower(c.String())
+			if regexp.MustCompile("#[[:xdigit:]]{8}").MatchString(s) {
+				red := uint8(0)
+				green := uint8(0x80)
+				blue := uint8(0)
+				alpha := uint8(0xff)
+
+				if _, err := fmt.Sscanf(s, "#%02x%02x%02x%02x", &red, &green, &blue, &alpha); err == nil {
+					colour = color.NRGBA{R: red, G: green, B: blue, A: alpha}
+				}
+			}
+		}
+
+		switch fill {
+		case "solid":
+			return wav2png.NewSolidFill(colour)
+
+		default:
+			return wav2png.NewSolidFill(colour)
+		}
+	}
+
+	return wav2png.NewSolidFill(FILL_COLOUR)
 }
 
 func grid(object js.Value) wav2png.GridSpec {
