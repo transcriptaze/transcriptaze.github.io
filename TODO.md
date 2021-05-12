@@ -3,6 +3,7 @@
 ### W2P
 
 - [ ] Palette
+- [ ] Browser tab icon
 - [ ] Segment of audio
 - [ ] Optimize draw/redraw
 - [ ] (optionally) show audio info

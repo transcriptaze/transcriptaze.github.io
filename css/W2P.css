@@ -178,6 +178,44 @@ div#sizes {
   visibility: hidden;
 }
 
+#palettes {
+  display: flex;
+  background: #222222;
+  width: 91px;
+  padding-left: 2px;
+  padding-right: 2px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  margin-left: 4px;
+  margin-right: 4px;
+  margin-top: 6px;
+  margin-bottom: 6px;
+  border-radius: 2px;
+}
+
+#palettes input[type="radio"] {
+  display: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+#palettes input[type="radio"]:checked + label img {
+  border: 1px solid red;
+  border-radius: 2px;
+}
+
+#palettes input[type="radio"]:disabled + label img {
+}
+
+.palette {
+  width: 11px;
+  height: 128px;
+  margin-left: 2px;
+  margin-right: 2px;
+  margin-top: 1px;
+  margin-bottom: 1px;
+}
+
 #fillcolour {
   width: 88px;
   height: 32px;

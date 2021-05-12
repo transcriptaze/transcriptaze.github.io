@@ -51,6 +51,7 @@ func main() {
 	js.Global().Set("goStore", js.FuncOf(store))
 	js.Global().Set("goRender", js.FuncOf(render))
 	js.Global().Set("goClear", js.FuncOf(clear))
+	js.Global().Set("goPalette", js.FuncOf(palette))
 
 	<-c
 }
@@ -169,6 +170,23 @@ func clear(this js.Value, inputs []js.Value) interface{} {
 	go func() {
 		wav = nil
 		callback.Invoke(js.Null())
+	}()
+
+	return nil
+}
+
+func palette(this js.Value, inputs []js.Value) interface{} {
+	callback := inputs[0]
+	buffer := inputs[1]
+
+	go func() {
+		b := bytes.NewBuffer(arrayBufferToBytes(buffer))
+
+		if _, err := png.Decode(b); err != nil {
+			callback.Invoke(fmt.Errorf("Error decoding palette PNG").Error())
+		} else {
+			callback.Invoke(js.Null())
+		}
 	}()
 
 	return nil
@@ -326,4 +344,14 @@ func bytesToArrayBuffer(bytes []byte) js.Value {
 	js.CopyBytesToJS(u8array, bytes)
 
 	return array
+}
+
+func arrayBufferToBytes(buffer js.Value) []byte {
+	u8array := js.Global().Get("Uint8Array").New(buffer)
+	N := u8array.Length()
+	bytes := make([]byte, N)
+
+	js.CopyBytesToGo(bytes, u8array)
+
+	return bytes
 }

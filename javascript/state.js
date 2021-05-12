@@ -32,13 +32,13 @@ export const State = function () {
     size: '645x392',
     padding: 2,
     customSize: '',
-    
+
     fill: {
       type: 'solid',
       colour: '#000000',
       alpha: 255
     },
-    
+
     grid: {
       type: 'square',
       colour: '#008000',
@@ -128,7 +128,7 @@ export const State = function () {
 
   this.setFill = function (type, colour, alpha) {
     this.W2P.fill.type = type
-    this.W2P.fill.colour = colour    
+    this.W2P.fill.colour = colour
     this.W2P.fill.alpha = alpha
 
     window.localStorage.setItem(tags.W2P.fill, JSON.stringify(this.W2P.fill))

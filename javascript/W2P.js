@@ -1,4 +1,4 @@
-/* global goStore, goRender, goClear */
+/* global goStore, goRender, goClear, goPalette */
 
 import { State } from './state.js'
 
@@ -161,6 +161,31 @@ export function onCustomSize (event) {
   }
 }
 
+export function onPalette (event) {
+  const img = document.querySelector('#' + event.target.id + " + label img")
+
+  if (img) {
+    fetch(img.src)
+      .then(response => response.blob())
+      .then(blob => blob.arrayBuffer())
+      .then(buffer => palette(buffer))
+      .catch(function (err) {
+        console.error(err)
+      })
+  }
+
+  // new Promise((resolve) => setTimeout(resolve, 100))
+  //     .then(b => setPalette())
+  //     .finally(unbusy)
+
+  // if (loaded) {
+  //   busy()
+  //   new Promise((resolve) => setTimeout(resolve, 100))
+  //     .then(b => redraw())
+  //     .finally(unbusy)
+  // }
+}
+
 export function onFill (event) {
   if (loaded && (event.type === 'change' || (event.type === 'keydown' && event.key === 'Enter'))) {
     busy()
@@ -171,6 +196,8 @@ export function onFill (event) {
 }
 
 export function onPadding (event) {
+  padding()
+
   if (loaded && event.type === 'keydown' && event.key === 'Enter') {
     busy()
     new Promise((resolve) => setTimeout(resolve, 100))
@@ -435,6 +462,18 @@ async function render (width, height, padding) {
   })
 }
 
+async function palette (buffer) {
+  return new Promise((resolve, reject) => {
+    goPalette((err) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve()
+      }
+    }, buffer)
+  })
+}
+
 function size () {
   let v = '645x390'
 
@@ -474,7 +513,7 @@ function padding () {
   const padding = parseInt(v, 10)
 
   if (!isNaN(padding) && padding >= -16 && padding <= 32) {
-    // state.setPadding(padding)
+    state.setPadding(padding)
     return padding
   }
 

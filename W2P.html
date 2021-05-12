@@ -116,6 +116,27 @@
                 </div>
               </div>
 
+              <!-- PALETTES -->
+              <div id="palettes">
+                <input id="palette1" type="radio" name="palette" value="ice" onchange="onPalette(event)" checked />
+                <label for="palette1"><img class="palette" src="./images/ice.png" draggable="false" /></label>
+
+                <input id="palette2" type="radio" name="palette" value="blue" onchange="onPalette(event)" />
+                <label for="palette2"><img class="palette" src="./images/blue.png"    draggable="false" /></label>
+
+                <input id="palette3" type="radio" name="palette" value="" onchange="onPalette(event)" disabled />
+                <label for="palette3"><img class="palette" src="./images/palette.png" draggable="false" /></label>
+
+                <input id="palette4" type="radio" name="palette" value="" onchange="onPalette(event)" disabled />
+                <label for="palette4"><img class="palette" src="./images/palette.png" draggable="false" /></label>
+
+                <input id="palette5" type="radio" name="palette" value="" onchange="onPalette(event)" disabled />
+                <label for="palette5"><img class="palette" src="./images/palette.png" draggable="false" /></label>
+
+                <input id="palette6" type="radio" name="palette" value="" onchange="onPalette(event)" disabled />
+                <label for="palette6"><img class="palette" src="./images/palette.png" draggable="false" /></label>
+              </div>
+
               <!-- FILL -->
               <input id="fillcolour" type="color" value="#000000" 
                      title="fill colour" 
@@ -214,6 +235,7 @@
     import { initialise,
              onDrop, onDragOver, onPick, onPicked, onAccept,
              onSize, onCustomSize, 
+             onPalette,
              onFill,
              onGrid, onGridSetting, onPadding, onAntiAlias,
              onExport, onClear
@@ -226,6 +248,7 @@
     window.onAccept = onAccept
     window.onSize = onSize
     window.onCustomSize = onCustomSize
+    window.onPalette = onPalette
     window.onFill = onFill
     window.onGrid = onGrid
     window.onGridSetting = onGridSetting
