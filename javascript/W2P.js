@@ -109,18 +109,55 @@ export function onDragOver (event) {
   event.preventDefault()
 }
 
-export function onPick (event) {
-  const input = document.getElementById('file')
+export function onPick (event, type) {
+  if (type === 'palette') {
+    const label = event.target.parentElement
+    const slot = label.getAttribute('for')
+    const input = document.getElementById(slot)
+    const picker = document.getElementById('palette')
 
-  input.value = null
-  input.click()
+    if (input.disabled) {
+      picker.dataset.slot = slot
+      picker.value = null
+      picker.click()
+    }
+
+  } else {
+    const input = document.getElementById('file')
+
+    input.value = null
+    input.click()
+  }
 }
 
-export function onPicked (event) {
-  const files = event.target.files
+export function onPicked (event, type) {
+  if (type === 'palette') {
+    const files = event.target.files
 
-  if ((files.length > 0) && (files[0] !== undefined)) {
-    load(files[0].name, files[0])
+    if ((files.length > 0) && (files[0] !== undefined)) {
+      const label = document.querySelector(`#${event.target.dataset.slot} + label`)
+      const slot = label.querySelector('img')
+      const blob = files[0]
+      const url = URL.createObjectURL(blob)
+
+      if (blob && blob.type && blob.type === 'image/png') {
+        slot.src = url
+
+        if (label && label.getAttribute('for')) {
+          const input = document.getElementById(label.getAttribute('for'))
+          if (input) {
+            input.disabled = false
+          }
+        }
+      }
+    }    
+
+  } else {
+    const files = event.target.files
+
+    if ((files.length > 0) && (files[0] !== undefined)) {
+      load(files[0].name, files[0])
+    }    
   }
 }
 

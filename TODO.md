@@ -3,6 +3,9 @@
 ### W2P
 
 - [ ] Palette
+      - clear palette
+      - store/restore
+
 - [ ] Browser tab icon
 - [ ] Segment of audio
 - [ ] Optimize draw/redraw
