@@ -90,6 +90,10 @@ github.com/transcriptaze/wav2png v0.0.0-20210510225130-2dda15a2f190 h1:rlT25j8EV
 github.com/transcriptaze/wav2png v0.0.0-20210510225130-2dda15a2f190/go.mod h1:Z+y/ZhQcjeNcTqC98mjm8liTrx1RfBcnCNjg8urNNN8=
 github.com/transcriptaze/wav2png v0.0.0-20210510231347-60d0346dc860 h1:OK3iDgmQ+9nZltjL/jB8X7lv39/G8hpyxQ0h74NJkCw=
 github.com/transcriptaze/wav2png v0.0.0-20210510231347-60d0346dc860/go.mod h1:Z+y/ZhQcjeNcTqC98mjm8liTrx1RfBcnCNjg8urNNN8=
+github.com/transcriptaze/wav2png v0.0.0-20210512224313-aebf6e063ed1 h1:stYUrvQ2qEaiwh4ISzJb2Heno2PR2x2xt+MghpLOaO0=
+github.com/transcriptaze/wav2png v0.0.0-20210512224313-aebf6e063ed1/go.mod h1:+VSxdO98inwNFmrGc1Ceab7E9t8CpVsPkCZYewMvt44=
+github.com/transcriptaze/wav2png v0.0.0-20210512231011-18ba4f465775 h1:5xkWAso3jbudxNSgEvexkoBKur98qp8Zcb0pjnrsuoY=
+github.com/transcriptaze/wav2png v0.0.0-20210512231011-18ba4f465775/go.mod h1:+VSxdO98inwNFmrGc1Ceab7E9t8CpVsPkCZYewMvt44=
 github.com/ugorji/go/codec v0.0.0-20181204163529-d75b2dcb6bc8/go.mod h1:VFNgLljTbGfSG7qAOspJ7OScBnGdDN/yBr0sguwnwf0=
 github.com/xordataexchange/crypt v0.0.3-0.20170626215501-b2862e3d0a77/go.mod h1:aYKd//L2LvnjZzWKhF00oedf4jCCReLcmhLdhm1A27Q=
 go.starlark.net v0.0.0-20190702223751-32f345186213/go.mod h1:c1/X6cHgvdXj6pUlmWKMkuqRnW4K8x2vwt6JAaaircg=

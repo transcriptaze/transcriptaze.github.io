@@ -94,11 +94,13 @@ export function onDrop (event) {
 
   if (event.dataTransfer.items) {
     if (event.dataTransfer.items.length > 0 && event.dataTransfer.items[0].kind === 'file') {
-      load(event.dataTransfer.items[0].getAsFile())
+      const file = event.dataTransfer.items[0].getAsFile()
+      load(file.name, file)
     }
   } else if (event.dataTransfer.files) {
     if (event.dataTransfer.files.length > 0) {
-      load(event.dataTransfer.files[0])
+      const file = event.dataTransfer.files[0]
+      load(file.name, file)
     }
   }
 }
@@ -162,28 +164,59 @@ export function onCustomSize (event) {
 }
 
 export function onPalette (event) {
-  const img = document.querySelector('#' + event.target.id + " + label img")
+  const img = document.querySelector('#' + event.target.id + ' + label img')
 
   if (img) {
-    fetch(img.src)
+    if (loaded) {
+      busy()
+    }
+
+    delay()
+      .then(b => fetch(img.src))
       .then(response => response.blob())
       .then(blob => blob.arrayBuffer())
       .then(buffer => palette(buffer))
+      .then(b => { if (loaded) { redraw() } })
+      .finally(unbusy)
       .catch(function (err) {
         console.error(err)
       })
   }
+}
 
-  // new Promise((resolve) => setTimeout(resolve, 100))
-  //     .then(b => setPalette())
-  //     .finally(unbusy)
+export function onPaletteDrop (event) {
+  event.preventDefault()
 
-  // if (loaded) {
-  //   busy()
-  //   new Promise((resolve) => setTimeout(resolve, 100))
-  //     .then(b => redraw())
-  //     .finally(unbusy)
-  // }
+  const drop = function (blob) {
+    const slot = event.target
+    const label = event.target.parentElement
+    const url = URL.createObjectURL(blob)
+
+    if (blob && blob.type && blob.type === 'image/png') {
+        slot.src = url
+
+        if (label && label.getAttribute('for')) {
+          const input = document.getElementById(label.getAttribute('for'))
+          if (input) {
+            input.disabled = false
+          }
+        }
+    }
+  }
+
+  if (event.dataTransfer.items) {
+    if (event.dataTransfer.items.length > 0 && event.dataTransfer.items[0].kind === 'file') {
+      drop(event.dataTransfer.items[0].getAsFile())
+    }
+  } else if (event.dataTransfer.files) {
+    if (event.dataTransfer.files.length > 0) {
+      drop(event.dataTransfer.files[0])
+    }
+  }
+}
+
+export function onPaletteDragOver (event) {
+  event.preventDefault()
 }
 
 export function onFill (event) {
@@ -657,6 +690,10 @@ function unbusy () {
 
   loading.style.visibility = 'hidden'
   windmill.style.display = 'none'
+}
+
+function delay () {
+  return new Promise((resolve) => setTimeout(resolve, 100))
 }
 
 function sleep (time) {

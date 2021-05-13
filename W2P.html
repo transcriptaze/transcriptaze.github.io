@@ -121,20 +121,36 @@
                 <input id="palette1" type="radio" name="palette" value="ice" onchange="onPalette(event)" checked />
                 <label for="palette1"><img class="palette" src="./images/ice.png" draggable="false" /></label>
 
-                <input id="palette2" type="radio" name="palette" value="blue" onchange="onPalette(event)" />
-                <label for="palette2"><img class="palette" src="./images/blue.png"    draggable="false" /></label>
+                <input id="palette2" type="radio" name="palette" value="amber" onchange="onPalette(event)" />
+                <label for="palette2"><img class="palette" src="./images/amber.png" draggable="false" 
+                       ondrop="onPaletteDrop(event)" 
+                       ondragover="onPaletteDragOver(event)"/>
+                </label>
 
                 <input id="palette3" type="radio" name="palette" value="" onchange="onPalette(event)" disabled />
-                <label for="palette3"><img class="palette" src="./images/palette.png" draggable="false" /></label>
+                <label for="palette3"><img class="palette" src="./images/palette.png" draggable="false"
+                       ondrop="onPaletteDrop(event)" 
+                       ondragover="onPaletteDragOver(event)"/>
+                </label>
 
                 <input id="palette4" type="radio" name="palette" value="" onchange="onPalette(event)" disabled />
-                <label for="palette4"><img class="palette" src="./images/palette.png" draggable="false" /></label>
+                <label for="palette4"><img class="palette" src="./images/palette.png" draggable="false" 
+                       ondrop="onPaletteDrop(event)" 
+                       ondragover="onPaletteDragOver(event)"/>
+                </label>
 
                 <input id="palette5" type="radio" name="palette" value="" onchange="onPalette(event)" disabled />
-                <label for="palette5"><img class="palette" src="./images/palette.png" draggable="false" /></label>
+                <label for="palette5"><img class="palette" src="./images/palette.png" draggable="false" 
+                       ondrop="onPaletteDrop(event)" 
+                       ondragover="onPaletteDragOver(event)"/>
+                </label>
 
                 <input id="palette6" type="radio" name="palette" value="" onchange="onPalette(event)" disabled />
-                <label for="palette6"><img class="palette" src="./images/palette.png" draggable="false" /></label>
+                <label for="palette6">
+                  <img class="palette" src="./images/palette.png" draggable="false"  
+                       ondrop="onPaletteDrop(event)" 
+                       ondragover="onPaletteDragOver(event)"/>
+                </label>
               </div>
 
               <!-- FILL -->
@@ -235,7 +251,7 @@
     import { initialise,
              onDrop, onDragOver, onPick, onPicked, onAccept,
              onSize, onCustomSize, 
-             onPalette,
+             onPalette,onPaletteDrop,onPaletteDragOver,
              onFill,
              onGrid, onGridSetting, onPadding, onAntiAlias,
              onExport, onClear
@@ -249,6 +265,8 @@
     window.onSize = onSize
     window.onCustomSize = onCustomSize
     window.onPalette = onPalette
+    window.onPaletteDrop = onPaletteDrop
+    window.onPaletteDragOver = onPaletteDragOver
     window.onFill = onFill
     window.onGrid = onGrid
     window.onGridSetting = onGridSetting

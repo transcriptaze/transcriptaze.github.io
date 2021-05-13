@@ -44,6 +44,11 @@ type audio struct {
 }
 
 var wav *audio
+var cache = struct {
+	palette wav2png.Palette
+}{
+	palette: wav2png.Ice,
+}
 
 func main() {
 	c := make(chan bool)
@@ -137,7 +142,7 @@ func render(this js.Value, inputs []js.Value) interface{} {
 
 		img := image.NewNRGBA(image.Rect(0, 0, width, height))
 		grid := wav2png.Grid(gridspec, width, height, padding)
-		waveform := wav2png.Render(wav.duration, wav.samples, w, h)
+		waveform := wav2png.Render(wav.duration, wav.samples, w, h, cache.palette)
 		antialiased := wav2png.Antialias(waveform, kernel)
 
 		origin := image.Pt(0, 0)
@@ -182,9 +187,15 @@ func palette(this js.Value, inputs []js.Value) interface{} {
 	go func() {
 		b := bytes.NewBuffer(arrayBufferToBytes(buffer))
 
-		if _, err := png.Decode(b); err != nil {
+		if img, err := png.Decode(b); err != nil {
 			callback.Invoke(fmt.Errorf("Error decoding palette PNG").Error())
+		} else if p, err := wav2png.PaletteFromPng(img); err != nil {
+			callback.Invoke(err.Error())
+		} else if p == nil {
+			callback.Invoke(fmt.Errorf("Error creating palette from PNG").Error())
 		} else {
+			cache.palette = *p
+
 			callback.Invoke(js.Null())
 		}
 	}()
