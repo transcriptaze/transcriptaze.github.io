@@ -4,16 +4,15 @@
 
 - [ ] Palette
       - store/restore
-      - fix transparency for fire & aurora
       - restore with default palettes if box is empty
       - use dataset rather than guessing which palette is being deleted etc
-- [ ] Browser tab icon
 
 - [ ] Segment of audio
-- [ ] Amplify
+- [ ] Amplify/v-scale
 - [ ] Optimize draw/redraw
 - [ ] (optionally) show audio info
 
+- [x] Browser tab icon
 - [x] Move padding out of grid
 - [x] Fill settings
 - [x] Anti-alias settings
