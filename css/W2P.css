@@ -199,21 +199,48 @@ div#sizes {
   appearance: none;
 }
 
-#palettes input[type="radio"]:checked + label img {
+#palettes input[type="radio"] + label {
+  position: relative;
+  height: 128px;
+  margin-left: 1px;
+  margin-right: 2px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding: 0px 0px 0px 0px;
+  border: none;
+}
+
+#palettes input[type="radio"]:checked + label {
   border: 1px solid red;
   border-radius: 2px;
 }
 
-#palettes input[type="radio"]:disabled + label img {
+.palette {
+  width: 12px;
+  height: 128px;
 }
 
-.palette {
-  width: 11px;
+.palette:hover {
+  width: 12px;
   height: 128px;
-  margin-left: 2px;
-  margin-right: 2px;
-  margin-top: 1px;
-  margin-bottom: 1px;
+}
+
+.X {
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  left: 1px;
+  top: 117px;
+  visibility: hidden;
+  z-index: 2;
+}
+
+#palettes input[type="radio"] + label:hover img.X {
+  visibility: visible;
+}
+
+#palettes input[type="radio"]:disabled + label:hover img.X {
+  visibility: hidden;
 }
 
 #fillcolour {

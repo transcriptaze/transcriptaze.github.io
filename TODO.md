@@ -3,11 +3,14 @@
 ### W2P
 
 - [ ] Palette
-      - clear palette
       - store/restore
-
+      - fix transparency for fire & aurora
+      - restore with default palettes if box is empty
+      - use dataset rather than guessing which palette is being deleted etc
 - [ ] Browser tab icon
+
 - [ ] Segment of audio
+- [ ] Amplify
 - [ ] Optimize draw/redraw
 - [ ] (optionally) show audio info
 

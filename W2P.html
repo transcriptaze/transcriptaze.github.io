@@ -118,47 +118,58 @@
 
               <!-- PALETTES -->
               <div id="palettes">
-                <input id="palette" type="file" accept="image/png" onchange="onPicked(event, 'palette')" style="display: none;" />
+                <input id="palette" type="file" accept="image/png" onchange="onPalettePicked(event)" style="display: none;" />
 
                 <input id="palette1" type="radio" name="palette" value="ice" onchange="onPalette(event)" checked />
-                <label for="palette1"><img class="palette" src="./images/ice.png" draggable="false" /></label>
+                <label for="palette1">
+                  <img class="X" src="./images/X.svg" draggable="false" onclick="onPaletteDelete(event)" />
+                  <img class="palette" src="./images/ice.png" draggable="false" 
+                       onclick="return onPalettePick(event)"
+                       ondrop="onPaletteDrop(event)" 
+                       ondragover="onPaletteDragOver(event)"/>
+                </label>
 
                 <input id="palette2" type="radio" name="palette" value="fire" onchange="onPalette(event)" />
                 <label for="palette2">
+                  <img class="X" src="./images/X.svg" draggable="false" onclick="onPaletteDelete(event)" />
                   <img class="palette" src="./images/fire.png" draggable="false" 
-                       onclick="return onPick(event, 'palette')"
+                       onclick="return onPalettePick(event)"
                        ondrop="onPaletteDrop(event)" 
                        ondragover="onPaletteDragOver(event)"/>
                 </label>
 
                 <input id="palette3" type="radio" name="palette" value="aurora" onchange="onPalette(event)" />
                 <label for="palette3">
+                  <img class="X" src="./images/X.svg" draggable="false" onclick="onPaletteDelete(event)" />
                   <img class="palette" src="./images/aurora.png" draggable="false"
-                       onclick="return onPick(event, 'palette')"
+                       onclick="return onPalettePick(event)"
                        ondrop="onPaletteDrop(event)" 
                        ondragover="onPaletteDragOver(event)"/>
                 </label>
 
                 <input id="palette4" type="radio" name="palette" value="" onchange="onPalette(event)" disabled />
                 <label for="palette4">
+                  <img class="X" src="./images/X.svg" draggable="false" onclick="onPaletteDelete(event)" />
                   <img class="palette" src="./images/palette.png" draggable="false" 
-                       onclick="return onPick(event, 'palette')"
+                       onclick="return onPalettePick(event)"
                        ondrop="onPaletteDrop(event)" 
                        ondragover="onPaletteDragOver(event)"/>
                 </label>
 
                 <input id="palette5" type="radio" name="palette" value="" onchange="onPalette(event)" disabled />
                 <label for="palette5">
+                  <img class="X" src="./images/X.svg" draggable="false" onclick="onPaletteDelete(event)" />
                   <img class="palette" src="./images/palette.png" draggable="false" 
-                       onclick="return onPick(event, 'palette')"
+                       onclick="return onPalettePick(event)"
                        ondrop="onPaletteDrop(event)" 
                        ondragover="onPaletteDragOver(event)"/>
                 </label>
 
                 <input id="palette6" type="radio" name="palette" value="" onchange="onPalette(event)" disabled />
                 <label for="palette6">
+                  <img class="X" src="./images/X.svg" draggable="false" onclick="onPaletteDelete(event)" />
                   <img class="palette" src="./images/palette.png" draggable="false"  
-                       onclick="return onPick(event, 'palette')"
+                       onclick="return onPalettePick(event)"
                        ondrop="onPaletteDrop(event)" 
                        ondragover="onPaletteDragOver(event)"/>
                 </label>
@@ -262,7 +273,7 @@
     import { initialise,
              onDrop, onDragOver, onPick, onPicked, onAccept,
              onSize, onCustomSize, 
-             onPalette,onPaletteDrop,onPaletteDragOver,
+             onPalette,onPalettePick,onPalettePicked,onPaletteDrop,onPaletteDragOver,onPaletteDelete,
              onFill,
              onGrid, onGridSetting, onPadding, onAntiAlias,
              onExport, onClear
@@ -276,8 +287,11 @@
     window.onSize = onSize
     window.onCustomSize = onCustomSize
     window.onPalette = onPalette
+    window.onPalettePick = onPalettePick
+    window.onPalettePicked = onPalettePicked
     window.onPaletteDrop = onPaletteDrop
     window.onPaletteDragOver = onPaletteDragOver
+    window.onPaletteDelete = onPaletteDelete
     window.onFill = onFill
     window.onGrid = onGrid
     window.onGridSetting = onGridSetting
