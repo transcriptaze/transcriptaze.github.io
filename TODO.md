@@ -3,9 +3,9 @@
 ### W2P
 
 - [ ] Palette
-      - store/restore
-      - restore with default palettes if box is empty
       - use dataset rather than guessing which palette is being deleted etc
+      - better 'ice'
+      - release palette URL's on replace
 
 - [ ] Segment of audio
 - [ ] Amplify/v-scale

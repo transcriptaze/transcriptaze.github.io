@@ -18,6 +18,22 @@ export function initialise () {
     element.checked = true
   }
 
+  [2, 3, 4, 5, 6].forEach(ix => {
+    const tag = `palette${ix}`
+    const bytes = state.W2P.palettes.get(tag)
+
+    if (bytes) {
+      const array = new Uint8Array(bytes)
+      const png = new Blob([array], { type: 'image/png' })
+      const url = URL.createObjectURL(png)
+      const input = document.getElementById(tag)
+      const slot = document.querySelector('#' + tag + ' + label img.palette')
+
+      slot.src = url
+      input.disabled = false
+    }
+  })
+
   document.getElementById('fillcolour').value = state.W2P.fill.colour
   document.getElementById('fillalpha').value = state.W2P.fill.alpha
 
@@ -201,7 +217,8 @@ export function onPalettePicked (event) {
   const files = event.target.files
 
   if ((files.length > 0) && (files[0] !== undefined)) {
-    const label = document.querySelector(`#${event.target.dataset.slot} + label`)
+    const tag = event.target.dataset.slot
+    const label = document.querySelector(`#${tag} + label`)
     const slot = label.querySelector('img.palette')
     const blob = files[0]
     const url = URL.createObjectURL(blob)
@@ -210,10 +227,14 @@ export function onPalettePicked (event) {
       slot.src = url
 
       if (label && label.getAttribute('for')) {
-        const input = document.getElementById(label.getAttribute('for'))
-        if (input) {
-          input.disabled = false
-        }
+        const tag = label.getAttribute('for')
+        const input = document.getElementById(tag)
+
+        input.disabled = false
+
+        blob
+          .arrayBuffer()
+          .then(b => state.setPalette(tag, new Uint8Array(b)))
       }
     }
   }
@@ -231,10 +252,14 @@ export function onPaletteDrop (event) {
       slot.src = url
 
       if (label && label.getAttribute('for')) {
-        const input = document.getElementById(label.getAttribute('for'))
-        if (input) {
-          input.disabled = false
-        }
+        const tag = label.getAttribute('for')
+        const input = document.getElementById(tag)
+
+        input.disabled = false
+
+        blob
+          .arrayBuffer()
+          .then(b => state.setPalette(tag, new Uint8Array(b)))
       }
     }
   }
@@ -260,17 +285,20 @@ export function onPaletteDelete (event) {
   const label = event.target.parentElement
 
   if (label && label.getAttribute('for')) {
-    const input = document.getElementById(label.getAttribute('for'))
-    const img = document.querySelector('#' + label.getAttribute('for') + ' + label img.palette')
+    const tag = label.getAttribute('for')
+    const input = document.getElementById(tag)
+    const slot = document.querySelector('#' + tag + ' + label img.palette')
 
     if (input) {
       input.disabled = true
       input.checked = false
     }
 
-    if (img) {
-      img.src = './images/palette.png'
+    if (slot) {
+      slot.src = './images/palette.png'
     }
+
+    state.setPalette(tag)
   }
 }
 

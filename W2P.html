@@ -120,13 +120,9 @@
               <div id="palettes">
                 <input id="palette" type="file" accept="image/png" onchange="onPalettePicked(event)" style="display: none;" />
 
-                <input id="palette1" type="radio" name="palette" value="ice" onchange="onPalette(event)" checked />
+                <input id="palette1" type="radio" name="palette" value="ice" checked />
                 <label for="palette1">
-                  <img class="X" src="./images/X.svg" draggable="false" onclick="onPaletteDelete(event)" />
-                  <img class="palette" src="./images/ice.png" draggable="false" 
-                       onclick="return onPalettePick(event)"
-                       ondrop="onPaletteDrop(event)" 
-                       ondragover="onPaletteDragOver(event)"/>
+                  <img class="palette" src="./images/ice.png" draggable="false" />
                 </label>
 
                 <input id="palette2" type="radio" name="palette" value="fire" onchange="onPalette(event)" />

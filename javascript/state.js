@@ -11,6 +11,7 @@ const tags = {
     size: 'W2P.size',
     padding: 'W2P.padding',
     customSize: 'W2P.customSize',
+    palettes: 'W2P.palettes',
     fill: 'W2P.fill',
     grid: 'W2P.grid',
     antialias: 'W2P.antialias'
@@ -32,6 +33,7 @@ export const State = function () {
     size: '645x392',
     padding: 2,
     customSize: '',
+    palettes: new Map(),
 
     fill: {
       type: 'solid',
@@ -126,6 +128,18 @@ export const State = function () {
     window.localStorage.setItem(tags.W2P.customSize, this.W2P.customSize)
   }
 
+  this.setPalette = function (slot, png) {
+    if (png) {
+      this.W2P.palettes.set(slot, [...png])
+    } else {
+      this.W2P.palettes.delete(slot)
+    }
+
+    const blob = JSON.stringify(Array.from(this.W2P.palettes.entries()))
+
+    window.localStorage.setItem(tags.W2P.palettes, blob)
+  }
+
   this.setFill = function (type, colour, alpha) {
     this.W2P.fill.type = type
     this.W2P.fill.colour = colour
@@ -217,6 +231,18 @@ function restoreW2P (state) {
   blob = window.localStorage.getItem(tags.W2P.customSize)
   if (blob !== null) {
     state.W2P.customSize = blob.trim()
+  }
+
+  // Restore W2P palettes
+  try {
+    blob = window.localStorage.getItem(tags.W2P.palettes)
+    if (blob !== null) {
+      JSON.parse(blob).forEach(([k, v]) => {
+        state.W2P.palettes.set(k, v)
+      })
+    }
+  } catch (err) {
+    // IGNORE
   }
 
   // Restore W2P fill
