@@ -2,15 +2,13 @@
 
 ### W2P
 
-- [ ] Palette
-      - better 'ice'
-
 - [ ] Segment of audio
 - [ ] Amplify/v-scale
 - [ ] Optimize draw/redraw
 - [ ] (optionally) show audio info
 - [ ] Update transcriptaze Github page
 
+- [x] Palette
 - [x] Browser tab icon
 - [x] Move padding out of grid
 - [x] Fill settings

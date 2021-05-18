@@ -4,5 +4,5 @@ go 1.16
 
 require (
 	github.com/transcriptaze/taps2beats v0.0.0-20210309001227-c9c5f753542d
-	github.com/transcriptaze/wav2png v0.0.0-20210512231011-18ba4f465775 // indirect
+	github.com/transcriptaze/wav2png v0.0.0-20210518233151-6fc102700bd0 // indirect
 )
