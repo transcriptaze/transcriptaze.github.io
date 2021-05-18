@@ -122,13 +122,14 @@
 
                 <input id="palette1" type="radio" name="palette" value="ice"  onchange="onPalette(event)" checked />
                 <label for="palette1">
-                  <img class="palette" src="./images/ice.png" draggable="false" />
+                  <img class="palette" src="./images/ice.png" draggable="false" data-palette="palette1" />
                 </label>
 
                 <input id="palette2" type="radio" name="palette" value="fire" onchange="onPalette(event)" />
                 <label for="palette2">
-                  <img class="X" src="./images/X.svg" draggable="false" onclick="onPaletteDelete(event)" />
+                  <img class="X" src="./images/X.svg" draggable="false" onclick="onPaletteDelete(event, 'palette2')" />
                   <img class="palette" src="./images/fire.png" draggable="false" 
+                       data-palette="palette2" 
                        onclick="return onPalettePick(event)"
                        ondrop="onPaletteDrop(event)" 
                        ondragover="onPaletteDragOver(event)"/>
@@ -136,8 +137,9 @@
 
                 <input id="palette3" type="radio" name="palette" value="aurora" onchange="onPalette(event)" />
                 <label for="palette3">
-                  <img class="X" src="./images/X.svg" draggable="false" onclick="onPaletteDelete(event)" />
+                  <img class="X" src="./images/X.svg" draggable="false" onclick="onPaletteDelete(event, 'palette3')" />
                   <img class="palette" src="./images/aurora.png" draggable="false"
+                       data-palette="palette3" 
                        onclick="return onPalettePick(event)"
                        ondrop="onPaletteDrop(event)" 
                        ondragover="onPaletteDragOver(event)"/>
@@ -145,8 +147,9 @@
 
                 <input id="palette4" type="radio" name="palette" value="" onchange="onPalette(event)" >
                 <label for="palette4">
-                  <img class="X" src="./images/X.svg" draggable="false" onclick="onPaletteDelete(event)" />
+                  <img class="X" src="./images/X.svg" draggable="false" onclick="onPaletteDelete(event, 'palette4')" />
                   <img class="palette" src="./images/horizon.png" draggable="false" 
+                       data-palette="palette4" 
                        onclick="return onPalettePick(event)"
                        ondrop="onPaletteDrop(event)" 
                        ondragover="onPaletteDragOver(event)"/>
@@ -154,8 +157,9 @@
 
                 <input id="palette5" type="radio" name="palette" value="" onchange="onPalette(event)" />
                 <label for="palette5">
-                  <img class="X" src="./images/X.svg" draggable="false" onclick="onPaletteDelete(event)" />
+                  <img class="X" src="./images/X.svg" draggable="false" onclick="onPaletteDelete(event, 'palette5')" />
                   <img class="palette" src="./images/gold.png" draggable="false" 
+                       data-palette="palette5" 
                        onclick="return onPalettePick(event)"
                        ondrop="onPaletteDrop(event)" 
                        ondragover="onPaletteDragOver(event)"/>
@@ -163,8 +167,9 @@
 
                 <input id="palette6" type="radio" name="palette" value="" onchange="onPalette(event)" disabled />
                 <label for="palette6">
-                  <img class="X" src="./images/X.svg" draggable="false" onclick="onPaletteDelete(event)" />
+                  <img class="X" src="./images/X.svg" draggable="false" onclick="onPaletteDelete(event, 'palette6')" />
                   <img class="palette" src="./images/palette.png" draggable="false"  
+                       data-palette="palette6" 
                        onclick="return onPalettePick(event)"
                        ondrop="onPaletteDrop(event)" 
                        ondragover="onPaletteDragOver(event)"/>

@@ -3,14 +3,13 @@
 ### W2P
 
 - [ ] Palette
-      - use dataset rather than guessing which palette is being deleted etc
       - better 'ice'
-      - release palette URL's on replace
 
 - [ ] Segment of audio
 - [ ] Amplify/v-scale
 - [ ] Optimize draw/redraw
 - [ ] (optionally) show audio info
+- [ ] Update transcriptaze Github page
 
 - [x] Browser tab icon
 - [x] Move padding out of grid
