@@ -18,10 +18,9 @@
               WebAssembly
                 .instantiateStreaming(fetch("./wasm/W2P.wasm"), go.importObject)
                 .then((result) => {
+                  onComplete('document')
                   go.run(result.instance)
                 })
-
-              onComplete('document')
               break;
         }
       })
@@ -313,7 +312,7 @@
     window.onExport = onExport
     window.onClear = onClear
 
-    initialise()
+    window.initialise = initialise
   </script>
 
   <script type="text/javascript">
@@ -323,6 +322,7 @@
 
     Promise.all([complete]).then((v) => {
       console.log("'k, ready at last")
+      initialise()
     })
   </script>
 

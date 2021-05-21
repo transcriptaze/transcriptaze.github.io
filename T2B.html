@@ -20,10 +20,9 @@
               WebAssembly
                 .instantiateStreaming(fetch("./wasm/T2B.wasm"), go.importObject)
                 .then((result) => {
+                  onComplete('document')
                   go.run(result.instance)
                 })
-
-              onComplete('document')
               break;
         }
       })

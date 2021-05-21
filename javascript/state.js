@@ -34,7 +34,10 @@ export const State = function () {
     size: '645x392',
     padding: 2,
     customSize: '',
-    palettes: new Map(),
+    palette: {
+      selected: 'palette1',
+      palettes: new Map()
+    },
 
     fill: {
       type: 'solid',
@@ -134,16 +137,30 @@ export const State = function () {
     window.localStorage.setItem(tags.W2P.customSize, this.W2P.customSize)
   }
 
-  this.setPalette = function (slot, png) {
-    if (png) {
-      this.W2P.palettes.set(slot, [...png])
-    } else {
-      this.W2P.palettes.delete(slot)
+  this.setSelectedPalette = function (selected) {
+    this.W2P.palette.selected = selected
+
+    const object = {
+      selected: this.W2P.palette.selected,
+      palettes: Array.from(this.W2P.palette.palettes.entries())
     }
 
-    const blob = JSON.stringify(Array.from(this.W2P.palettes.entries()))
+    window.localStorage.setItem(tags.W2P.palettes, JSON.stringify(object))
+  }
 
-    window.localStorage.setItem(tags.W2P.palettes, blob)
+  this.setPalette = function (slot, png) {
+    if (png) {
+      this.W2P.palette.palettes.set(slot, [...png])
+    } else {
+      this.W2P.palette.palettes.delete(slot)
+    }
+
+    const object = {
+      selected: this.W2P.palette.selected,
+      palettes: Array.from(this.W2P.palette.palettes.entries())
+    }
+
+    window.localStorage.setItem(tags.W2P.palettes, JSON.stringify(object))
   }
 
   this.setFill = function (type, colour, alpha) {
@@ -250,8 +267,11 @@ function restoreW2P (state) {
   try {
     blob = window.localStorage.getItem(tags.W2P.palettes)
     if (blob !== null) {
-      JSON.parse(blob).forEach(([k, v]) => {
-        state.W2P.palettes.set(k, v)
+      const object = JSON.parse(blob)
+
+      state.W2P.palette.selected = object.selected
+      object.palettes.forEach(([k, v]) => {
+        state.W2P.palette.palettes.set(k, v)
       })
     }
   } catch (err) {

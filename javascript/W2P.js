@@ -20,11 +20,11 @@ export function initialise () {
   }
 
   // ... initialise palettes
-  [2, 3, 4, 5, 6].forEach(ix => {
+  for (let ix = 2; ix <= 6; ix++) {
     const tag = `palette${ix}`
     const input = document.getElementById(tag)
     const slot = document.querySelector(`img[data-palette="${tag}"]`)
-    const bytes = state.W2P.palettes.get(tag)
+    const bytes = state.W2P.palette.palettes.get(tag)
 
     if (bytes) {
       const array = new Uint8Array(bytes)
@@ -38,7 +38,27 @@ export function initialise () {
         URL.revokeObjectURL(url)
       }
     }
-  })
+  }
+
+  const tag = state.W2P.palette.selected
+  if (tag && tag.match('palette[1-6]')) {
+    const input = document.getElementById(tag)
+    const img = document.querySelector(`img[data-palette="${tag}"]`)
+
+    if (input) {
+      input.checked = true
+    }
+
+    if (img) {
+      fetch(img.src)
+        .then(response => response.blob())
+        .then(blob => blob.arrayBuffer())
+        .then(buffer => palette(buffer))
+        .catch(function (err) {
+          console.error(err)
+        })
+    }
+  }
 
   // ... initialise fill
   document.getElementById('fillcolour').value = state.W2P.fill.colour
@@ -201,6 +221,8 @@ export function onPalette (event) {
   const img = document.querySelector(`img[data-palette="${tag}"]`)
 
   if (img) {
+    state.setSelectedPalette(tag)
+
     if (loaded) {
       busy()
       delay()
@@ -295,9 +317,15 @@ export function onPaletteDragOver (event) {
 export function onPaletteDelete (event, tag) {
   event.preventDefault()
 
+  const palette1 = document.getElementById('palette1')
   const input = document.getElementById(tag)
   const slot = document.querySelector(`img[data-palette="${tag}"]`)
   const url = slot.src
+
+  if (input.checked) {
+    palette1.checked = true
+    state.setSelectedPalette('palette1')
+  }
 
   input.disabled = true
   input.checked = false

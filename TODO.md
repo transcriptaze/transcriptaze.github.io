@@ -3,13 +3,13 @@
 ### W2P
 
 - [ ] Default rectangular grid size looks wrong
-- [ ] Save/restore selected palette
 - [ ] Segment of audio
 - [ ] Optimize draw/redraw
 - [ ] (optionally) show audio info
 - [ ] Update transcriptaze Github page
 - [ ] Let busy() return a Promise and then chain everything off that (?)
 
+- [x] Save/restore selected palette
 - [x] v-scale
 - [x] Palette
 - [x] Browser tab icon
