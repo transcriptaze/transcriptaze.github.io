@@ -300,7 +300,7 @@ div#grid {
 }
 
 #padding {
-  width: 48px;
+  width: 32px;
   margin-left: 8px;
   margin-top: 2px;
   margin-bottom: 2px;
@@ -363,7 +363,25 @@ div#antialias {
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
-  margin-left: 16px;
+  margin-left: 12px;
+}
+
+div#scale {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  margin-left: 12px;
+}
+
+#vscale {
+  width: 96px;
+  height: 18px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  padding-left: 0px;
+  padding-right: 0px;
+  margin-bottom: 2px;
+  /*display: none;*/
 }
 
 dialog#zoom {

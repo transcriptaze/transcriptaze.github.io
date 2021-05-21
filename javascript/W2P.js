@@ -11,6 +11,7 @@ export function initialise () {
 
   state.restore('W2P')
 
+  // ... initialise size
   document.getElementById('custom').value = state.W2P.customSize
 
   const element = document.querySelector(`input[name="size"][value="${state.W2P.size}"]`)
@@ -18,6 +19,7 @@ export function initialise () {
     element.checked = true
   }
 
+  // ... initialise palettes
   [2, 3, 4, 5, 6].forEach(ix => {
     const tag = `palette${ix}`
     const input = document.getElementById(tag)
@@ -38,9 +40,11 @@ export function initialise () {
     }
   })
 
+  // ... initialise fill
   document.getElementById('fillcolour').value = state.W2P.fill.colour
   document.getElementById('fillalpha').value = state.W2P.fill.alpha
 
+  // ... initialise grid
   document.getElementById('padding').value = state.W2P.padding
   document.getElementById('gridcolour').value = state.W2P.grid.colour
   document.getElementById('gridalpha').value = state.W2P.grid.alpha
@@ -65,6 +69,7 @@ export function initialise () {
       document.getElementById('square').click()
   }
 
+  // ... initialise antialiasing
   switch (state.W2P.antialias.type) {
     case 'none':
       document.getElementById('noantialias').click()
@@ -86,6 +91,14 @@ export function initialise () {
       document.getElementById('vertical').click()
   }
 
+  // ... initialise scale
+  const a = 1.0
+  const b = 4.0 / Math.log(4.0)
+  const c = 0.25
+  const v = Math.round(a + b * Math.log(state.W2P.scale.vertical / c))
+  document.getElementById('vscale').value = v
+
+  // ... show/hide 'here be cookies' message
   const footer = document.querySelector('footer')
   if (footer) {
     if (state.global.hideCookiesMessage) {
@@ -377,6 +390,15 @@ export function onAntiAlias (event) {
   }
 }
 
+export function onVScale (event) {
+  if (loaded && (event.type === 'change' || (event.type === 'keydown' && event.key === 'Enter'))) {
+    busy()
+    delay()
+      .then(b => redraw())
+      .finally(unbusy)
+  }
+}
+
 export function onExport (event) {
   const waveform = document.getElementById('png')
   const link = document.getElementById('download')
@@ -455,7 +477,7 @@ function load (name, blob) {
     .then(b => blob.arrayBuffer())
     .then(b => transcode(b))
     .then(b => store(b))
-    .then(b => render(width, height, padding()))
+    .then(b => render(width, height))
     .then(b => {
       const array = new Uint8Array(b)
       const png = new Blob([array], { type: 'image/png' })
@@ -486,7 +508,7 @@ function redraw () {
     URL.revokeObjectURL(waveform.src)
   }
 
-  return render(width, height, padding())
+  return render(width, height)
     .then(b => {
       const array = new Uint8Array(b)
       const png = new Blob([array], { type: 'image/png' })
@@ -561,7 +583,7 @@ async function store (buffer) {
   })
 }
 
-async function render (width, height, padding) {
+async function render (width, height) {
   return new Promise((resolve, reject) => {
     goRender((err, png) => {
       if (err) {
@@ -569,7 +591,7 @@ async function render (width, height, padding) {
       } else {
         resolve(png)
       }
-    }, width, height, padding, fill(), grid(), antialias())
+    }, width, height, padding(), fill(), grid(), antialias(), scale())
   })
 }
 
@@ -751,6 +773,25 @@ function antialias () {
     default:
       return { type: 'vertical' }
   }
+}
+
+function scale () {
+  const v = parseInt(document.getElementById('vscale').value, 10)
+
+  const hscale = 1.0
+  let vscale = 1.0
+
+  if (v && !Number.isNaN(v)) {
+    const a = 1.0
+    const b = 4 / Math.log(4.0)
+    const c = 25
+
+    vscale = Math.round(c * Math.exp((v - a) / b)) / 100.0
+  }
+
+  state.setScale(hscale, vscale)
+
+  return { horizontal: hscale, vertical: vscale }
 }
 
 function busy () {

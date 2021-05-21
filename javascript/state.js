@@ -14,7 +14,8 @@ const tags = {
     palettes: 'W2P.palettes',
     fill: 'W2P.fill',
     grid: 'W2P.grid',
-    antialias: 'W2P.antialias'
+    antialias: 'W2P.antialias',
+    scale: 'W2P.scale'
   }
 }
 
@@ -52,6 +53,11 @@ export const State = function () {
 
     antialias: {
       type: 'vertical'
+    },
+
+    scale: {
+      horizontal: 1.0,
+      vertical: 1.0
     }
   }
 
@@ -164,6 +170,13 @@ export const State = function () {
 
     window.localStorage.setItem(tags.W2P.antialias, JSON.stringify(this.W2P.antialias))
   }
+
+  this.setScale = function (hscale, vscale) {
+    this.W2P.scale.horizontal = hscale
+    this.W2P.scale.vertical = vscale
+
+    window.localStorage.setItem(tags.W2P.scale, JSON.stringify(this.W2P.scale))
+  }
 }
 
 function restoreT2B (state) {
@@ -261,5 +274,11 @@ function restoreW2P (state) {
   blob = window.localStorage.getItem(tags.W2P.antialias)
   if (blob !== null) {
     state.W2P.antialias = JSON.parse(blob)
+  }
+
+  // Restore W2P scale
+  blob = window.localStorage.getItem(tags.W2P.scale)
+  if (blob !== null) {
+    state.W2P.scale = JSON.parse(blob)
   }
 }

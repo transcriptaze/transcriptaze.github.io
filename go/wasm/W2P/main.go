@@ -102,6 +102,7 @@ func render(this js.Value, inputs []js.Value) interface{} {
 	var fillspec wav2png.FillSpec = wav2png.NewSolidFill(FILL_COLOUR)
 	var gridspec wav2png.GridSpec = wav2png.NewSquareGrid(GRID_COLOUR, GRID_SIZE, GRID_FIT, GRID_OVERLAY)
 	var kernel wav2png.Kernel = wav2png.Soft
+	var vscale = 1.0
 
 	if len(inputs) > 1 && !inputs[1].IsNaN() {
 		width = inputs[1].Int()
@@ -127,6 +128,10 @@ func render(this js.Value, inputs []js.Value) interface{} {
 		kernel = antialias(inputs[6])
 	}
 
+	if len(inputs) > 7 {
+		vscale = scale(inputs[7])
+	}
+
 	go func() {
 		if wav == nil {
 			callback.Invoke(fmt.Errorf("Audio not loaded").Error(), js.Null())
@@ -142,7 +147,7 @@ func render(this js.Value, inputs []js.Value) interface{} {
 
 		img := image.NewNRGBA(image.Rect(0, 0, width, height))
 		grid := wav2png.Grid(gridspec, width, height, padding)
-		waveform := wav2png.Render(wav.duration, wav.samples, w, h, cache.palette)
+		waveform := wav2png.Render(wav.duration, wav.samples, w, h, cache.palette, vscale)
 		antialiased := wav2png.Antialias(waveform, kernel)
 
 		origin := image.Pt(0, 0)
@@ -336,6 +341,18 @@ func antialias(object js.Value) wav2png.Kernel {
 	return wav2png.Soft
 }
 
+func scale(object js.Value) float64 {
+	vscale := 1.0
+	if !object.IsNull() {
+		if v := object.Get("vertical"); !v.IsNull() && !v.IsNaN() {
+			if vv := v.Float(); vv >= 0.25 && vv <= 4.0 {
+				vscale = vv
+			}
+		}
+	}
+
+	return vscale
+}
 func float32ArrayToSlice(array js.Value) []float32 {
 	u8array := js.Global().Get("Uint8Array").New(array)
 	N := u8array.Length()
