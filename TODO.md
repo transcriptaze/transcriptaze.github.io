@@ -2,8 +2,8 @@
 
 ### W2P
 
-- [ ] Default rectangular grid size looks wrong
 - [ ] Segment of audio
+- [ ] Rectangular grid: handle partial entry e.g. ~64
 - [ ] Optimize draw/redraw
 - [ ] (optionally) show audio info
 - [ ] Update transcriptaze Github page

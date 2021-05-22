@@ -4,8 +4,9 @@
   <head>
     <meta charset="UTF-8">
     <title>transcriptaze - W2P</title>
-    <link rel="icon"       href="./images/favicon.png">
+    <link rel="icon"       href="images/favicon.png">
     <link rel="stylesheet" href="css/transcriptaze.css" type="text/css">
+    <link rel="stylesheet" href="css/slider.css" type="text/css">
     <link rel="stylesheet" href="css/W2P.css" type="text/css">
     <script src="./javascript/wasm_exec.js"></script>
     <script>
@@ -62,21 +63,41 @@
       <main>
         <div>
           <div id="container">
-            <div id="wave" class="panel" ondrop="onDrop(event)"  ondragover="onDragOver(event)">
-              <div id="picker" class="picker">
-                <input id="file" type="file" accept="audio/*" onchange="onPicked(event)" style="display: none;" />
-                <img onclick="return onPick(event)" src="../images/audio.png" />
-                <div id="message">&nbsp;</div>
-              </div>
-              <div>
-                <img id="png" onclick="zoom(event)" />                
-              </div>
-              <div id="loading" class="overlay">
-                <div id="windmill" class="overlay">
-                  <span class="windmill"></span>
+              <!-- WAVEFORM -->
+              <div id="wave" class="panel" ondrop="onDrop(event)"  ondragover="onDragOver(event)">
+                <div id="picker" class="picker">
+                  <input id="file" type="file" accept="audio/*" onchange="onPicked(event)" style="display: none;" />
+                  <img onclick="return onPick(event)" src="../images/audio.png" />
+                  <div id="message">&nbsp;</div>
+                </div>
+                <div>
+                  <img id="png" onclick="zoom(event)" />                
+                </div>
+                <div id="loading" class="overlay">
+                  <div id="windmill" class="overlay">
+                    <span class="windmill"></span>
+                  </div>
                 </div>
               </div>
-            </div>
+
+              <!-- SLIDER -->
+              <div id="slider" class="slider">
+                <div class="rail" style="width:645px;">
+                  <img id="start" class="min thumb" src="images/min-arrow.svg" tabindex="0" draggable="false"
+                       role="slider"
+                       valuemin="0"
+                       valuenow="0"
+                       valuemax="100">
+                  <img id="end" class="max thumb" src="images/max-arrow.svg" tabindex="0" draggable="false"
+                       role="slider"
+                       valuemin="0"
+                       valuenow="100"
+                       valuemax="100">
+                  <input id="from" type="text" tabindex="0" readonly />
+                  <input id="to"   type="text" tabindex="0" readonly />
+                  <canvas width="1290" height="12"></canvas>
+                </div>
+              </div>
 
             <div id="right" class="panel">
               

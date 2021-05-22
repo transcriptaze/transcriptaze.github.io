@@ -1,8 +1,10 @@
 /* global goStore, goRender, goClear, goPalette */
 
 import { State } from './state.js'
+import { Slider } from './slider.js'
 
 const state = new State()
+const local = {}
 
 let loaded = false
 
@@ -117,6 +119,13 @@ export function initialise () {
   const c = 0.25
   const v = Math.round(a + b * Math.log(state.W2P.scale.vertical / c))
   document.getElementById('vscale').value = v
+
+  // ... initialise slider
+
+  local.start = new Slider('start', 'from', onSetStart)
+  local.end = new Slider('end', 'to', onSetEnd)
+
+  local.end.init(0, 100, 100)
 
   // ... show/hide 'here be cookies' message
   const footer = document.querySelector('footer')
@@ -427,6 +436,47 @@ export function onVScale (event) {
   }
 }
 
+function onSetStart (t, released) {
+  document.getElementById('from').value = format(t)
+
+  // if (released) {
+  // }
+
+  drawSlider()
+}
+
+function onSetEnd (t, released) {
+  document.getElementById('to').value = format(t)
+
+  // if (released) {
+  // }
+
+  drawSlider()
+}
+
+function drawSlider () {
+  // const canvas = document.getElementById('slider').querySelector('div.rail canvas')
+  // const ctx = canvas.getContext('2d')
+  // const width = canvas.width
+  // const height = canvas.height
+  // const t = player.getCurrentTime()
+  // const x = width * local.start.valueNow / local.taps.duration
+  // const w = width * local.end.valueNow / local.taps.duration
+
+  // ctx.clearRect(0, 0, width, height)
+
+  // ctx.fillStyle = '#268bd2c0'
+  // ctx.fillRect(x, 0, w - x + 1, height)
+
+  // if (t) {
+  //   ctx.fillStyle = '#dc322fc0'
+  //   ctx.fillRect(0, 0, Math.max(width * t / local.taps.duration, x), height)
+  // } else {
+  //   ctx.fillStyle = '#dc322fc0'
+  //   ctx.fillRect(0, 0, x, height)
+  // }
+}
+
 export function onExport (event) {
   const waveform = document.getElementById('png')
   const link = document.getElementById('download')
@@ -451,6 +501,7 @@ export function onClear (event) {
   const message = document.getElementById('message')
   const picker = document.getElementById('picker')
   const waveform = document.getElementById('png')
+  const slider = document.getElementById('slider')
   const zoomed = document.getElementById('zoomed')
   const save = document.getElementById('export')
   const clear = document.getElementById('clear')
@@ -465,6 +516,7 @@ export function onClear (event) {
   }
 
   picker.style.visibility = 'visible'
+  slider.style.display = 'none'
   waveform.style.visibility = 'hidden'
   message.innerText = ''
   message.style.visibility = 'hidden'
@@ -490,6 +542,7 @@ function load (name, blob) {
   const message = document.getElementById('message')
   const picker = document.getElementById('picker')
   const waveform = document.getElementById('png')
+  const slider = document.getElementById('slider')
   const save = document.getElementById('export')
   const clear = document.getElementById('clear')
   const wh = size()
@@ -514,8 +567,10 @@ function load (name, blob) {
 
       waveform.dataset.filename = name
       picker.style.visibility = 'hidden'
+      slider.style.display = 'none'
       save.disabled = false
       clear.disabled = false
+
       loaded = true
     })
     .catch(function (err) {
@@ -591,6 +646,9 @@ async function transcode (bytes) {
   const buffer = await ctx.decodeAudioData(bytes)
   const offline = new OfflineAudioContext(1, 44100 * buffer.duration, 44100)
   const src = offline.createBufferSource()
+
+  local.start.init(0, buffer.duration, 0)
+  local.end.init(0, buffer.duration, buffer.duration)
 
   src.buffer = buffer
   src.connect(offline.destination)
@@ -845,4 +903,16 @@ function delay () {
 
 function sleep (time) {
   return new Promise((resolve) => setTimeout(resolve, time))
+}
+
+function format (t) {
+  let minutes = 0
+  let seconds = 0
+
+  if (t > 0) {
+    minutes = Math.floor(t / 60)
+    seconds = Math.round((t % 60) * 10) / 10.0
+  }
+
+  return String(minutes) + ':' + String(seconds).padStart(2, '0')
 }

@@ -170,10 +170,12 @@ Slider.prototype.handleMouseDown = function (event) {
   const self = this
 
   const handleMouseMove = function (event) {
-    const diffX = event.pageX - self.railDomNode.offsetLeft
-    self.valueNow = self.railMin + parseInt(((self.railMax - self.railMin) * diffX) / self.railWidth)
+    const hscale = Math.ceil(100 / (self.railMax - self.railMin))
 
-    self.moveSliderTo(self.valueNow)
+    const diffX = event.pageX - self.railDomNode.offsetLeft
+    self.valueNow = self.railMin + parseInt(hscale * ((self.railMax - self.railMin) * diffX) / self.railWidth)
+
+    self.moveSliderTo(self.valueNow / hscale)
 
     event.preventDefault()
     event.stopPropagation()
