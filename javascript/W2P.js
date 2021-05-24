@@ -567,7 +567,7 @@ function load (name, blob) {
 
       waveform.dataset.filename = name
       picker.style.visibility = 'hidden'
-      slider.style.display = 'none'
+      slider.style.display = 'block'
       save.disabled = false
       clear.disabled = false
 

@@ -8,6 +8,7 @@
 - [ ] (optionally) show audio info
 - [ ] Update transcriptaze Github page
 - [ ] Let busy() return a Promise and then chain everything off that (?)
+- [ ] Move event handling to Go
 
 - [x] Save/restore selected palette
 - [x] v-scale

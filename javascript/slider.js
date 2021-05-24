@@ -92,11 +92,21 @@ Slider.prototype.moveSliderTo = function (value, released) {
   const pos = (this.valueNow - this.railMin) * scale
 
   if (this.labelLeft) {
-    this.labelNode.style.left = Math.ceil(pos - 50) + 'px'
+    let offset = -50
+    const v = parseInt(this.labelNode.dataset.offset)
+    if (v && !Number.isNaN(v)) {
+      offset = v
+    }
+    this.labelNode.style.left = Math.ceil(pos + offset) + 'px'
   }
 
   if (this.labelRight) {
-    this.labelNode.style.left = Math.ceil(pos + 10) + 'px'
+    let offset = 10
+    const v = parseInt(this.labelNode.dataset.offset)
+    if (v && !Number.isNaN(v)) {
+      offset = v
+    }
+    this.labelNode.style.left = Math.ceil(pos + offset) + 'px'
   }
 
   if (this.minDomNode) {
