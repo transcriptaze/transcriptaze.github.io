@@ -1,4 +1,4 @@
-/* global goStore, goRender, goClear, goPalette */
+/* global goStore, goRender, goClear, goPalette, goSelect */
 
 import { State } from './state.js'
 import { Slider } from './slider.js'
@@ -121,7 +121,6 @@ export function initialise () {
   document.getElementById('vscale').value = v
 
   // ... initialise slider
-
   local.start = new Slider('start', 'from', onSetStart)
   local.end = new Slider('end', 'to', onSetEnd)
 
@@ -438,20 +437,46 @@ export function onVScale (event) {
 
 function onSetStart (t, released) {
   document.getElementById('from').value = format(t)
-
-  // if (released) {
-  // }
-
   drawSlider()
+
+  if (released) {
+    const v = parseFloat(t.toString(), 10)
+
+    if (!Number.isNaN(v)) {
+      local.from = v
+      if (loaded) {
+        busy()
+        delay()
+          .then(b => select())
+          .then(b => redraw())
+          .finally(unbusy)
+      } else {
+        select()
+      }
+    }
+  }
 }
 
 function onSetEnd (t, released) {
   document.getElementById('to').value = format(t)
-
-  // if (released) {
-  // }
-
   drawSlider()
+
+  if (released) {
+    const v = parseFloat(t.toString(), 10)
+
+    if (!Number.isNaN(v)) {
+      local.to = v
+      if (loaded) {
+        busy()
+        delay()
+          .then(b => select())
+          .then(b => redraw())
+          .finally(unbusy)
+      } else {
+        select()
+      }
+    }
+  }
 }
 
 function drawSlider () {
@@ -524,6 +549,9 @@ export function onClear (event) {
   clear.disabled = true
 
   loaded = false
+
+  delete (local.from)
+  delete (local.to)
 
   new Promise((resolve, reject) => {
     goClear((err) => {
@@ -690,6 +718,20 @@ async function palette (buffer) {
         resolve()
       }
     }, buffer)
+  })
+}
+
+async function select () {
+  return new Promise((resolve, reject) => {
+    goSelect((err) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(true)
+      }
+    }, local.from, local.to)
+  }).catch(function (err) {
+    console.error(err)
   })
 }
 

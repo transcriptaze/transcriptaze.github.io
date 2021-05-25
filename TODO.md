@@ -3,12 +3,15 @@
 ### W2P
 
 - [ ] Segment of audio
+      - paint different colour between sliders
+      - double check render for noise when selected (not doing what expected)
+      
 - [ ] Rectangular grid: handle partial entry e.g. ~64
 - [ ] Optimize draw/redraw
 - [ ] (optionally) show audio info
 - [ ] Update transcriptaze Github page
 - [ ] Let busy() return a Promise and then chain everything off that (?)
-- [ ] Move event handling to Go
+- [ ] Move event handling+redraw to Go
 
 - [x] Save/restore selected palette
 - [x] v-scale
