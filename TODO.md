@@ -2,16 +2,14 @@
 
 ### W2P
 
-- [ ] Segment of audio
-      - double check noise render with selected (not doing what expected)
-
+- [ ] (optionally) show audio info
 - [ ] Rectangular grid: handle partial entry e.g. ~64
 - [ ] Optimize draw/redraw
-- [ ] (optionally) show audio info
 - [ ] Update transcriptaze Github page
 - [ ] Let busy() return a Promise and then chain everything off that (?)
 - [ ] Move event handling+redraw to Go
 
+- [x] Segment of audio
 - [x] Save/restore selected palette
 - [x] v-scale
 - [x] Palette

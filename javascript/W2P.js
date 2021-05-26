@@ -494,7 +494,7 @@ function drawSlider () {
     const w = width * local.end.valueNow / local.duration
 
     ctx.fillStyle = '#dc322fc0'
-    ctx.fillRect(x, 0, w-x, height)
+    ctx.fillRect(x, 0, w - x, height)
   }
 }
 
