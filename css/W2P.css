@@ -118,7 +118,8 @@ div#controls {
 
 div#buttons {
   grid-area: buttons;
-  display: block;
+  display: flex;
+  justify-content: flex-end;
   visibility: visible;
 }
 

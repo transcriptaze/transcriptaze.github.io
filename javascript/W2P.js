@@ -486,7 +486,7 @@ function drawSlider () {
   const height = canvas.height
 
   ctx.clearRect(0, 0, width, height)
-  ctx.fillStyle = '#268bd2c0'
+  ctx.fillStyle = '#7cb5ecc0'
   ctx.fillRect(0, 0, width, height)
 
   if (loaded) {
