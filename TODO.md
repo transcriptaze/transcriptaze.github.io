@@ -3,9 +3,8 @@
 ### W2P
 
 - [ ] Segment of audio
-      - paint different colour between sliders
-      - double check render for noise when selected (not doing what expected)
-      
+      - double check noise render with selected (not doing what expected)
+
 - [ ] Rectangular grid: handle partial entry e.g. ~64
 - [ ] Optimize draw/redraw
 - [ ] (optionally) show audio info
@@ -45,6 +44,7 @@
 - [ ] Load audio from file
 - [ ] View as JSON
 - [ ] Dangling left slider label
+- [ ] Double sliders (one for visible range, one for audio range) (?)
 - [ ] Go all neumorphic (?)
       - https://codepen.io/ma_suwa/pen/eYdZVML
       - https://github.com/jvnaveenbabu/Neumorphism-Designs

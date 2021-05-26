@@ -480,26 +480,22 @@ function onSetEnd (t, released) {
 }
 
 function drawSlider () {
-  // const canvas = document.getElementById('slider').querySelector('div.rail canvas')
-  // const ctx = canvas.getContext('2d')
-  // const width = canvas.width
-  // const height = canvas.height
-  // const t = player.getCurrentTime()
-  // const x = width * local.start.valueNow / local.taps.duration
-  // const w = width * local.end.valueNow / local.taps.duration
+  const canvas = document.getElementById('slider').querySelector('div.rail canvas')
+  const ctx = canvas.getContext('2d')
+  const width = canvas.width
+  const height = canvas.height
 
-  // ctx.clearRect(0, 0, width, height)
+  ctx.clearRect(0, 0, width, height)
+  ctx.fillStyle = '#268bd2c0'
+  ctx.fillRect(0, 0, width, height)
 
-  // ctx.fillStyle = '#268bd2c0'
-  // ctx.fillRect(x, 0, w - x + 1, height)
+  if (loaded) {
+    const x = width * local.start.valueNow / local.duration
+    const w = width * local.end.valueNow / local.duration
 
-  // if (t) {
-  //   ctx.fillStyle = '#dc322fc0'
-  //   ctx.fillRect(0, 0, Math.max(width * t / local.taps.duration, x), height)
-  // } else {
-  //   ctx.fillStyle = '#dc322fc0'
-  //   ctx.fillRect(0, 0, x, height)
-  // }
+    ctx.fillStyle = '#dc322fc0'
+    ctx.fillRect(x, 0, w-x, height)
+  }
 }
 
 export function onExport (event) {
@@ -598,8 +594,9 @@ function load (name, blob) {
       slider.style.display = 'block'
       save.disabled = false
       clear.disabled = false
-
       loaded = true
+
+      drawSlider()
     })
     .catch(function (err) {
       console.error(err)
@@ -675,6 +672,7 @@ async function transcode (bytes) {
   const offline = new OfflineAudioContext(1, 44100 * buffer.duration, 44100)
   const src = offline.createBufferSource()
 
+  local.duration = buffer.duration
   local.start.init(0, buffer.duration, 0)
   local.end.init(0, buffer.duration, buffer.duration)
 

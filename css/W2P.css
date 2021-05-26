@@ -87,6 +87,10 @@ div#slider {
   display: none;
 }
 
+.slider .rail canvas {
+  width: 645px;
+}
+
 #from {
   top: -4px;
 }
