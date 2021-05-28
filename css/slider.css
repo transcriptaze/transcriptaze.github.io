@@ -20,11 +20,13 @@
 .slider input#from {
   left: -50px;
   text-align: right;
+  pointer-events: none;
 }
 
 .slider input#to {
   left: 10px;
   text-align: left;
+  pointer-events: none;
 }
 
 .slider img[role="slider"] {
