@@ -1,4 +1,4 @@
-/* global goStore, goRender, goClear, goPalette, goSelect */
+/* global goStore, goRender, goClear, goPalette, goSelect , goGrid */
 
 import { State } from './state.js'
 import { Slider } from './slider.js'
@@ -135,6 +135,14 @@ export function initialise () {
       footer.style.visibility = 'visible'
     }
   }
+}
+
+export function onDraw (bytes, width, height) {
+  const array = new Uint8Array(bytes)
+  const png = new Blob([array], { type: 'image/png' })
+  const size = { width: width, height: height }
+
+  draw(png, size)
 }
 
 export function onAccept (event) {
@@ -398,8 +406,20 @@ export function onGrid (event) {
   }
 
   if (loaded) {
+    const setGrid = function () {
+      return new Promise((resolve, reject) => {
+        goGrid((err, png) => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve(png)
+          }
+        }, grid())
+      })
+    }
+
     busy()
-      .then(b => redraw())
+      .then(b => setGrid())
       .catch((err) => console.error(err))
       .finally(unbusy)
   }

@@ -302,7 +302,7 @@
   <!-- SCRIPTS -->
  
   <script type="module">
-    import { initialise,
+    import { initialise, onDraw,
              onDrop, onDragOver, onPick, onPicked, onAccept,
              onSize, onCustomSize, 
              onPalette,onPalettePick,onPalettePicked,onPaletteDrop,onPaletteDragOver,onPaletteDelete,
@@ -334,6 +334,7 @@
     window.onClear = onClear
 
     window.initialise = initialise
+    window.onDraw = onDraw
   </script>
 
   <script type="text/javascript">
