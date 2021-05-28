@@ -6,8 +6,8 @@
 - [ ] Optimize draw/redraw
 - [ ] (optionally) show audio info
 - [ ] Update transcriptaze Github page
-- [ ] Let busy() return a Promise and then chain everything off that (?)
 
+- [x] Let busy() return a Promise and then chain everything off that (?)
 - [x] Rectangular grid: handle partial entry e.g. ~64
 - [x] Segment of audio
 - [x] Save/restore selected palette

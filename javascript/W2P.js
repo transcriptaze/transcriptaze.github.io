@@ -197,8 +197,8 @@ export function onSize (event) {
 
     if (loaded) {
       busy()
-      new Promise((resolve) => setTimeout(resolve, 100))
         .then(b => redraw())
+        .catch((err) => console.error(err))
         .finally(unbusy)
     }
   }
@@ -216,8 +216,8 @@ export function onCustomSize (event) {
 
       if (!isNaN(w) && !isNaN(h) && w >= 64 && w <= 8192 && h > 64 && h <= 8192) {
         busy()
-        new Promise((resolve) => setTimeout(resolve, 100))
           .then(b => redraw())
+          .catch((err) => console.error(err))
           .finally(unbusy)
       }
     }
@@ -233,16 +233,13 @@ export function onPalette (event) {
 
     if (loaded) {
       busy()
-      delay()
         .then(b => fetch(img.src))
         .then(response => response.blob())
         .then(blob => blob.arrayBuffer())
         .then(buffer => palette(buffer))
         .then(b => redraw())
+        .catch((err) => console.error(err))
         .finally(unbusy)
-        .catch(function (err) {
-          console.error(err)
-        })
     }
   }
 }
@@ -349,8 +346,8 @@ export function onPaletteDelete (event, tag) {
 export function onFill (event) {
   if (loaded && (event.type === 'change' || (event.type === 'keydown' && event.key === 'Enter'))) {
     busy()
-    new Promise((resolve) => setTimeout(resolve, 100))
       .then(b => redraw())
+      .catch((err) => console.error(err))
       .finally(unbusy)
   }
 }
@@ -360,8 +357,8 @@ export function onPadding (event) {
 
   if (loaded && event.type === 'keydown' && event.key === 'Enter') {
     busy()
-    new Promise((resolve) => setTimeout(resolve, 100))
       .then(b => redraw())
+      .catch((err) => console.error(err))
       .finally(unbusy)
   }
 }
@@ -402,8 +399,8 @@ export function onGrid (event) {
 
   if (loaded) {
     busy()
-    new Promise((resolve) => setTimeout(resolve, 100))
       .then(b => redraw())
+      .catch((err) => console.error(err))
       .finally(unbusy)
   }
 }
@@ -411,8 +408,8 @@ export function onGrid (event) {
 export function onGridSetting (event) {
   if (loaded && (event.type === 'change' || (event.type === 'keydown' && event.key === 'Enter'))) {
     busy()
-    new Promise((resolve) => setTimeout(resolve, 100))
       .then(b => redraw())
+      .catch((err) => console.error(err))
       .finally(unbusy)
   }
 }
@@ -420,8 +417,8 @@ export function onGridSetting (event) {
 export function onAntiAlias (event) {
   if (loaded) {
     busy()
-    new Promise((resolve) => setTimeout(resolve, 100))
       .then(b => redraw())
+      .catch((err) => console.error(err))
       .finally(unbusy)
   }
 }
@@ -429,8 +426,8 @@ export function onAntiAlias (event) {
 export function onVScale (event) {
   if (loaded && (event.type === 'change' || (event.type === 'keydown' && event.key === 'Enter'))) {
     busy()
-    delay()
       .then(b => redraw())
+      .catch((err) => console.error(err))
       .finally(unbusy)
   }
 }
@@ -446,9 +443,9 @@ function onSetStart (t, released) {
       local.from = v
       if (loaded) {
         busy()
-        delay()
           .then(b => select())
           .then(b => redraw())
+          .catch((err) => console.error(err))
           .finally(unbusy)
       } else {
         select()
@@ -468,9 +465,9 @@ function onSetEnd (t, released) {
       local.to = v
       if (loaded) {
         busy()
-        delay()
           .then(b => select())
           .then(b => redraw())
+          .catch((err) => console.error(err))
           .finally(unbusy)
       } else {
         select()
@@ -578,7 +575,6 @@ function load (name, blob) {
   }
 
   busy()
-  return sleep(100)
     .then(b => blob.arrayBuffer())
     .then(b => transcode(b))
     .then(b => store(b))
@@ -598,7 +594,7 @@ function load (name, blob) {
 
       drawSlider()
     })
-    .catch(function (err) {
+    .catch((err) => {
       console.error(err)
       message.innerText = err
       message.style.visibility = 'visible'
@@ -932,9 +928,15 @@ function busy () {
   const loading = document.getElementById('loading')
   const windmill = document.getElementById('windmill')
 
-  loading.style.visibility = 'visible'
-  windmill.style.visibility = 'visible'
-  windmill.style.display = 'block'
+  return new Promise((resolve) => {
+    loading.style.visibility = 'visible'
+    windmill.style.visibility = 'visible'
+    windmill.style.display = 'block'
+
+    // NOTE: a delay seems to be the only way to get e.g. the 'size' radio buttons
+    //       to be updated before the redraw is complete
+    setTimeout(resolve, 100)
+  })
 }
 
 function unbusy () {
@@ -943,14 +945,6 @@ function unbusy () {
 
   loading.style.visibility = 'hidden'
   windmill.style.display = 'none'
-}
-
-function delay () {
-  return new Promise((resolve) => setTimeout(resolve, 100))
-}
-
-function sleep (time) {
-  return new Promise((resolve) => setTimeout(resolve, time))
 }
 
 function format (t) {
