@@ -828,8 +828,8 @@ function grid () {
   let match = /([~=><≥≤])?\s*([0-9]+)/.exec(s)
   if (match) {
     const v = parseInt(match[2], 10)
-    if (!isNaN(v) && v >= 16 && v <= 1024) {
-      gridsize = s.replace(/\s/g, '')
+    if (!Number.isNaN(v) && v >= 16 && v <= 1024) {
+      gridsize = match[1] + v
     }
   }
 
@@ -847,9 +847,17 @@ function grid () {
   match = /([~=><≥≤])?\s*([0-9]+)\s*x\s*([0-9]+)/.exec(wh)
   if (match) {
     const w = parseInt(match[2], 10)
-    const h = parseInt(match[2], 10)
-    if (!isNaN(w) && w >= 16 && w <= 1024 && !isNaN(h) && h >= 16 && h <= 1024) {
-      gridwh = wh.replace(/\s/g, '')
+    const h = parseInt(match[3], 10)
+    if (!Number.isNaN(w) && w >= 16 && w <= 1024 && !Number.isNaN(h) && h >= 16 && h <= 1024) {
+      gridwh = match[1] + w + 'x' + h
+    }
+  } else {
+    match = /([~=><≥≤])?\s*([0-9]+)/.exec(wh)
+    if (match) {
+      const v = parseInt(match[2], 10)
+      if (!Number.isNaN(v) && v >= 16 && v <= 1024) {
+        gridwh = match[1] + v + 'x' + v
+      }
     }
   }
 
