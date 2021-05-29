@@ -12,6 +12,10 @@ import (
 )
 
 func redraw() error {
+	if wav == nil {
+		return nil
+	}
+
 	width := 645
 	height := 390
 	padding := 2
@@ -19,10 +23,6 @@ func redraw() error {
 	var fillspec wav2png.FillSpec = wav2png.NewSolidFill(FILL_COLOUR)
 	var kernel wav2png.Kernel = wav2png.Soft
 	var vscale = 1.0
-
-	if wav == nil {
-		return nil
-	}
 
 	w := width
 	h := height

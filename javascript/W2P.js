@@ -52,13 +52,15 @@ export function initialise () {
     }
 
     if (img) {
-      fetch(img.src)
-        .then(response => response.blob())
-        .then(blob => blob.arrayBuffer())
-        .then(buffer => palette(buffer))
-        .catch(function (err) {
-          console.error(err)
-        })
+      palette(img).catch((err) => console.error(err))
+
+      // fetch(img.src)
+      //   .then(response => response.blob())
+      //   .then(blob => blob.arrayBuffer())
+      //   .then(buffer => palette(buffer))
+      //   .catch(function (err) {
+      //     console.error(err)
+      //   })
     }
   }
 
@@ -241,13 +243,24 @@ export function onPalette (event) {
 
     if (loaded) {
       busy()
-        .then(b => fetch(img.src))
-        .then(response => response.blob())
-        .then(blob => blob.arrayBuffer())
-        .then(buffer => palette(buffer))
-        .then(b => redraw())
+        .then(palette(img))
         .catch((err) => console.error(err))
         .finally(unbusy)
+
+      // busy()
+      //   .then(b => fetch(img.src))
+      //   .then(response => response.blob())
+      //   .then(blob => blob.arrayBuffer())
+      //   .then(buffer => palette(buffer))
+      //   .catch((err) => console.error(err))
+      //   .finally(unbusy)
+    } else {
+      palette(img).catch((err) => console.error(err))
+      // fetch(img.src)
+      //   .then(response => response.blob())
+      //   .then(blob => blob.arrayBuffer())
+      //   .then(buffer => palette(buffer))
+      //   .catch((err) => console.error(err))
     }
   }
 }
@@ -723,16 +736,23 @@ async function render (width, height) {
   })
 }
 
-async function palette (buffer) {
-  return new Promise((resolve, reject) => {
-    goPalette((err) => {
-      if (err) {
-        reject(err)
-      } else {
-        resolve()
-      }
-    }, buffer)
-  })
+function palette (img) {
+  const set = function (buffer) {
+    return new Promise((resolve, reject) => {
+      goPalette((err) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve()
+        }
+      }, buffer)
+    })
+  }
+
+  return fetch(img.src)
+    .then(response => response.blob())
+    .then(blob => blob.arrayBuffer())
+    .then(buffer => set(buffer))
 }
 
 async function select () {

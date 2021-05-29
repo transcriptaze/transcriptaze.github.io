@@ -28,7 +28,11 @@ func palette(this js.Value, inputs []js.Value) interface{} {
 		} else {
 			cache.palette = *p
 
-			callback.Invoke(js.Null())
+			if err := redraw(); err != nil {
+				callback.Invoke(err.Error())
+			} else {
+				callback.Invoke(js.Null())
+			}
 		}
 	}()
 

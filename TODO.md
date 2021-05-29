@@ -3,6 +3,13 @@
 ### W2P
 
 - [ ] Move event handling+redraw to Go
+      - size
+      - fill
+      - padding
+      - antialias
+      - vscale
+      - selection
+
 - [ ] Optimize draw/redraw
 - [ ] (optionally) show audio info
 - [ ] Update transcriptaze Github page
