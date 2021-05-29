@@ -45,8 +45,12 @@ var options = struct {
 
 var cache = struct {
 	palette wav2png.Palette
+	hscale float64
+	vscale  float64
 }{
 	palette: wav2png.Ice,
+	hscale:  1.0,
+	vscale:  1.0,
 }
 
 func main() {
@@ -58,6 +62,7 @@ func main() {
 	js.Global().Set("goPalette", js.FuncOf(palette))
 	js.Global().Set("goSelect", js.FuncOf(selected))
 	js.Global().Set("goGrid", js.FuncOf(onGrid))
+	js.Global().Set("goScale", js.FuncOf(onScale))
 
 	<-c
 }
@@ -113,19 +118,6 @@ func antialias(object js.Value) wav2png.Kernel {
 	}
 
 	return wav2png.Soft
-}
-
-func scale(object js.Value) float64 {
-	vscale := 1.0
-	if !object.IsNull() {
-		if v := object.Get("vertical"); !v.IsNull() && !v.IsNaN() {
-			if vv := v.Float(); vv >= 0.25 && vv <= 4.0 {
-				vscale = vv
-			}
-		}
-	}
-
-	return vscale
 }
 
 func float32ArrayToSlice(array js.Value) []float32 {

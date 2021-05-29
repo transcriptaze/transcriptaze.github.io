@@ -24,7 +24,7 @@ func render(this js.Value, inputs []js.Value) interface{} {
 	var fillspec wav2png.FillSpec = wav2png.NewSolidFill(FILL_COLOUR)
 	var gridspec wav2png.GridSpec = wav2png.NewSquareGrid(GRID_COLOUR, GRID_SIZE, GRID_FIT, GRID_OVERLAY)
 	var kernel wav2png.Kernel = wav2png.Soft
-	var vscale = 1.0
+	var vscale = cache.vscale
 
 	if len(inputs) > 1 && !inputs[1].IsNaN() {
 		width = inputs[1].Int()
@@ -48,10 +48,6 @@ func render(this js.Value, inputs []js.Value) interface{} {
 
 	if len(inputs) > 6 {
 		kernel = antialias(inputs[6])
-	}
-
-	if len(inputs) > 7 {
-		vscale = scale(inputs[7])
 	}
 
 	go func() {

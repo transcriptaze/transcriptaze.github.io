@@ -7,7 +7,6 @@
       - fill
       - padding
       - antialias
-      - vscale
       - selection
 
 - [ ] Optimize draw/redraw

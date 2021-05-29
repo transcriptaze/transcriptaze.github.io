@@ -22,7 +22,7 @@ func redraw() error {
 
 	var fillspec wav2png.FillSpec = wav2png.NewSolidFill(FILL_COLOUR)
 	var kernel wav2png.Kernel = wav2png.Soft
-	var vscale = 1.0
+	var vscale = cache.vscale
 
 	w := width
 	h := height

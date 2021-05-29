@@ -1,4 +1,4 @@
-/* global goStore, goRender, goClear, goPalette, goSelect , goGrid */
+/* global goStore, goRender, goClear, goPalette, goSelect , goGrid, goScale */
 
 import { State } from './state.js'
 import { Slider } from './slider.js'
@@ -53,14 +53,6 @@ export function initialise () {
 
     if (img) {
       palette(img).catch((err) => console.error(err))
-
-      // fetch(img.src)
-      //   .then(response => response.blob())
-      //   .then(blob => blob.arrayBuffer())
-      //   .then(buffer => palette(buffer))
-      //   .catch(function (err) {
-      //     console.error(err)
-      //   })
     }
   }
 
@@ -121,6 +113,8 @@ export function initialise () {
   const c = 0.25
   const v = Math.round(a + b * Math.log(state.W2P.scale.vertical / c))
   document.getElementById('vscale').value = v
+
+  setScale(state.W2P.scale)
 
   // ... initialise slider
   local.start = new Slider('start', 'from', onSetStart)
@@ -246,21 +240,8 @@ export function onPalette (event) {
         .then(palette(img))
         .catch((err) => console.error(err))
         .finally(unbusy)
-
-      // busy()
-      //   .then(b => fetch(img.src))
-      //   .then(response => response.blob())
-      //   .then(blob => blob.arrayBuffer())
-      //   .then(buffer => palette(buffer))
-      //   .catch((err) => console.error(err))
-      //   .finally(unbusy)
     } else {
       palette(img).catch((err) => console.error(err))
-      // fetch(img.src)
-      //   .then(response => response.blob())
-      //   .then(blob => blob.arrayBuffer())
-      //   .then(buffer => palette(buffer))
-      //   .catch((err) => console.error(err))
     }
   }
 }
@@ -457,12 +438,33 @@ export function onAntiAlias (event) {
 }
 
 export function onVScale (event) {
-  if (loaded && (event.type === 'change' || (event.type === 'keydown' && event.key === 'Enter'))) {
-    busy()
-      .then(b => redraw())
-      .catch((err) => console.error(err))
-      .finally(unbusy)
+  if (event.type === 'change' || (event.type === 'keydown' && event.key === 'Enter')) {
+    const v = scale()
+
+    if (loaded) {
+      busy()
+        .then(b => setScale(v))
+        .catch(err => console.error(err))
+        .finally(unbusy)
+    } else {
+      setScale(v).catch(err => console.error(err))
+    }
   }
+}
+
+function setScale (v) {
+  const hscale = v.horizontal
+  const vscale = v.vertical
+
+  return new Promise((resolve, reject) => {
+    goScale((err) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve()
+      }
+    }, hscale, vscale)
+  })
 }
 
 function onSetStart (t, released) {
@@ -732,7 +734,7 @@ async function render (width, height) {
       } else {
         resolve(png)
       }
-    }, width, height, padding(), fill(), grid(), antialias(), scale())
+    }, width, height, padding(), fill(), grid(), antialias())
   })
 }
 
