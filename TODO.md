@@ -9,7 +9,8 @@
       - padding
       - antialias
       - selection
-
+      - move grid validation to Go
+      
 - [ ] Update transcriptaze Github page
 - [ ] Optimize draw/redraw
 - [ ] https://schollz.com/blog/waveforms/

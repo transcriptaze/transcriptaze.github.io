@@ -237,15 +237,15 @@
                 <input id="gridcolour" type="color" value="#008000" 
                        title="grid colour" 
                        placeholder="colour" 
-                       onchange="onGridSetting(event)" />
+                       onchange="onGrid(event)" />
                 
                 <input id="gridalpha" type="range" value="255" min="0" max="256" step="32"
                        title="grid transparency" 
-                       onchange="onGridSetting(event)" />
+                       onchange="onGrid(event)" />
 
-                <input id="gridsize" type="text" value="~64" placeholder="~64" title="grid size" onchange="onGridSetting(event)" onkeydown="onGridSetting(event)" />
-                <input id="gridwh" type="text" value="~64x48" placeholder="~64x48" title="grid width and height" onchange="onGridSetting(event)" onkeydown="onGridSetting(event)" />
-                <input id="overlay" type="checkbox" title="draws grid above wave" onchange="onGridSetting(event)" />
+                <input id="gridsize" type="text" value="~64" placeholder="~64" title="grid size" onchange="onGrid(event)" onkeydown="onGrid(event)" />
+                <input id="gridwh" type="text" value="~64x48" placeholder="~64x48" title="grid width and height" onchange="onGrid(event)" onkeydown="onGrid(event)" />
+                <input id="overlay" type="checkbox" title="draws grid above wave" onchange="onGrid(event)" />
                 <label for="overlay" title="draws grid above wave">overlay</label>
               </div>
 
@@ -307,7 +307,7 @@
              onSize, onCustomSize, 
              onPalette,onPalettePick,onPalettePicked,onPaletteDrop,onPaletteDragOver,onPaletteDelete,
              onFill,
-             onPadding, onGrid, onGridSetting, onAntiAlias, onVScale,
+             onPadding, onGrid, onAntiAlias, onVScale,
              onExport, onClear
           } from './javascript/W2P.js'
 
@@ -327,7 +327,6 @@
     window.onFill = onFill
     window.onPadding = onPadding
     window.onGrid = onGrid
-    window.onGridSetting = onGridSetting
     window.onAntiAlias = onAntiAlias
     window.onVScale = onVScale
     window.onExport = onExport

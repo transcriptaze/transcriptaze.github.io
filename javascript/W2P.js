@@ -366,61 +366,54 @@ export function onPadding (event) {
 }
 
 export function onGrid (event) {
-  const v = document.querySelector('input[name="grid"]:checked')
+  if (event.type === 'change' || (event.type === 'keydown' && event.key === 'Enter')) {
+    const v = document.querySelector('input[name="grid"]:checked')
 
-  if (v && v.value) {
-    switch (v.value) {
-      case 'none':
-        document.getElementById('gridcolour').style.display = 'none'
-        document.getElementById('gridalpha').style.display = 'none'
-        document.getElementById('gridsize').style.display = 'none'
-        document.getElementById('gridwh').style.display = 'none'
-        document.getElementById('overlay').style.display = 'none'
-        document.querySelector('#overlay + label').style.display = 'none'
-        break
+    if (v && v.value) {
+      switch (v.value) {
+        case 'none':
+          document.getElementById('gridcolour').style.display = 'none'
+          document.getElementById('gridalpha').style.display = 'none'
+          document.getElementById('gridsize').style.display = 'none'
+          document.getElementById('gridwh').style.display = 'none'
+          document.getElementById('overlay').style.display = 'none'
+          document.querySelector('#overlay + label').style.display = 'none'
+          break
 
-      case 'square':
-        document.getElementById('gridcolour').style.display = 'block'
-        document.getElementById('gridalpha').style.display = 'block'
-        document.getElementById('gridsize').style.display = 'block'
-        document.getElementById('gridwh').style.display = 'none'
-        document.getElementById('overlay').style.display = 'block'
-        document.querySelector('#overlay + label').style.display = 'block'
-        break
+        case 'square':
+          document.getElementById('gridcolour').style.display = 'block'
+          document.getElementById('gridalpha').style.display = 'block'
+          document.getElementById('gridsize').style.display = 'block'
+          document.getElementById('gridwh').style.display = 'none'
+          document.getElementById('overlay').style.display = 'block'
+          document.querySelector('#overlay + label').style.display = 'block'
+          break
 
-      case 'rectangular':
-        document.getElementById('gridcolour').style.display = 'block'
-        document.getElementById('gridalpha').style.display = 'block'
-        document.getElementById('gridsize').style.display = 'none'
-        document.getElementById('gridwh').style.display = 'block'
-        document.getElementById('overlay').style.display = 'block'
-        document.querySelector('#overlay + label').style.display = 'block'
-        break
+        case 'rectangular':
+          document.getElementById('gridcolour').style.display = 'block'
+          document.getElementById('gridalpha').style.display = 'block'
+          document.getElementById('gridsize').style.display = 'none'
+          document.getElementById('gridwh').style.display = 'block'
+          document.getElementById('overlay').style.display = 'block'
+          document.querySelector('#overlay + label').style.display = 'block'
+          break
+      }
     }
-  }
 
-  const setGrid = function () {
-    return new Promise((resolve, reject) => {
-      goGrid((err, png) => {
-        if (err) {
-          reject(err)
-        } else {
-          resolve(png)
-        }
-      }, grid())
-    })
-  }
+    const set = function () {
+      return new Promise((resolve, reject) => {
+        goGrid((err, png) => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve(png)
+          }
+        }, grid())
+      })
+    }
 
-  busy()
-    .then(b => setGrid())
-    .catch((err) => console.error(err))
-    .finally(unbusy)
-}
-
-export function onGridSetting (event) {
-  if (loaded && (event.type === 'change' || (event.type === 'keydown' && event.key === 'Enter'))) {
     busy()
-      .then(b => redraw())
+      .then(b => set())
       .catch((err) => console.error(err))
       .finally(unbusy)
   }
@@ -732,7 +725,7 @@ async function render (width, height) {
       } else {
         resolve(png)
       }
-    }, width, height, padding(), fill(), grid(), antialias())
+    }, width, height, padding(), fill(), antialias())
   })
 }
 

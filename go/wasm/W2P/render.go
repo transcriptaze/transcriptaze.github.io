@@ -21,7 +21,7 @@ func render(this js.Value, inputs []js.Value) interface{} {
 	padding := 2
 
 	var fillspec wav2png.FillSpec = wav2png.NewSolidFill(FILL_COLOUR)
-	var gridspec wav2png.GridSpec = wav2png.NewSquareGrid(GRID_COLOUR, GRID_SIZE, GRID_FIT, GRID_OVERLAY)
+	gridspec := options.gridspec
 	var kernel wav2png.Kernel = wav2png.Soft
 	var vscale = cache.vscale
 
@@ -41,15 +41,8 @@ func render(this js.Value, inputs []js.Value) interface{} {
 		fillspec = fill(inputs[4])
 	}
 
-	// TODO REMOVE
 	if len(inputs) > 5 {
-		g, settings := grid(inputs[5])
-		gridspec = g
-		save(TagGrid, settings)
-	}
-
-	if len(inputs) > 6 {
-		kernel = antialias(inputs[6])
+		kernel = antialias(inputs[5])
 	}
 
 	go func() {
