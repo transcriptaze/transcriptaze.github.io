@@ -1,6 +1,5 @@
 // +build js,wasm
 
-// WASM interface for the taps2beats functions
 package main
 
 import (
@@ -25,11 +24,11 @@ func onScale(this js.Value, inputs []js.Value) interface{} {
 }
 
 func scale(object js.Value) float64 {
-		if !object.IsNull() && !object.IsNaN() {
-			if v := object.Float(); v >= 0.25 && v <= 4.0 {
-				return v
-			}
+	if !object.IsNull() && !object.IsNaN() {
+		if v := object.Float(); v >= 0.25 && v <= 4.0 {
+			return v
 		}
+	}
 
 	return 1.0
 }

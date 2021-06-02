@@ -1,6 +1,6 @@
 // +build js,wasm
 
-// WASM interface for the taps2beats functions
+// WASM interface for the wav2png functions
 package main
 
 import (
@@ -45,7 +45,7 @@ var options = struct {
 
 var cache = struct {
 	palette wav2png.Palette
-	hscale float64
+	hscale  float64
 	vscale  float64
 }{
 	palette: wav2png.Ice,
@@ -56,7 +56,7 @@ var cache = struct {
 func main() {
 	c := make(chan bool)
 
-	js.Global().Set("goStore", js.FuncOf(store))
+	js.Global().Set("goAudio", js.FuncOf(setAudio))
 	js.Global().Set("goRender", js.FuncOf(render))
 	js.Global().Set("goClear", js.FuncOf(clear))
 	js.Global().Set("goPalette", js.FuncOf(palette))

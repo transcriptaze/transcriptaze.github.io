@@ -1,6 +1,5 @@
 // +build js,wasm
 
-// WASM interface for the taps2beats functions
 package main
 
 import (
@@ -42,8 +41,11 @@ func render(this js.Value, inputs []js.Value) interface{} {
 		fillspec = fill(inputs[4])
 	}
 
+	// TODO REMOVE
 	if len(inputs) > 5 {
-		gridspec = grid(inputs[5])
+		g, settings := grid(inputs[5])
+		gridspec = g
+		save(TagGrid, settings)
 	}
 
 	if len(inputs) > 6 {

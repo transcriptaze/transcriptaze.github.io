@@ -1,6 +1,5 @@
 // +build js,wasm
 
-// WASM interface for the taps2beats functions
 package main
 
 import (
@@ -9,7 +8,7 @@ import (
 	"time"
 )
 
-func store(this js.Value, inputs []js.Value) interface{} {
+func setAudio(this js.Value, inputs []js.Value) interface{} {
 	callback := inputs[0]
 	buffer := inputs[1]
 

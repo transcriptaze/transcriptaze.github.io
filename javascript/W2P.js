@@ -1,4 +1,4 @@
-/* global goStore, goRender, goClear, goPalette, goSelect , goGrid, goScale */
+/* global goAudio, goRender, goClear, goPalette, goSelect , goGrid, goScale */
 
 import { State } from './state.js'
 import { Slider } from './slider.js'
@@ -399,24 +399,22 @@ export function onGrid (event) {
     }
   }
 
-  if (loaded) {
-    const setGrid = function () {
-      return new Promise((resolve, reject) => {
-        goGrid((err, png) => {
-          if (err) {
-            reject(err)
-          } else {
-            resolve(png)
-          }
-        }, grid())
-      })
-    }
-
-    busy()
-      .then(b => setGrid())
-      .catch((err) => console.error(err))
-      .finally(unbusy)
+  const setGrid = function () {
+    return new Promise((resolve, reject) => {
+      goGrid((err, png) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(png)
+        }
+      }, grid())
+    })
   }
+
+  busy()
+    .then(b => setGrid())
+    .catch((err) => console.error(err))
+    .finally(unbusy)
 }
 
 export function onGridSetting (event) {
@@ -716,7 +714,7 @@ async function transcode (bytes) {
 
 async function store (buffer) {
   return new Promise((resolve, reject) => {
-    goStore((err) => {
+    goAudio((err) => {
       if (err) {
         reject(err)
       } else {
@@ -907,20 +905,18 @@ function grid () {
 
   // grid
 
-  state.setGrid(v, c, alpha, gridsize, wh, overlay)
-
   switch (v) {
     case 'none':
-      return { type: 'none' }
+      return { type: 'none', colour: colour, size: gridsize, wh: gridwh, overlay: overlay }
 
     case 'square':
-      return { type: 'square', colour: colour, size: gridsize, overlay: overlay }
+      return { type: 'square', colour: colour, size: gridsize, wh: gridwh, overlay: overlay }
 
     case 'rectangular':
-      return { type: 'rectangular', colour: colour, size: gridwh, overlay: overlay }
+      return { type: 'rectangular', colour: colour, size: gridwh, wh: gridwh, overlay: overlay }
 
     default:
-      return { type: 'square', colour: colour, size: gridsize, overlay: overlay }
+      return { type: 'square', colour: colour, size: gridsize, wh: gridwh, overlay: overlay }
   }
 }
 
@@ -971,12 +967,14 @@ function busy () {
   const windmill = document.getElementById('windmill')
 
   return new Promise((resolve) => {
-    loading.style.visibility = 'visible'
-    windmill.style.visibility = 'visible'
-    windmill.style.display = 'block'
+    if (loaded) {
+      loading.style.visibility = 'visible'
+      windmill.style.visibility = 'visible'
+      windmill.style.display = 'block'
+    }
 
-    // NOTE: a delay seems to be the only way to get e.g. the 'size' radio buttons
-    //       to be updated before the redraw is complete
+    // FIXME: a delay seems to be the only way to get e.g. the 'size' radio buttons
+    //        to be updated before the redraw is complete
     setTimeout(resolve, 100)
   })
 }

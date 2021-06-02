@@ -3,15 +3,17 @@
 ### W2P
 
 - [ ] Move event handling+redraw to Go
+      - settings
       - size
       - fill
       - padding
       - antialias
       - selection
 
-- [ ] Optimize draw/redraw
-- [ ] (optionally) show audio info
 - [ ] Update transcriptaze Github page
+- [ ] Optimize draw/redraw
+- [ ] https://schollz.com/blog/waveforms/
+- [ ] (optionally) show audio info
 
 - [x] Let busy() return a Promise and then chain everything off that (?)
 - [x] Rectangular grid: handle partial entry e.g. ~64

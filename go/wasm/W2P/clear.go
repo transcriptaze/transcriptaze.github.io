@@ -1,6 +1,5 @@
 // +build js,wasm
 
-// WASM interface for the taps2beats functions
 package main
 
 import (

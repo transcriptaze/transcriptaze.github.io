@@ -171,17 +171,6 @@ export const State = function () {
     window.localStorage.setItem(tags.W2P.fill, JSON.stringify(this.W2P.fill))
   }
 
-  this.setGrid = function (type, colour, alpha, size, wh, overlay) {
-    this.W2P.grid.type = type
-    this.W2P.grid.colour = colour
-    this.W2P.grid.alpha = alpha
-    this.W2P.grid.size = size
-    this.W2P.grid.wh = wh
-    this.W2P.grid.overlay = overlay
-
-    window.localStorage.setItem(tags.W2P.grid, JSON.stringify(this.W2P.grid))
-  }
-
   this.setAntiAlias = function (type) {
     this.W2P.antialias.type = type
 
