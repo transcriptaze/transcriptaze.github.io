@@ -6,6 +6,7 @@ import { Slider } from './slider.js'
 const state = new State()
 const local = {}
 
+let loading = false
 let loaded = false
 
 export function initialise () {
@@ -567,6 +568,7 @@ export function onClear (event) {
   save.disabled = true
   clear.disabled = true
 
+  loading = false
   loaded = false
 
   delete (local.from)
@@ -600,6 +602,9 @@ function load (name, blob) {
     URL.revokeObjectURL(waveform.src)
   }
 
+  loading = true
+  loaded = false
+
   busy()
     .then(b => blob.arrayBuffer())
     .then(b => transcode(b))
@@ -616,6 +621,7 @@ function load (name, blob) {
       slider.style.display = 'block'
       save.disabled = false
       clear.disabled = false
+      loading = false
       loaded = true
 
       drawSlider()
@@ -956,12 +962,12 @@ function scale () {
 }
 
 function busy () {
-  const loading = document.getElementById('loading')
+  const overlay = document.getElementById('loading')
   const windmill = document.getElementById('windmill')
 
   return new Promise((resolve) => {
-    if (loaded) {
-      loading.style.visibility = 'visible'
+    if (loading || loaded) {
+      overlay.style.visibility = 'visible'
       windmill.style.visibility = 'visible'
       windmill.style.display = 'block'
     }
@@ -973,10 +979,10 @@ function busy () {
 }
 
 function unbusy () {
-  const loading = document.getElementById('loading')
+  const overlay = document.getElementById('loading')
   const windmill = document.getElementById('windmill')
 
-  loading.style.visibility = 'hidden'
+  overlay.style.visibility = 'hidden'
   windmill.style.display = 'none'
 }
 
