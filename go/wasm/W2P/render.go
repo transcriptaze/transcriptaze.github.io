@@ -20,7 +20,7 @@ func render(this js.Value, inputs []js.Value) interface{} {
 	height := 390
 	padding := 2
 
-	var fillspec wav2png.FillSpec = wav2png.NewSolidFill(FILL_COLOUR)
+	fillspec := options.fillspec
 	gridspec := options.gridspec
 	kernel := options.antialias
 	var vscale = cache.vscale
@@ -35,10 +35,6 @@ func render(this js.Value, inputs []js.Value) interface{} {
 
 	if len(inputs) > 3 && !inputs[3].IsNaN() {
 		padding = inputs[3].Int()
-	}
-
-	if len(inputs) > 4 {
-		fillspec = fill(inputs[4])
 	}
 
 	go func() {

@@ -5,7 +5,6 @@
 - [ ] Move event handling+redraw to Go
       - settings
       - size
-      - fill
       - padding
       - selection
       - move grid validation to Go

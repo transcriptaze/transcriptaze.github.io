@@ -6,10 +6,7 @@ package main
 import (
 	"bytes"
 	"encoding/binary"
-	"fmt"
 	"image/color"
-	"regexp"
-	"strings"
 	"syscall/js"
 	"time"
 
@@ -36,11 +33,13 @@ type audio struct {
 var wav *audio
 
 var options = struct {
+	fillspec  wav2png.FillSpec
 	gridspec  wav2png.GridSpec
 	antialias wav2png.Kernel
 	from      *time.Duration
 	to        *time.Duration
 }{
+	fillspec:  wav2png.NewSolidFill(FILL_COLOUR),
 	gridspec:  wav2png.NewSquareGrid(GRID_COLOUR, GRID_SIZE, GRID_FIT, GRID_OVERLAY),
 	antialias: wav2png.Vertical,
 }
@@ -62,43 +61,13 @@ func main() {
 	js.Global().Set("goRender", js.FuncOf(render))
 	js.Global().Set("goClear", js.FuncOf(clear))
 	js.Global().Set("goPalette", js.FuncOf(palette))
-	js.Global().Set("goSelect", js.FuncOf(selected))
+	js.Global().Set("goFill", js.FuncOf(onFill))
 	js.Global().Set("goGrid", js.FuncOf(onGrid))
 	js.Global().Set("goAntialias", js.FuncOf(onAntialias))
 	js.Global().Set("goScale", js.FuncOf(onScale))
+	js.Global().Set("goSelect", js.FuncOf(selected))
 
 	<-c
-}
-
-func fill(object js.Value) wav2png.FillSpec {
-	if !object.IsNull() {
-		fill := object.Get("type").String()
-		colour := FILL_COLOUR
-
-		if c := object.Get("colour"); !c.IsNull() && !c.IsUndefined() {
-			s := strings.ToLower(c.String())
-			if regexp.MustCompile("#[[:xdigit:]]{8}").MatchString(s) {
-				red := uint8(0)
-				green := uint8(0x80)
-				blue := uint8(0)
-				alpha := uint8(0xff)
-
-				if _, err := fmt.Sscanf(s, "#%02x%02x%02x%02x", &red, &green, &blue, &alpha); err == nil {
-					colour = color.NRGBA{R: red, G: green, B: blue, A: alpha}
-				}
-			}
-		}
-
-		switch fill {
-		case "solid":
-			return wav2png.NewSolidFill(colour)
-
-		default:
-			return wav2png.NewSolidFill(colour)
-		}
-	}
-
-	return wav2png.NewSolidFill(FILL_COLOUR)
 }
 
 func float32ArrayToSlice(array js.Value) []float32 {

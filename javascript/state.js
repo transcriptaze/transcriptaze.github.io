@@ -163,14 +163,6 @@ export const State = function () {
     window.localStorage.setItem(tags.W2P.palettes, JSON.stringify(object))
   }
 
-  this.setFill = function (type, colour, alpha) {
-    this.W2P.fill.type = type
-    this.W2P.fill.colour = colour
-    this.W2P.fill.alpha = alpha
-
-    window.localStorage.setItem(tags.W2P.fill, JSON.stringify(this.W2P.fill))
-  }
-
   this.setScale = function (hscale, vscale) {
     this.W2P.scale.horizontal = hscale
     this.W2P.scale.vertical = vscale

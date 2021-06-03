@@ -42,8 +42,12 @@ func onGrid(this js.Value, inputs []js.Value) interface{} {
 func grid(object js.Value) (wav2png.GridSpec, interface{}) {
 	settings := gridSettings(object)
 
+	clean := func(v js.Value) string {
+		return strings.ReplaceAll(strings.ToLower(v.String()), " ", "")
+	}
+
 	if !object.IsNull() {
-		grid := object.Get("type").String()
+		grid := clean(object.Get("type"))
 		colour := GRID_COLOUR
 		size := GRID_SIZE
 		width := GRID_WIDTH
@@ -52,7 +56,7 @@ func grid(object js.Value) (wav2png.GridSpec, interface{}) {
 		overlay := GRID_OVERLAY
 
 		if c := object.Get("colour"); !c.IsNull() && !c.IsUndefined() {
-			s := strings.ToLower(c.String())
+			s := clean(c)
 			if regexp.MustCompile("#[[:xdigit:]]{8}").MatchString(s) {
 				red := uint8(0)
 				green := uint8(0x80)
@@ -66,7 +70,7 @@ func grid(object js.Value) (wav2png.GridSpec, interface{}) {
 		}
 
 		if sz := object.Get("size"); !sz.IsNull() && !sz.IsUndefined() {
-			if matched := regexp.MustCompile(`([~=><≥≤]).*`).FindStringSubmatch(sz.String()); matched != nil && len(matched) == 2 {
+			if matched := regexp.MustCompile(`([~=><≥≤]).*`).FindStringSubmatch(clean(sz)); matched != nil && len(matched) == 2 {
 				switch matched[1] {
 				case "~":
 					fit = wav2png.Approximate
@@ -85,7 +89,7 @@ func grid(object js.Value) (wav2png.GridSpec, interface{}) {
 				}
 			}
 
-			if matched := regexp.MustCompile(`([~=><≥≤])?\s*([0-9]+)`).FindStringSubmatch(sz.String()); matched != nil && len(matched) == 3 {
+			if matched := regexp.MustCompile(`([~=><≥≤])?\s*([0-9]+)`).FindStringSubmatch(clean(sz)); matched != nil && len(matched) == 3 {
 				if v, err := strconv.ParseInt(matched[2], 10, 32); err == nil && v >= 16 && v <= 1024 {
 					size = int(v)
 				}
@@ -93,7 +97,7 @@ func grid(object js.Value) (wav2png.GridSpec, interface{}) {
 		}
 
 		if sz := object.Get("wh"); !sz.IsNull() && !sz.IsUndefined() {
-			if matched := regexp.MustCompile(`([~=><≥≤]).*`).FindStringSubmatch(sz.String()); matched != nil && len(matched) == 2 {
+			if matched := regexp.MustCompile(`([~=><≥≤]).*`).FindStringSubmatch(clean(sz)); matched != nil && len(matched) == 2 {
 				switch matched[1] {
 				case "~":
 					fit = wav2png.Approximate
@@ -112,7 +116,7 @@ func grid(object js.Value) (wav2png.GridSpec, interface{}) {
 				}
 			}
 
-			if matched := regexp.MustCompile(`([~=><≥≤])?\s*([0-9]+)x([0-9]+)`).FindStringSubmatch(sz.String()); matched != nil && len(matched) == 4 {
+			if matched := regexp.MustCompile(`([~=><≥≤])?\s*([0-9]+)x([0-9]+)`).FindStringSubmatch(clean(sz)); matched != nil && len(matched) == 4 {
 				if v, err := strconv.ParseInt(matched[2], 10, 32); err == nil && v >= 16 && v <= 1024 {
 					width = int(v)
 				}

@@ -1,4 +1,4 @@
-/* global goAudio, goRender, goClear, goPalette, goSelect , goGrid, goAntialias, goScale */
+/* global goAudio, goRender, goClear, goPalette, goFill, goSelect , goGrid, goAntialias, goScale */
 
 import { State } from './state.js'
 import { Slider } from './slider.js'
@@ -347,12 +347,31 @@ export function onPaletteDelete (event, tag) {
 }
 
 export function onFill (event) {
-  if (loaded && (event.type === 'change' || (event.type === 'keydown' && event.key === 'Enter'))) {
+  if (event.type === 'change' || (event.type === 'keydown' && event.key === 'Enter')) {
+    const set = function () {
+      return new Promise((resolve, reject) => {
+        goFill((err, png) => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve(png)
+          }
+        }, fill())
+      })
+    }
+
     busy()
-      .then(b => redraw())
+      .then(b => set())
       .catch((err) => console.error(err))
       .finally(unbusy)
   }
+
+  // if (loaded && (event.type === 'change' || (event.type === 'keydown' && event.key === 'Enter'))) {
+  //   busy()
+  //     .then(b => redraw())
+  //     .catch((err) => console.error(err))
+  //     .finally(unbusy)
+  // }
 }
 
 export function onPadding (event) {
@@ -837,8 +856,6 @@ function fill () {
   } else if (!isNaN(alpha) && alpha < 255) {
     colour = c + alpha.toString(16)
   }
-
-  state.setFill('solid', c, alpha)
 
   return { type: 'solid', colour: colour }
 }

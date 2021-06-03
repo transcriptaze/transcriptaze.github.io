@@ -20,7 +20,7 @@ func redraw() error {
 	height := 390
 	padding := 2
 
-	var fillspec wav2png.FillSpec = wav2png.NewSolidFill(FILL_COLOUR)
+	fillspec := options.fillspec
 	kernel := options.antialias
 	var vscale = cache.vscale
 
