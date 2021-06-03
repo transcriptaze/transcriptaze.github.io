@@ -22,7 +22,7 @@ func render(this js.Value, inputs []js.Value) interface{} {
 
 	var fillspec wav2png.FillSpec = wav2png.NewSolidFill(FILL_COLOUR)
 	gridspec := options.gridspec
-	var kernel wav2png.Kernel = wav2png.Soft
+	kernel := options.antialias
 	var vscale = cache.vscale
 
 	if len(inputs) > 1 && !inputs[1].IsNaN() {
@@ -39,10 +39,6 @@ func render(this js.Value, inputs []js.Value) interface{} {
 
 	if len(inputs) > 4 {
 		fillspec = fill(inputs[4])
-	}
-
-	if len(inputs) > 5 {
-		kernel = antialias(inputs[5])
 	}
 
 	go func() {

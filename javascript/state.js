@@ -171,12 +171,6 @@ export const State = function () {
     window.localStorage.setItem(tags.W2P.fill, JSON.stringify(this.W2P.fill))
   }
 
-  this.setAntiAlias = function (type) {
-    this.W2P.antialias.type = type
-
-    window.localStorage.setItem(tags.W2P.antialias, JSON.stringify(this.W2P.antialias))
-  }
-
   this.setScale = function (hscale, vscale) {
     this.W2P.scale.horizontal = hscale
     this.W2P.scale.vertical = vscale

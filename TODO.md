@@ -7,10 +7,10 @@
       - size
       - fill
       - padding
-      - antialias
       - selection
       - move grid validation to Go
-      
+
+- [ ] Put some audio samples on the page      
 - [ ] Update transcriptaze Github page
 - [ ] Optimize draw/redraw
 - [ ] https://schollz.com/blog/waveforms/

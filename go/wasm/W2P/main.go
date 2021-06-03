@@ -36,11 +36,13 @@ type audio struct {
 var wav *audio
 
 var options = struct {
-	gridspec wav2png.GridSpec
-	from     *time.Duration
-	to       *time.Duration
+	gridspec  wav2png.GridSpec
+	antialias wav2png.Kernel
+	from      *time.Duration
+	to        *time.Duration
 }{
-	gridspec: wav2png.NewSquareGrid(GRID_COLOUR, GRID_SIZE, GRID_FIT, GRID_OVERLAY),
+	gridspec:  wav2png.NewSquareGrid(GRID_COLOUR, GRID_SIZE, GRID_FIT, GRID_OVERLAY),
+	antialias: wav2png.Vertical,
 }
 
 var cache = struct {
@@ -62,6 +64,7 @@ func main() {
 	js.Global().Set("goPalette", js.FuncOf(palette))
 	js.Global().Set("goSelect", js.FuncOf(selected))
 	js.Global().Set("goGrid", js.FuncOf(onGrid))
+	js.Global().Set("goAntialias", js.FuncOf(onAntialias))
 	js.Global().Set("goScale", js.FuncOf(onScale))
 
 	<-c
@@ -96,28 +99,6 @@ func fill(object js.Value) wav2png.FillSpec {
 	}
 
 	return wav2png.NewSolidFill(FILL_COLOUR)
-}
-
-func antialias(object js.Value) wav2png.Kernel {
-	if !object.IsNull() {
-		kernel := object.Get("type").String()
-
-		switch kernel {
-		case "none":
-			return wav2png.None
-
-		case "vertical":
-			return wav2png.Vertical
-
-		case "horizontal":
-			return wav2png.Horizontal
-
-		case "soft":
-			return wav2png.Soft
-		}
-	}
-
-	return wav2png.Soft
 }
 
 func float32ArrayToSlice(array js.Value) []float32 {

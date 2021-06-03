@@ -21,7 +21,7 @@ func redraw() error {
 	padding := 2
 
 	var fillspec wav2png.FillSpec = wav2png.NewSolidFill(FILL_COLOUR)
-	var kernel wav2png.Kernel = wav2png.Soft
+	kernel := options.antialias
 	var vscale = cache.vscale
 
 	w := width

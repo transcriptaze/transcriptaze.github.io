@@ -1,4 +1,4 @@
-/* global goAudio, goRender, goClear, goPalette, goSelect , goGrid, goScale */
+/* global goAudio, goRender, goClear, goPalette, goSelect , goGrid, goAntialias, goScale */
 
 import { State } from './state.js'
 import { Slider } from './slider.js'
@@ -421,9 +421,21 @@ export function onGrid (event) {
 }
 
 export function onAntiAlias (event) {
-  if (loaded) {
+  if (event.type === 'change' || (event.type === 'keydown' && event.key === 'Enter')) {
+    const set = function () {
+      return new Promise((resolve, reject) => {
+        goAntialias((err, png) => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve(png)
+          }
+        }, antialias())
+      })
+    }
+
     busy()
-      .then(b => redraw())
+      .then(b => set())
       .catch((err) => console.error(err))
       .finally(unbusy)
   }
@@ -731,7 +743,7 @@ async function render (width, height) {
       } else {
         resolve(png)
       }
-    }, width, height, padding(), fill(), antialias())
+    }, width, height, padding(), fill())
   })
 }
 
@@ -921,8 +933,6 @@ function grid () {
 
 function antialias () {
   const v = document.querySelector('input[name="antialias"]:checked').value
-
-  state.setAntiAlias(v)
 
   switch (v) {
     case 'none':
