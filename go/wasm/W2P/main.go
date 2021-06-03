@@ -18,10 +18,6 @@ const VERSION = "v0.1.0"
 var BLACK = color.NRGBA{R: 0x00, G: 0x00, B: 0x00, A: 255}
 var DARKGREEN = color.NRGBA{R: 0x00, G: 0x80, B: 0x00, A: 255}
 
-var FILL_COLOUR = BLACK
-
-const PADDING = 0
-
 type audio struct {
 	sampleRate float64
 	channels   int
@@ -33,12 +29,14 @@ type audio struct {
 var wav *audio
 
 var options = struct {
+	padding   int
 	fillspec  wav2png.FillSpec
 	gridspec  wav2png.GridSpec
 	antialias wav2png.Kernel
 	from      *time.Duration
 	to        *time.Duration
 }{
+	padding:   PADDING,
 	fillspec:  wav2png.NewSolidFill(FILL_COLOUR),
 	gridspec:  wav2png.NewSquareGrid(GRID_COLOUR, GRID_SIZE, GRID_FIT, GRID_OVERLAY),
 	antialias: wav2png.Vertical,
@@ -63,6 +61,7 @@ func main() {
 	js.Global().Set("goPalette", js.FuncOf(palette))
 	js.Global().Set("goFill", js.FuncOf(onFill))
 	js.Global().Set("goGrid", js.FuncOf(onGrid))
+	js.Global().Set("goPadding", js.FuncOf(onPadding))
 	js.Global().Set("goAntialias", js.FuncOf(onAntialias))
 	js.Global().Set("goScale", js.FuncOf(onScale))
 	js.Global().Set("goSelect", js.FuncOf(selected))

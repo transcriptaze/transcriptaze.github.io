@@ -18,8 +18,8 @@ func render(this js.Value, inputs []js.Value) interface{} {
 	callback := inputs[0]
 	width := 645
 	height := 390
-	padding := 2
 
+	padding := options.padding
 	fillspec := options.fillspec
 	gridspec := options.gridspec
 	kernel := options.antialias
@@ -31,10 +31,6 @@ func render(this js.Value, inputs []js.Value) interface{} {
 
 	if len(inputs) > 2 && !inputs[2].IsNaN() {
 		height = inputs[2].Int()
-	}
-
-	if len(inputs) > 3 && !inputs[3].IsNaN() {
-		padding = inputs[3].Int()
 	}
 
 	go func() {

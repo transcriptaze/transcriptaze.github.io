@@ -125,12 +125,6 @@ export const State = function () {
     window.localStorage.setItem(tags.W2P.size, this.W2P.size)
   }
 
-  this.setPadding = function (padding) {
-    this.W2P.padding = padding
-
-    window.localStorage.setItem(tags.W2P.padding, this.W2P.padding)
-  }
-
   this.setCustomSize = function (size) {
     this.W2P.customSize = size.trim()
 

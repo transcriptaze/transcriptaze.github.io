@@ -18,8 +18,8 @@ func redraw() error {
 
 	width := 645
 	height := 390
-	padding := 2
 
+	padding := options.padding
 	fillspec := options.fillspec
 	kernel := options.antialias
 	var vscale = cache.vscale

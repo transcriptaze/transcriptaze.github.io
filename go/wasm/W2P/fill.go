@@ -11,6 +11,8 @@ import (
 	"github.com/transcriptaze/wav2png/wav2png"
 )
 
+var FILL_COLOUR = BLACK
+
 func onFill(this js.Value, inputs []js.Value) interface{} {
 	callback := inputs[0]
 

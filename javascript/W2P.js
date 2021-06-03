@@ -1,4 +1,4 @@
-/* global goAudio, goRender, goClear, goPalette, goFill, goSelect , goGrid, goAntialias, goScale */
+/* global goAudio, goRender, goClear, goPalette, goFill, goSelect , goGrid, goPadding, goAntialias, goScale */
 
 import { State } from './state.js'
 import { Slider } from './slider.js'
@@ -365,21 +365,24 @@ export function onFill (event) {
       .catch((err) => console.error(err))
       .finally(unbusy)
   }
-
-  // if (loaded && (event.type === 'change' || (event.type === 'keydown' && event.key === 'Enter'))) {
-  //   busy()
-  //     .then(b => redraw())
-  //     .catch((err) => console.error(err))
-  //     .finally(unbusy)
-  // }
 }
 
 export function onPadding (event) {
-  padding()
+  if (event.type === 'change' || (event.type === 'keydown' && event.key === 'Enter')) {
+    const set = function () {
+      return new Promise((resolve, reject) => {
+        goPadding((err, png) => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve(png)
+          }
+        }, padding())
+      })
+    }
 
-  if (loaded && event.type === 'keydown' && event.key === 'Enter') {
     busy()
-      .then(b => redraw())
+      .then(b => set())
       .catch((err) => console.error(err))
       .finally(unbusy)
   }
@@ -762,7 +765,7 @@ async function render (width, height) {
       } else {
         resolve(png)
       }
-    }, width, height, padding(), fill())
+    }, width, height)
   })
 }
 
@@ -838,7 +841,6 @@ function padding () {
   const padding = parseInt(v, 10)
 
   if (!isNaN(padding) && padding >= -16 && padding <= 32) {
-    state.setPadding(padding)
     return padding
   }
 
