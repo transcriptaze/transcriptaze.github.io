@@ -16,22 +16,14 @@ import (
 
 func render(this js.Value, inputs []js.Value) interface{} {
 	callback := inputs[0]
-	width := 645
-	height := 390
 
+	width := options.width
+	height := options.height
 	padding := options.padding
 	fillspec := options.fillspec
 	gridspec := options.gridspec
 	kernel := options.antialias
 	vscale := options.vscale
-
-	if len(inputs) > 1 && !inputs[1].IsNaN() {
-		width = inputs[1].Int()
-	}
-
-	if len(inputs) > 2 && !inputs[2].IsNaN() {
-		height = inputs[2].Int()
-	}
 
 	go func() {
 		if wav == nil {

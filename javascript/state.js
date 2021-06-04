@@ -9,8 +9,8 @@ const tags = {
 
   W2P: {
     size: 'W2P.size',
-    padding: 'W2P.padding',
     customSize: 'W2P.customSize',
+    padding: 'W2P.padding',
     palettes: 'W2P.palettes',
     fill: 'W2P.fill',
     grid: 'W2P.grid',
@@ -31,7 +31,7 @@ export const State = function () {
   }
 
   this.W2P = {
-    size: '645x392',
+    size: '645x390',
     padding: 2,
     customSize: '',
     palette: {
@@ -119,12 +119,6 @@ export const State = function () {
     window.localStorage.setItem(tags.T2B.apikey, this.T2B.apikey)
   }
 
-  this.setSize = function (size) {
-    this.W2P.size = size.trim()
-
-    window.localStorage.setItem(tags.W2P.size, this.W2P.size)
-  }
-
   this.setCustomSize = function (size) {
     this.W2P.customSize = size.trim()
 
@@ -201,7 +195,7 @@ function restoreT2B (state) {
 }
 
 function restoreW2P (state) {
-  state.W2P.size = '641x386'
+  state.W2P.size = '645x390'
   state.W2P.customSize = ''
 
   // Restore W2P size

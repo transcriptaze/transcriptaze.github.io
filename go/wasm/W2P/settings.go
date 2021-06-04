@@ -25,9 +25,19 @@ func (t Tag) String() string {
 }
 
 func save(tag Tag, value interface{}) error {
-	bytes, err := json.Marshal(value)
-	if err != nil {
-		return err
+	var bytes []byte
+
+	switch v := value.(type) {
+	case string:
+		bytes = []byte(v)
+
+	default:
+		b, err := json.Marshal(value)
+		if err != nil {
+			return err
+		} else {
+			bytes = b
+		}
 	}
 
 	js.Global().

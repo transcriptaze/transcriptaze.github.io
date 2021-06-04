@@ -1,4 +1,4 @@
-/* global goAudio, goRender, goClear, goPalette, goFill, goSelect , goGrid, goPadding, goAntialias, goScale */
+/* global goAudio, goRender, goClear, goSize, goPalette, goFill, goSelect , goGrid, goPadding, goAntialias, goScale */
 
 import { State } from './state.js'
 import { Slider } from './slider.js'
@@ -137,9 +137,8 @@ export function initialise () {
 export function onDraw (bytes, width, height) {
   const array = new Uint8Array(bytes)
   const png = new Blob([array], { type: 'image/png' })
-  const size = { width: width, height: height }
 
-  draw(png, size)
+  draw(png, { width: width, height: height })
 }
 
 export function onAccept (event) {
@@ -200,12 +199,24 @@ export function onSize (event) {
   } else {
     custom.style.visibility = 'hidden'
 
-    if (loaded) {
-      busy()
-        .then(b => redraw())
-        .catch((err) => console.error(err))
-        .finally(unbusy)
+    const sz = size()
+
+    const set = function () {
+      return new Promise((resolve, reject) => {
+        goSize((err, png) => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve(png)
+          }
+        }, sz.width, sz.height)
+      })
     }
+
+    busy()
+      .then(b => set())
+      .catch((err) => console.error(err))
+      .finally(unbusy)
   }
 }
 
@@ -624,8 +635,6 @@ function load (name, blob) {
   const save = document.getElementById('export')
   const clear = document.getElementById('clear')
   const wh = size()
-  const width = wh.width
-  const height = wh.height
 
   if (waveform.src !== '') {
     URL.revokeObjectURL(waveform.src)
@@ -638,7 +647,7 @@ function load (name, blob) {
     .then(b => blob.arrayBuffer())
     .then(b => transcode(b))
     .then(b => store(b))
-    .then(b => render(width, height))
+    .then(b => render())
     .then(b => {
       const array = new Uint8Array(b)
       const png = new Blob([array], { type: 'image/png' })
@@ -666,14 +675,12 @@ function load (name, blob) {
 function redraw () {
   const wh = size()
   const waveform = document.getElementById('png')
-  const width = wh.width
-  const height = wh.height
 
   if (waveform.src !== '') {
     URL.revokeObjectURL(waveform.src)
   }
 
-  return render(width, height)
+  return render()
     .then(b => {
       const array = new Uint8Array(b)
       const png = new Blob([array], { type: 'image/png' })
@@ -752,7 +759,7 @@ async function store (buffer) {
   })
 }
 
-async function render (width, height) {
+async function render () {
   return new Promise((resolve, reject) => {
     goRender((err, png) => {
       if (err) {
@@ -760,7 +767,7 @@ async function render (width, height) {
       } else {
         resolve(png)
       }
-    }, width, height)
+    })
   })
 }
 
@@ -821,8 +828,6 @@ function size () {
       if (option.value === 'custom') {
         state.setCustomSize(v)
       }
-
-      state.setSize(option.value)
 
       return { width: w, height: h }
     }

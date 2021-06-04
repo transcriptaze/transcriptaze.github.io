@@ -16,9 +16,8 @@ func redraw() error {
 		return nil
 	}
 
-	width := 645
-	height := 390
-
+	width := options.width
+	height := options.height
 	padding := options.padding
 	fillspec := options.fillspec
 	kernel := options.antialias
