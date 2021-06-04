@@ -465,32 +465,27 @@ export function onAntiAlias (event) {
 
 export function onVScale (event) {
   if (event.type === 'change' || (event.type === 'keydown' && event.key === 'Enter')) {
-    const v = scale()
-
-    if (loaded) {
-      busy()
-        .then(b => setScale(v))
-        .catch(err => console.error(err))
-        .finally(unbusy)
-    } else {
-      setScale(v).catch(err => console.error(err))
-    }
+    setScale(scale())
   }
 }
 
 function setScale (v) {
-  const hscale = v.horizontal
-  const vscale = v.vertical
+  const set = function () {
+    return new Promise((resolve, reject) => {
+      goScale((err, png) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(png)
+        }
+      }, v.horizontal, v.vertical)
+    })
+  }
 
-  return new Promise((resolve, reject) => {
-    goScale((err) => {
-      if (err) {
-        reject(err)
-      } else {
-        resolve()
-      }
-    }, hscale, vscale)
-  })
+  busy()
+    .then(b => set())
+    .catch((err) => console.error(err))
+    .finally(unbusy)
 }
 
 function onSetStart (t, released) {
@@ -984,8 +979,6 @@ function scale () {
 
     vscale = Math.round(c * Math.exp((v - a) / b)) / 100.0
   }
-
-  state.setScale(hscale, vscale)
 
   return { horizontal: hscale, vertical: vscale }
 }

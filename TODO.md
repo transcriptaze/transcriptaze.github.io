@@ -5,10 +5,10 @@
 - [ ] Move event handling+redraw to Go
       - size
       - palette
-      - scale
       - selection
       - move grid/fill/etc validation to Go 
       - use current settings as initial values when parsing inputs in onFill, onAntialias, etc
+      - use current setting to initialise `options`
 
 - [ ] Put some audio samples on the page      
 - [ ] Update transcriptaze Github page

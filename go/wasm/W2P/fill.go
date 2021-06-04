@@ -35,11 +35,6 @@ func onFill(this js.Value, inputs []js.Value) interface{} {
 
 func fill(object js.Value) (wav2png.FillSpec, interface{}) {
 	fillspec := wav2png.NewSolidFill(FILL_COLOUR)
-	settings := fillSettings(object)
-
-	clean := func(v js.Value) string {
-		return strings.ReplaceAll(strings.ToLower(v.String()), " ", "")
-	}
 
 	if !object.IsNull() {
 		fill := clean(object.Get("type"))
@@ -68,7 +63,7 @@ func fill(object js.Value) (wav2png.FillSpec, interface{}) {
 		}
 	}
 
-	return fillspec, settings
+	return fillspec, fillSettings(object)
 }
 
 func fillSettings(object js.Value) interface{} {

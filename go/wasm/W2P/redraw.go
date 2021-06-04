@@ -22,7 +22,7 @@ func redraw() error {
 	padding := options.padding
 	fillspec := options.fillspec
 	kernel := options.antialias
-	var vscale = cache.vscale
+	vscale := options.vscale
 
 	w := width
 	h := height

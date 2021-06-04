@@ -156,13 +156,6 @@ export const State = function () {
 
     window.localStorage.setItem(tags.W2P.palettes, JSON.stringify(object))
   }
-
-  this.setScale = function (hscale, vscale) {
-    this.W2P.scale.horizontal = hscale
-    this.W2P.scale.vertical = vscale
-
-    window.localStorage.setItem(tags.W2P.scale, JSON.stringify(this.W2P.scale))
-  }
 }
 
 function restoreT2B (state) {

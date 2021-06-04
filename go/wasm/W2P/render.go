@@ -23,7 +23,7 @@ func render(this js.Value, inputs []js.Value) interface{} {
 	fillspec := options.fillspec
 	gridspec := options.gridspec
 	kernel := options.antialias
-	var vscale = cache.vscale
+	vscale := options.vscale
 
 	if len(inputs) > 1 && !inputs[1].IsNaN() {
 		width = inputs[1].Int()

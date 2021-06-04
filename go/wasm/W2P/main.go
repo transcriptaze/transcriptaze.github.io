@@ -7,6 +7,7 @@ import (
 	"bytes"
 	"encoding/binary"
 	"image/color"
+	"strings"
 	"syscall/js"
 	"time"
 
@@ -33,6 +34,8 @@ var options = struct {
 	fillspec  wav2png.FillSpec
 	gridspec  wav2png.GridSpec
 	antialias wav2png.Kernel
+	hscale    float64
+	vscale    float64
 	from      *time.Duration
 	to        *time.Duration
 }{
@@ -40,16 +43,14 @@ var options = struct {
 	fillspec:  wav2png.NewSolidFill(FILL_COLOUR),
 	gridspec:  wav2png.NewSquareGrid(GRID_COLOUR, GRID_SIZE, GRID_FIT, GRID_OVERLAY),
 	antialias: wav2png.Vertical,
+	hscale:    HSCALE,
+	vscale:    VSCALE,
 }
 
 var cache = struct {
 	palette wav2png.Palette
-	hscale  float64
-	vscale  float64
 }{
 	palette: wav2png.Ice,
-	hscale:  1.0,
-	vscale:  1.0,
 }
 
 func main() {
@@ -104,4 +105,8 @@ func seconds(g float64) (time.Duration, *time.Duration) {
 	t := time.Duration(g * float64(time.Second))
 
 	return t, &t
+}
+
+func clean(v js.Value) string {
+	return strings.ReplaceAll(strings.ToLower(v.String()), " ", "")
 }
