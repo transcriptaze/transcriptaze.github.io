@@ -634,7 +634,6 @@ function load (name, blob) {
   const slider = document.getElementById('slider')
   const save = document.getElementById('export')
   const clear = document.getElementById('clear')
-  const wh = size()
 
   if (waveform.src !== '') {
     URL.revokeObjectURL(waveform.src)
@@ -647,13 +646,7 @@ function load (name, blob) {
     .then(b => blob.arrayBuffer())
     .then(b => transcode(b))
     .then(b => store(b))
-    .then(b => render())
     .then(b => {
-      const array = new Uint8Array(b)
-      const png = new Blob([array], { type: 'image/png' })
-
-      draw(png, wh)
-
       waveform.dataset.filename = name
       picker.style.visibility = 'hidden'
       slider.style.display = 'block'

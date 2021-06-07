@@ -3,7 +3,6 @@
 ### W2P
 
 - [ ] Move event handling+redraw to Go
-      - load
       - custom size
       - palette
       - selection

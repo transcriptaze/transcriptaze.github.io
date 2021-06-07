@@ -34,7 +34,11 @@ func setAudio(this js.Value, inputs []js.Value) interface{} {
 			samples:    samples,
 		}
 
-		callback.Invoke(js.Null())
+		if err := redraw(); err != nil {
+			callback.Invoke(err.Error())
+		} else {
+			callback.Invoke(js.Null())
+		}
 	}()
 
 	return nil
