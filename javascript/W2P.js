@@ -1,4 +1,7 @@
-/* global goAudio, goRender, goClear, goSize, goPalette, goFill, goSelect , goGrid, goPadding, goAntialias, goScale */
+/* global goAudio, goRender, goClear, goSelect ,
+          goSize, goCustomSize,
+          goPalette, goFill,
+          goGrid, goPadding, goAntialias, goScale */
 
 import { State } from './state.js'
 import { Slider } from './slider.js'
@@ -198,30 +201,30 @@ export function onSize (event) {
     custom.focus()
   } else {
     custom.style.visibility = 'hidden'
-
-    const sz = size()
-
-    const set = function () {
-      return new Promise((resolve, reject) => {
-        goSize((err, png) => {
-          if (err) {
-            reject(err)
-          } else {
-            resolve(png)
-          }
-        }, sz.width, sz.height)
-      })
-    }
-
-    busy()
-      .then(b => set())
-      .catch((err) => console.error(err))
-      .finally(unbusy)
   }
+
+  const sz = size()
+
+  const set = function () {
+    return new Promise((resolve, reject) => {
+      goSize((err, png) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(png)
+        }
+      }, sz.width, sz.height)
+    })
+  }
+
+  busy()
+    .then(b => set())
+    .catch((err) => console.error(err))
+    .finally(unbusy)
 }
 
 export function onCustomSize (event) {
-  if (loaded && event.type === 'keydown' && event.key === 'Enter') {
+  if (event.type === 'keydown' && event.key === 'Enter') {
     const v = document.getElementById('custom').value
     const re = /([0-9]+)\s*x\s*([0-9]+)/
     const match = re.exec(v)
@@ -231,8 +234,20 @@ export function onCustomSize (event) {
       const h = parseInt(match[2], 10)
 
       if (!isNaN(w) && !isNaN(h) && w >= 64 && w <= 8192 && h > 64 && h <= 8192) {
+        const set = function () {
+          return new Promise((resolve, reject) => {
+            goCustomSize((err, png) => {
+              if (err) {
+                reject(err)
+              } else {
+                resolve(png)
+              }
+            }, w, h)
+          })
+        }
+
         busy()
-          .then(b => redraw())
+          .then(b => set())
           .catch((err) => console.error(err))
           .finally(unbusy)
       }
@@ -818,10 +833,6 @@ function size () {
     const h = parseInt(match[2], 10)
 
     if (w > 0 && w <= 8192 && h > 0 && h <= 8192) {
-      if (option.value === 'custom') {
-        state.setCustomSize(v)
-      }
-
       return { width: w, height: h }
     }
   }

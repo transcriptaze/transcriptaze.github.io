@@ -119,12 +119,6 @@ export const State = function () {
     window.localStorage.setItem(tags.T2B.apikey, this.T2B.apikey)
   }
 
-  this.setCustomSize = function (size) {
-    this.W2P.customSize = size.trim()
-
-    window.localStorage.setItem(tags.W2P.customSize, this.W2P.customSize)
-  }
-
   this.setSelectedPalette = function (selected) {
     this.W2P.palette.selected = selected
 

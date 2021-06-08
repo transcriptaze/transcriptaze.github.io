@@ -3,7 +3,6 @@
 ### W2P
 
 - [ ] Move event handling+redraw to Go
-      - custom size
       - palette
       - selection
       - move grid/fill/etc validation to Go 

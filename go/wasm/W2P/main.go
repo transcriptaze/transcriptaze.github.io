@@ -64,6 +64,7 @@ func main() {
 	js.Global().Set("goRender", js.FuncOf(render))
 	js.Global().Set("goClear", js.FuncOf(clear))
 	js.Global().Set("goSize", js.FuncOf(onSize))
+	js.Global().Set("goCustomSize", js.FuncOf(onCustomSize))
 	js.Global().Set("goPalette", js.FuncOf(palette))
 	js.Global().Set("goFill", js.FuncOf(onFill))
 	js.Global().Set("goGrid", js.FuncOf(onGrid))

@@ -31,6 +31,27 @@ func onSize(this js.Value, inputs []js.Value) interface{} {
 	return nil
 }
 
+func onCustomSize(this js.Value, inputs []js.Value) interface{} {
+	callback := inputs[0]
+
+	go func() {
+		width, height, settings := size(inputs[1], inputs[2])
+
+		options.width = width
+		options.height = height
+
+		if err := redraw(); err != nil {
+			callback.Invoke(err.Error())
+		} else if err := save(TagCustomSize, settings); err != nil {
+			callback.Invoke(err.Error())
+		} else {
+			callback.Invoke(js.Null())
+		}
+	}()
+
+	return nil
+}
+
 func size(width, height js.Value) (int, int, interface{}) {
 	w := options.width
 	h := options.height
