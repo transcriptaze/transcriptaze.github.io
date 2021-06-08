@@ -30,10 +30,13 @@ type audio struct {
 var wav *audio
 
 var options = struct {
-	width     int
-	height    int
-	padding   int
-	fillspec  wav2png.FillSpec
+	width    int
+	height   int
+	padding  int
+	fillspec wav2png.FillSpec
+	palettes struct {
+		selected string
+	}
 	gridspec  wav2png.GridSpec
 	antialias wav2png.Kernel
 	hscale    float64
@@ -41,9 +44,14 @@ var options = struct {
 	from      *time.Duration
 	to        *time.Duration
 }{
-	width:     WIDTH,
-	height:    HEIGHT,
-	padding:   PADDING,
+	width:   WIDTH,
+	height:  HEIGHT,
+	padding: PADDING,
+	palettes: struct {
+		selected string
+	}{
+		selected: "palette1",
+	},
 	fillspec:  wav2png.NewSolidFill(FILL_COLOUR),
 	gridspec:  wav2png.NewSquareGrid(GRID_COLOUR, GRID_SIZE, GRID_FIT, GRID_OVERLAY),
 	antialias: wav2png.Vertical,
@@ -60,18 +68,17 @@ var cache = struct {
 func main() {
 	c := make(chan bool)
 
-	js.Global().Set("goAudio", js.FuncOf(setAudio))
-	js.Global().Set("goRender", js.FuncOf(render))
+	js.Global().Set("goAudio", js.FuncOf(onSetAudio))
+	js.Global().Set("goSelect", js.FuncOf(onSelectAudio))
 	js.Global().Set("goClear", js.FuncOf(clear))
 	js.Global().Set("goSize", js.FuncOf(onSize))
 	js.Global().Set("goCustomSize", js.FuncOf(onCustomSize))
-	js.Global().Set("goPalette", js.FuncOf(palette))
+	js.Global().Set("goSelectPalette", js.FuncOf(onSelectPalette))
 	js.Global().Set("goFill", js.FuncOf(onFill))
 	js.Global().Set("goGrid", js.FuncOf(onGrid))
 	js.Global().Set("goPadding", js.FuncOf(onPadding))
 	js.Global().Set("goAntialias", js.FuncOf(onAntialias))
 	js.Global().Set("goScale", js.FuncOf(onScale))
-	js.Global().Set("goSelect", js.FuncOf(selected))
 
 	<-c
 }

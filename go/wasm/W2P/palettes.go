@@ -11,9 +11,10 @@ import (
 	"github.com/transcriptaze/wav2png/wav2png"
 )
 
-func palette(this js.Value, inputs []js.Value) interface{} {
+func onSelectPalette(this js.Value, inputs []js.Value) interface{} {
 	callback := inputs[0]
-	buffer := inputs[1]
+	tag := inputs[1]
+	buffer := inputs[2]
 
 	go func() {
 		b := bytes.NewBuffer(arrayBufferToBytes(buffer))
@@ -26,6 +27,8 @@ func palette(this js.Value, inputs []js.Value) interface{} {
 			callback.Invoke(fmt.Errorf("Error creating palette from PNG").Error())
 		} else {
 			cache.palette = *p
+
+			options.palettes.selected = tag.String()
 
 			if err := redraw(); err != nil {
 				callback.Invoke(err.Error())

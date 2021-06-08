@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func setAudio(this js.Value, inputs []js.Value) interface{} {
+func onSetAudio(this js.Value, inputs []js.Value) interface{} {
 	callback := inputs[0]
 	buffer := inputs[1]
 
@@ -32,6 +32,34 @@ func setAudio(this js.Value, inputs []js.Value) interface{} {
 			duration:   time.Duration(duration * float64(time.Second)),
 			length:     length,
 			samples:    samples,
+		}
+
+		if err := redraw(); err != nil {
+			callback.Invoke(err.Error())
+		} else {
+			callback.Invoke(js.Null())
+		}
+	}()
+
+	return nil
+}
+
+func onSelectAudio(this js.Value, inputs []js.Value) interface{} {
+	callback := inputs[0]
+	from := inputs[1]
+	to := inputs[2]
+
+	go func() {
+		if from.IsUndefined() || from.IsNull() || from.IsNaN() {
+			options.from = nil
+		} else {
+			_, options.from = seconds(from.Float())
+		}
+
+		if to.IsUndefined() || to.IsNull() || to.IsNaN() {
+			options.to = nil
+		} else {
+			_, options.to = seconds(to.Float())
 		}
 
 		if err := redraw(); err != nil {

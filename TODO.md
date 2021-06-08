@@ -4,7 +4,6 @@
 
 - [ ] Move event handling+redraw to Go
       - palette
-      - selection
       - move grid/fill/etc validation to Go 
       - use current settings as initial values when parsing inputs in onFill, onAntialias, etc
       - use current settings to initialise `options`

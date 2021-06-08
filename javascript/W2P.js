@@ -1,6 +1,6 @@
-/* global goAudio, goRender, goClear, goSelect ,
+/* global goAudio,goClear, goSelect ,
           goSize, goCustomSize,
-          goPalette, goFill,
+          goSelectPalette, goFill,
           goGrid, goPadding, goAntialias, goScale */
 
 import { State } from './state.js'
@@ -56,7 +56,7 @@ export function initialise () {
     }
 
     if (img) {
-      palette(img).catch((err) => console.error(err))
+      palette(tag, img).catch((err) => console.error(err))
     }
   }
 
@@ -262,14 +262,10 @@ export function onPalette (event) {
   if (img) {
     state.setSelectedPalette(tag)
 
-    if (loaded) {
-      busy()
-        .then(palette(img))
-        .catch((err) => console.error(err))
-        .finally(unbusy)
-    } else {
-      palette(img).catch((err) => console.error(err))
-    }
+    busy()
+      .then(palette(tag, img))
+      .catch((err) => console.error(err))
+      .finally(unbusy)
   }
 }
 
@@ -515,47 +511,49 @@ function setScale (v) {
 }
 
 function onSetStart (t, released) {
-  document.getElementById('from').value = format(t)
-  drawSlider()
+  const v = parseFloat(t.toString(), 10)
+  if (!Number.isNaN(v)) {
+    document.getElementById('from').value = format(t)
+    drawSlider()
 
-  if (released) {
-    const v = parseFloat(t.toString(), 10)
-
-    if (!Number.isNaN(v)) {
+    if (released) {
       local.from = v
-      if (loaded) {
-        busy()
-          .then(b => select())
-          .then(b => redraw())
-          .catch((err) => console.error(err))
-          .finally(unbusy)
-      } else {
-        select()
-      }
+      select()
     }
   }
 }
 
 function onSetEnd (t, released) {
-  document.getElementById('to').value = format(t)
-  drawSlider()
+  const v = parseFloat(t.toString(), 10)
 
-  if (released) {
-    const v = parseFloat(t.toString(), 10)
+  if (!Number.isNaN(v)) {
+    document.getElementById('to').value = format(t)
+    drawSlider()
 
-    if (!Number.isNaN(v)) {
+    if (released) {
       local.to = v
-      if (loaded) {
-        busy()
-          .then(b => select())
-          .then(b => redraw())
-          .catch((err) => console.error(err))
-          .finally(unbusy)
-      } else {
-        select()
-      }
+      select()
     }
   }
+}
+
+function select () {
+  const set = function () {
+    return new Promise((resolve, reject) => {
+      goSelect((err) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(true)
+        }
+      }, local.from, local.to)
+    })
+  }
+
+  busy()
+    .then(b => set())
+    .catch((err) => console.error(err))
+    .finally(unbusy)
 }
 
 function drawSlider () {
@@ -680,26 +678,6 @@ function load (name, blob) {
     .finally(unbusy)
 }
 
-function redraw () {
-  const wh = size()
-  const waveform = document.getElementById('png')
-
-  if (waveform.src !== '') {
-    URL.revokeObjectURL(waveform.src)
-  }
-
-  return render()
-    .then(b => {
-      const array = new Uint8Array(b)
-      const png = new Blob([array], { type: 'image/png' })
-
-      draw(png, wh)
-    })
-    .catch(function (err) {
-      console.error(err)
-    })
-}
-
 function draw (png, size) {
   const waveform = document.getElementById('png')
   const zoom = document.getElementById('zoom')
@@ -767,28 +745,16 @@ async function store (buffer) {
   })
 }
 
-async function render () {
-  return new Promise((resolve, reject) => {
-    goRender((err, png) => {
-      if (err) {
-        reject(err)
-      } else {
-        resolve(png)
-      }
-    })
-  })
-}
-
-function palette (img) {
+function palette (tag, img) {
   const set = function (buffer) {
     return new Promise((resolve, reject) => {
-      goPalette((err) => {
+      goSelectPalette((err) => {
         if (err) {
           reject(err)
         } else {
           resolve()
         }
-      }, buffer)
+      }, tag, buffer)
     })
   }
 
@@ -796,20 +762,6 @@ function palette (img) {
     .then(response => response.blob())
     .then(blob => blob.arrayBuffer())
     .then(buffer => set(buffer))
-}
-
-async function select () {
-  return new Promise((resolve, reject) => {
-    goSelect((err) => {
-      if (err) {
-        reject(err)
-      } else {
-        resolve(true)
-      }
-    }, local.from, local.to)
-  }).catch(function (err) {
-    console.error(err)
-  })
 }
 
 function size () {
@@ -1003,8 +955,8 @@ function busy () {
       windmill.style.display = 'block'
     }
 
-    // FIXME: a delay seems to be the only way to get e.g. the 'size' radio buttons
-    //        to be updated before the redraw is complete
+    // A 100ms delay seems to be the only way to get e.g. the 'size' radio buttons
+    // to be updated and windmill displaying before the redraw is complete
     setTimeout(resolve, 100)
   })
 }
