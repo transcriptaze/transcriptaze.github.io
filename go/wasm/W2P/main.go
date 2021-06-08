@@ -39,8 +39,7 @@ var options = struct {
 	}
 	gridspec  wav2png.GridSpec
 	antialias wav2png.Kernel
-	hscale    float64
-	vscale    float64
+	scale     Scale
 	from      *time.Duration
 	to        *time.Duration
 }{
@@ -55,8 +54,7 @@ var options = struct {
 	fillspec:  wav2png.NewSolidFill(FILL_COLOUR),
 	gridspec:  wav2png.NewSquareGrid(GRID_COLOUR, GRID_SIZE, GRID_FIT, GRID_OVERLAY),
 	antialias: wav2png.Vertical,
-	hscale:    HSCALE,
-	vscale:    VSCALE,
+	scale:     SCALE,
 }
 
 var cache = struct {

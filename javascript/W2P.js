@@ -111,15 +111,6 @@ export function onInitialise () {
       document.getElementById('vertical').click()
   }
 
-  // ... initialise scale
-  const a = 1.0
-  const b = 4.0 / Math.log(4.0)
-  const c = 0.25
-  const v = Math.round(a + b * Math.log(state.W2P.scale.vertical / c))
-  document.getElementById('vscale').value = v
-
-  setScale(state.W2P.scale)
-
   // ... initialise slider
   local.start = new Slider('start', 'from', onSetStart)
   local.end = new Slider('end', 'to', onSetEnd)
@@ -155,7 +146,13 @@ function initialise () {
   busy()
     .then(b => restore())
     .then(s => {
-        document.getElementById('padding').value = s.padding
+      document.getElementById('padding').value = s.padding
+
+      const a = 1.0
+      const b = 4.0 / Math.log(4.0)
+      const c = 0.25
+      const v = Math.round(a + b * Math.log(s.scale.vertical / c))
+      document.getElementById('vscale').value = v
     })
     .catch((err) => console.error(err))
     .finally(unbusy)
@@ -519,27 +516,24 @@ export function onAntiAlias (event) {
 
 export function onVScale (event) {
   if (event.type === 'change' || (event.type === 'keydown' && event.key === 'Enter')) {
-    setScale(scale())
-  }
-}
+    const v = scale()
+    const set = function () {
+      return new Promise((resolve, reject) => {
+        goScale((err, png) => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve(png)
+          }
+        }, v.horizontal, v.vertical)
+      })
+    }
 
-function setScale (v) {
-  const set = function () {
-    return new Promise((resolve, reject) => {
-      goScale((err, png) => {
-        if (err) {
-          reject(err)
-        } else {
-          resolve(png)
-        }
-      }, v.horizontal, v.vertical)
-    })
+    busy()
+      .then(b => set())
+      .catch((err) => console.error(err))
+      .finally(unbusy)
   }
-
-  busy()
-    .then(b => set())
-    .catch((err) => console.error(err))
-    .finally(unbusy)
 }
 
 function onSetStart (t, released) {

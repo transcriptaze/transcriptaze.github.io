@@ -6,21 +6,25 @@ import (
 	"syscall/js"
 )
 
-const HSCALE = 1.0
-const VSCALE = 1.0
+type Scale struct {
+	Horizontal float64 `json:"horizontal"`
+	Vertical   float64 `json:"vertical"`
+}
+
+var SCALE = Scale{
+	Horizontal: 1.0,
+	Vertical:   1.0,
+}
 
 func onScale(this js.Value, inputs []js.Value) interface{} {
 	callback := inputs[0]
 
 	go func() {
-		hscale, vscale, settings := scale(inputs[1], inputs[2])
-
-		options.hscale = hscale
-		options.vscale = vscale
+		options.scale.parse(inputs[1], inputs[2])
 
 		if err := redraw(); err != nil {
 			callback.Invoke(err.Error())
-		} else if err := save(TagScale, settings); err != nil {
+		} else if err := save(TagScale, options.scale); err != nil {
 			callback.Invoke(err.Error())
 		} else {
 			callback.Invoke(js.Null())
@@ -30,8 +34,8 @@ func onScale(this js.Value, inputs []js.Value) interface{} {
 	return nil
 }
 
-func scale(horizontal, vertical js.Value) (float64, float64, interface{}) {
-	vscale := options.vscale
+func (s *Scale) parse(horizontal, vertical js.Value) {
+	vscale := options.scale.Vertical
 
 	if !vertical.IsNull() && !vertical.IsNaN() {
 		if v := vertical.Float(); v >= 0.25 && v <= 4.0 {
@@ -39,23 +43,18 @@ func scale(horizontal, vertical js.Value) (float64, float64, interface{}) {
 		}
 	}
 
-	return 1.0, vscale, scaleSettings(horizontal, vertical)
+	s.Horizontal = 1.0
+	s.Vertical = vscale
 }
 
-func scaleSettings(horizontal, vertical js.Value) interface{} {
-	settings := struct {
-		Horizontal float64 `json:"horizontal"`
-		Vertical   float64 `json:"vertical"`
-	}{
-		Horizontal: 1.0,
-		Vertical:   options.vscale,
+func (s *Scale) restore() error {
+	scale := options.scale
+
+	if err := restore(TagScale, &scale); err != nil {
+		return err
 	}
 
-	if !vertical.IsNull() && !vertical.IsNaN() {
-		if v := vertical.Float(); v >= 0.25 && v <= 4.0 {
-			settings.Vertical = v
-		}
-	}
+	*s = scale
 
-	return settings
+	return nil
 }

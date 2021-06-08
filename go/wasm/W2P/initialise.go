@@ -16,10 +16,17 @@ func onInitialise(this js.Value, inputs []js.Value) interface{} {
 			return
 		}
 
+		if err := options.scale.restore(); err != nil {
+			callback.Invoke(err.Error(), js.Null())
+			return
+		}
+
 		settings := struct {
-			Padding int `json:"padding"`
+			Padding Padding `json:"padding"`
+			Scale   Scale   `json:"scale"`
 		}{
-			Padding: int(options.padding),
+			Padding: options.padding,
+			Scale:   options.scale,
 		}
 
 		bytes, err := json.Marshal(settings)
