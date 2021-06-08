@@ -3,10 +3,10 @@
 ### W2P
 
 - [ ] Move event handling+redraw to Go
+      - use current settings to initialise `options`
       - move grid/fill/etc validation to Go 
       - palette
       - use current settings as initial values when parsing inputs in onFill, onAntialias, etc
-      - use current settings to initialise `options`
 
 - [ ] Update transcriptaze Github page
 - [ ] Optimize draw/redraw

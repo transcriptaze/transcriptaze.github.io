@@ -1,4 +1,5 @@
-/* global goAudio,goClear, goSelect ,
+/* global goInitialise,
+          goAudio,goClear, goSelect ,
           goSize, goCustomSize,
           goSelectPalette, goFill,
           goGrid, goPadding, goAntialias, goScale */
@@ -12,7 +13,7 @@ const local = {}
 let loading = false
 let loaded = false
 
-export function initialise () {
+export function onInitialise () {
   loaded = false
 
   state.restore('W2P')
@@ -65,7 +66,6 @@ export function initialise () {
   document.getElementById('fillalpha').value = state.W2P.fill.alpha
 
   // ... initialise grid
-  document.getElementById('padding').value = state.W2P.padding
   document.getElementById('gridcolour').value = state.W2P.grid.colour
   document.getElementById('gridalpha').value = state.W2P.grid.alpha
   document.getElementById('gridsize').value = state.W2P.grid.size
@@ -135,6 +135,30 @@ export function initialise () {
       footer.style.visibility = 'visible'
     }
   }
+
+  initialise()
+}
+
+function initialise () {
+  const restore = function () {
+    return new Promise((resolve, reject) => {
+      goInitialise((err, settings) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(settings)
+        }
+      })
+    })
+  }
+
+  busy()
+    .then(b => restore())
+    .then(s => {
+        document.getElementById('padding').value = s.padding
+    })
+    .catch((err) => console.error(err))
+    .finally(unbusy)
 }
 
 export function onDraw (bytes, width, height) {
@@ -157,16 +181,12 @@ export function onAccept (event) {
   }
 }
 
-export function onSample(name, url) {
+export function onSample (name, url) {
   event.preventDefault()
 
- fetch(url)
-  .then(response => response.blob())
-  .then(b => load(name, b))
-  // const data = await response.blob();
-  // return new File([data], name, {
-  //   type: response.headers.get('content-type') || defaultType,
-  // });
+  fetch(url)
+    .then(response => response.blob())
+    .then(b => load(name, b))
 }
 
 export function onDrop (event) {
@@ -219,11 +239,11 @@ export function onSize (event) {
 
   const set = function () {
     return new Promise((resolve, reject) => {
-      goSize((err, png) => {
+      goSize((err) => {
         if (err) {
           reject(err)
         } else {
-          resolve(png)
+          resolve()
         }
       }, sz.width, sz.height)
     })
@@ -402,14 +422,14 @@ export function onFill (event) {
 }
 
 export function onPadding (event) {
-  if (event.type === 'change' || (event.type === 'keydown' && event.key === 'Enter')) {
+  if (event.type === 'change') {
     const set = function () {
       return new Promise((resolve, reject) => {
-        goPadding((err, png) => {
+        goPadding((err) => {
           if (err) {
             reject(err)
           } else {
-            resolve(png)
+            resolve()
           }
         }, padding())
       })

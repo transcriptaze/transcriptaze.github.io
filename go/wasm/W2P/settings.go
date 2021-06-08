@@ -47,3 +47,24 @@ func save(tag Tag, value interface{}) error {
 
 	return nil
 }
+
+func restore(tag Tag, value interface{}) error {
+	blob := js.Global().
+		Get("window").
+		Get("localStorage").
+		Call("getItem", tag.String())
+
+	bytes := []byte(blob.String())
+
+	switch v := value.(type) {
+	// case string:
+	// 	bytes = []byte(v)
+
+	default:
+		if err := json.Unmarshal(bytes, v); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}

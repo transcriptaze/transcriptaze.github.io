@@ -311,7 +311,7 @@
   <!-- SCRIPTS -->
  
   <script type="module">
-    import { initialise, onDraw,
+    import { onInitialise, onDraw,
              onSample, onDrop, onDragOver, onPick, onPicked, onAccept,
              onSize, onCustomSize, 
              onPalette,onPalettePick,onPalettePicked,onPaletteDrop,onPaletteDragOver,onPaletteDelete,
@@ -319,6 +319,9 @@
              onPadding, onGrid, onAntiAlias, onVScale,
              onExport, onClear
           } from './javascript/W2P.js'
+
+    window.onInitialise = onInitialise
+    window.onDraw = onDraw
 
     window.onDrop = onDrop
     window.onDragOver = onDragOver
@@ -341,9 +344,6 @@
     window.onVScale = onVScale
     window.onExport = onExport
     window.onClear = onClear
-
-    window.initialise = initialise
-    window.onDraw = onDraw
   </script>
 
   <script type="text/javascript">
@@ -353,7 +353,7 @@
 
     Promise.all([complete]).then((v) => {
       console.log("'k, ready at last")
-      initialise()
+      onInitialise()
     })
   </script>
 

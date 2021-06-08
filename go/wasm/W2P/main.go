@@ -32,7 +32,7 @@ var wav *audio
 var options = struct {
 	width    int
 	height   int
-	padding  int
+	padding  Padding
 	fillspec wav2png.FillSpec
 	palettes struct {
 		selected string
@@ -68,6 +68,7 @@ var cache = struct {
 func main() {
 	c := make(chan bool)
 
+	js.Global().Set("goInitialise", js.FuncOf(onInitialise))
 	js.Global().Set("goAudio", js.FuncOf(onSetAudio))
 	js.Global().Set("goSelect", js.FuncOf(onSelectAudio))
 	js.Global().Set("goClear", js.FuncOf(clear))
