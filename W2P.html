@@ -66,6 +66,15 @@
               <!-- WAVEFORM -->
               <div id="wave" class="panel" ondrop="onDrop(event)"  ondragover="onDragOver(event)">
                 <div id="picker" class="picker">
+                  <div id="samples">
+                    <div class="sample">
+                      <a href="./W2P/noise.wav" onclick="onSample('noise', './W2P/noise.wav')">NOISE</a>
+                    </div>
+                    <div class="sample">
+                      <a href="./W2P/entangled.wav" onclick="onSample('entangled', './W2P/entangled.wav')">ENTANGLED</a>
+                    </div>
+                  </div>
+                  
                   <input id="file" type="file" accept="audio/*" onchange="onPicked(event)" style="display: none;" />
                   <img onclick="return onPick(event)" src="../images/audio.png" />
                   <div id="message">&nbsp;</div>
@@ -303,7 +312,7 @@
  
   <script type="module">
     import { initialise, onDraw,
-             onDrop, onDragOver, onPick, onPicked, onAccept,
+             onSample, onDrop, onDragOver, onPick, onPicked, onAccept,
              onSize, onCustomSize, 
              onPalette,onPalettePick,onPalettePicked,onPaletteDrop,onPaletteDragOver,onPaletteDelete,
              onFill,
@@ -313,6 +322,7 @@
 
     window.onDrop = onDrop
     window.onDragOver = onDragOver
+    window.onSample = onSample
     window.onPick = onPick
     window.onPicked = onPicked
     window.onAccept = onAccept

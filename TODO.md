@@ -3,17 +3,16 @@
 ### W2P
 
 - [ ] Move event handling+redraw to Go
-      - palette
       - move grid/fill/etc validation to Go 
+      - palette
       - use current settings as initial values when parsing inputs in onFill, onAntialias, etc
       - use current settings to initialise `options`
 
-- [ ] Put some audio samples on the page      
 - [ ] Update transcriptaze Github page
 - [ ] Optimize draw/redraw
-- [ ] https://schollz.com/blog/waveforms/
 - [ ] (optionally) show audio info
 
+- [x] Put some audio samples on the page      
 - [x] Let busy() return a Promise and then chain everything off that (?)
 - [x] Rectangular grid: handle partial entry e.g. ~64
 - [x] Segment of audio
@@ -60,4 +59,5 @@
 
 1. https://w3c.github.io/aria-practices/examples/slider/multithumb-slider.html
 2. https://gist.github.com/rodrigoborgesdeoliveira/987683cfbfcc8d800192da1e73adc486
+3. https://wavesurfer-js.org
 

@@ -157,6 +157,18 @@ export function onAccept (event) {
   }
 }
 
+export function onSample(name, url) {
+  event.preventDefault()
+
+ fetch(url)
+  .then(response => response.blob())
+  .then(b => load(name, b))
+  // const data = await response.blob();
+  // return new File([data], name, {
+  //   type: response.headers.get('content-type') || defaultType,
+  // });
+}
+
 export function onDrop (event) {
   event.preventDefault()
 
