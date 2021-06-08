@@ -34,15 +34,15 @@ func redraw() error {
 	end := len(wav.samples)
 	fs := wav.sampleRate
 
-	if options.from != nil {
-		v := int(math.Floor(options.from.Seconds() * fs))
+	if cache.from != nil {
+		v := int(math.Floor(cache.from.Seconds() * fs))
 		if v > 0 && v <= len(wav.samples) {
 			start = v
 		}
 	}
 
-	if options.to != nil {
-		v := int(math.Floor(options.to.Seconds() * fs))
+	if cache.to != nil {
+		v := int(math.Floor(cache.to.Seconds() * fs))
 		if v < start {
 			end = start
 		} else if v <= len(wav.samples) {

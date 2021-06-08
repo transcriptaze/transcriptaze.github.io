@@ -40,8 +40,6 @@ var options = struct {
 	gridspec  wav2png.GridSpec
 	antialias wav2png.Kernel
 	scale     Scale
-	from      *time.Duration
-	to        *time.Duration
 }{
 	width:   WIDTH,
 	height:  HEIGHT,
@@ -59,6 +57,8 @@ var options = struct {
 
 var cache = struct {
 	palette wav2png.Palette
+	from    *time.Duration
+	to      *time.Duration
 }{
 	palette: wav2png.Ice,
 }

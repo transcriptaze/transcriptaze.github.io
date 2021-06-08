@@ -12,8 +12,8 @@ func clear(this js.Value, inputs []js.Value) interface{} {
 	go func() {
 		wav = nil
 
-		options.from = nil
-		options.to = nil
+		cache.from = nil
+		cache.to = nil
 
 		callback.Invoke(js.Null())
 	}()

@@ -51,15 +51,15 @@ func onSelectAudio(this js.Value, inputs []js.Value) interface{} {
 
 	go func() {
 		if from.IsUndefined() || from.IsNull() || from.IsNaN() {
-			options.from = nil
+			cache.from = nil
 		} else {
-			_, options.from = seconds(from.Float())
+			_, cache.from = seconds(from.Float())
 		}
 
 		if to.IsUndefined() || to.IsNull() || to.IsNaN() {
-			options.to = nil
+			cache.to = nil
 		} else {
-			_, options.to = seconds(to.Float())
+			_, cache.to = seconds(to.Float())
 		}
 
 		if err := redraw(); err != nil {

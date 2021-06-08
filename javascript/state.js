@@ -198,15 +198,6 @@ function restoreW2P (state) {
     state.W2P.size = blob.trim()
   }
 
-  // Restore W2P padding
-  blob = window.localStorage.getItem(tags.W2P.padding)
-  if (blob !== null) {
-    const v = parseInt(blob, 10)
-    if (!isNaN(v) && v >= -16 && v <= 32) {
-      state.W2P.padding = v
-    }
-  }
-
   // Restore W2P custom size
   blob = window.localStorage.getItem(tags.W2P.customSize)
   if (blob !== null) {
@@ -244,11 +235,5 @@ function restoreW2P (state) {
   blob = window.localStorage.getItem(tags.W2P.antialias)
   if (blob !== null) {
     state.W2P.antialias = JSON.parse(blob)
-  }
-
-  // Restore W2P scale
-  blob = window.localStorage.getItem(tags.W2P.scale)
-  if (blob !== null) {
-    state.W2P.scale = JSON.parse(blob)
   }
 }
