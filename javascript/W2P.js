@@ -105,10 +105,6 @@ export function onInitialise () {
     }
   }
 
-  initialise()
-}
-
-function initialise () {
   const restore = function () {
     return new Promise((resolve, reject) => {
       goInitialise((err, settings) => {
@@ -123,41 +119,43 @@ function initialise () {
 
   busy()
     .then(b => restore())
-    .then(s => {
-      // ... padding
-      document.getElementById('padding').value = s.padding
-
-      // ... antialias
-      switch (s.antialias.type) {
-        case 'none':
-          document.getElementById('noantialias').click()
-          break
-
-        case 'vertical':
-          document.getElementById('vertical').click()
-          break
-
-        case 'horizontal':
-          document.getElementById('horizontal').click()
-          break
-
-        case 'soft':
-          document.getElementById('soft').click()
-          break
-
-        default:
-          document.getElementById('vertical').click()
-      }
-
-      // ... vscale
-      const a = 1.0
-      const b = 4.0 / Math.log(4.0)
-      const c = 0.25
-      const v = Math.round(a + b * Math.log(s.scale.vertical / c))
-      document.getElementById('vscale').value = v
-    })
+    .then(s => initialise(s))
     .catch((err) => console.error(err))
     .finally(unbusy)
+}
+
+function initialise (s) {
+  // ... padding
+  document.getElementById('padding').value = s.padding
+
+  // ... antialias
+  switch (s.antialias.type) {
+    case 'none':
+      document.getElementById('noantialias').click()
+      break
+
+    case 'vertical':
+      document.getElementById('vertical').click()
+      break
+
+    case 'horizontal':
+      document.getElementById('horizontal').click()
+      break
+
+    case 'soft':
+      document.getElementById('soft').click()
+      break
+
+    default:
+      document.getElementById('vertical').click()
+  }
+
+  // ... vscale
+  const a = 1.0
+  const b = 4.0 / Math.log(4.0)
+  const c = 0.25
+  const v = Math.round(a + b * Math.log(s.scale.vertical / c))
+  document.getElementById('vscale').value = v
 }
 
 export function onDraw (bytes, width, height) {
