@@ -33,8 +33,9 @@ var options = struct {
 	size       Size
 	customSize Size
 	padding    Padding
-	fillspec   wav2png.FillSpec
-	palettes   struct {
+
+	fill     Fill
+	palettes struct {
 		selected string
 	}
 	gridspec  wav2png.GridSpec
@@ -51,6 +52,14 @@ var options = struct {
 		height: 292,
 	},
 
+	fill: Fill{
+		Fill:   "solid",
+		Colour: "#000000",
+		Alpha:  255,
+
+		fillspec: wav2png.NewSolidFill(BLACK),
+	},
+
 	padding: Padding(2),
 
 	palettes: struct {
@@ -58,7 +67,7 @@ var options = struct {
 	}{
 		selected: "palette1",
 	},
-	fillspec: wav2png.NewSolidFill(FILL_COLOUR),
+
 	gridspec: wav2png.NewSquareGrid(GRID_COLOUR, GRID_SIZE, GRID_FIT, GRID_OVERLAY),
 
 	antialias: Antialias{

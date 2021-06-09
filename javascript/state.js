@@ -207,14 +207,8 @@ function restoreW2P (state) {
     // IGNORE
   }
 
-  // Restore W2P fill
-  let blob = window.localStorage.getItem(tags.W2P.fill)
-  if (blob !== null) {
-    state.W2P.fill = JSON.parse(blob)
-  }
-
   // Restore W2P grid
-  blob = window.localStorage.getItem(tags.W2P.grid)
+  const blob = window.localStorage.getItem(tags.W2P.grid)
   if (blob !== null) {
     state.W2P.grid = JSON.parse(blob)
   }

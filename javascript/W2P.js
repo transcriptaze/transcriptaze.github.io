@@ -53,10 +53,6 @@ export function onInitialise () {
     }
   }
 
-  // ... initialise fill
-  document.getElementById('fillcolour').value = state.W2P.fill.colour
-  document.getElementById('fillalpha').value = state.W2P.fill.alpha
-
   // ... initialise grid
   document.getElementById('gridcolour').value = state.W2P.grid.colour
   document.getElementById('gridalpha').value = state.W2P.grid.alpha
@@ -134,6 +130,10 @@ function initialise (s) {
 
   // ... custom size
   document.getElementById('custom').value = s.customSize
+
+  // ... initialise fill
+  document.getElementById('fillcolour').value = s.fill.colour
+  document.getElementById('fillalpha').value = s.fill.alpha
 
   // ... padding
   document.getElementById('padding').value = s.padding
@@ -408,7 +408,7 @@ export function onPaletteDelete (event, tag) {
 }
 
 export function onFill (event) {
-  if (event.type === 'change' || (event.type === 'keydown' && event.key === 'Enter')) {
+  if (event.type === 'change') {
     const set = function () {
       return new Promise((resolve, reject) => {
         goFill((err, png) => {
