@@ -89,28 +89,6 @@ export function onInitialise () {
       document.getElementById('square').click()
   }
 
-  // ... initialise antialiasing
-  switch (state.W2P.antialias.type) {
-    case 'none':
-      document.getElementById('noantialias').click()
-      break
-
-    case 'vertical':
-      document.getElementById('vertical').click()
-      break
-
-    case 'horizontal':
-      document.getElementById('horizontal').click()
-      break
-
-    case 'soft':
-      document.getElementById('soft').click()
-      break
-
-    default:
-      document.getElementById('vertical').click()
-  }
-
   // ... initialise slider
   local.start = new Slider('start', 'from', onSetStart)
   local.end = new Slider('end', 'to', onSetEnd)
@@ -146,8 +124,32 @@ function initialise () {
   busy()
     .then(b => restore())
     .then(s => {
+      // ... padding
       document.getElementById('padding').value = s.padding
 
+      // ... antialias
+      switch (s.antialias.type) {
+        case 'none':
+          document.getElementById('noantialias').click()
+          break
+
+        case 'vertical':
+          document.getElementById('vertical').click()
+          break
+
+        case 'horizontal':
+          document.getElementById('horizontal').click()
+          break
+
+        case 'soft':
+          document.getElementById('soft').click()
+          break
+
+        default:
+          document.getElementById('vertical').click()
+      }
+
+      // ... vscale
       const a = 1.0
       const b = 4.0 / Math.log(4.0)
       const c = 0.25

@@ -38,21 +38,27 @@ var options = struct {
 		selected string
 	}
 	gridspec  wav2png.GridSpec
-	antialias wav2png.Kernel
+	antialias Antialias
 	scale     Scale
 }{
 	width:   WIDTH,
 	height:  HEIGHT,
-	padding: PADDING,
+	padding: Padding(2),
 	palettes: struct {
 		selected string
 	}{
 		selected: "palette1",
 	},
-	fillspec:  wav2png.NewSolidFill(FILL_COLOUR),
-	gridspec:  wav2png.NewSquareGrid(GRID_COLOUR, GRID_SIZE, GRID_FIT, GRID_OVERLAY),
-	antialias: wav2png.Vertical,
-	scale:     SCALE,
+	fillspec: wav2png.NewSolidFill(FILL_COLOUR),
+	gridspec: wav2png.NewSquareGrid(GRID_COLOUR, GRID_SIZE, GRID_FIT, GRID_OVERLAY),
+	antialias: Antialias{
+		Type:   "vertical",
+		kernel: wav2png.Vertical,
+	},
+	scale: Scale{
+		Horizontal: 1.0,
+		Vertical:   1.0,
+	},
 }
 
 var cache = struct {

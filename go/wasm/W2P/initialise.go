@@ -21,12 +21,19 @@ func onInitialise(this js.Value, inputs []js.Value) interface{} {
 			return
 		}
 
+		if err := options.antialias.restore(); err != nil {
+			callback.Invoke(err.Error(), js.Null())
+			return
+		}
+
 		settings := struct {
-			Padding Padding `json:"padding"`
-			Scale   Scale   `json:"scale"`
+			Padding   Padding   `json:"padding"`
+			Antialias Antialias `json:"antialias"`
+			Scale     Scale     `json:"scale"`
 		}{
-			Padding: options.padding,
-			Scale:   options.scale,
+			Padding:   options.padding,
+			Antialias: options.antialias,
+			Scale:     options.scale,
 		}
 
 		bytes, err := json.Marshal(settings)

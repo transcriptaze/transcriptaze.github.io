@@ -1,23 +1,25 @@
 package main
 
 import (
-	"strings"
 	"syscall/js"
 
 	"github.com/transcriptaze/wav2png/wav2png"
 )
 
+type Antialias struct {
+	Type   string `json:"type"`
+	kernel wav2png.Kernel
+}
+
 func onAntialias(this js.Value, inputs []js.Value) interface{} {
 	callback := inputs[0]
 
 	go func() {
-		kernel, settings := antialias(inputs[1])
-
-		options.antialias = kernel
+		options.antialias.parse(inputs[1])
 
 		if err := redraw(); err != nil {
 			callback.Invoke(err.Error())
-		} else if err := save(TagAntialias, settings); err != nil {
+		} else if err := options.antialias.save(); err != nil {
 			callback.Invoke(err.Error())
 		} else {
 			callback.Invoke(js.Null())
@@ -27,40 +29,42 @@ func onAntialias(this js.Value, inputs []js.Value) interface{} {
 	return nil
 }
 
-func antialias(object js.Value) (wav2png.Kernel, interface{}) {
-	kernel := wav2png.Vertical
-
-	settings := struct {
-		Kernel string `json:"type"`
-	}{
-		Kernel: "vertical",
-	}
-
-	clean := func(v js.Value) string {
-		return strings.ReplaceAll(strings.ToLower(v.String()), " ", "")
-	}
-
+func (a *Antialias) parse(object js.Value) {
 	if !object.IsNull() {
 		k := clean(object.Get("type"))
 
 		switch k {
 		case "none":
-			settings.Kernel = "none"
-			kernel = wav2png.None
+			a.Type = "none"
+			a.kernel = wav2png.None
 
 		case "vertical":
-			settings.Kernel = "vertical"
-			kernel = wav2png.Vertical
+			a.Type = "vertical"
+			a.kernel = wav2png.Vertical
 
 		case "horizontal":
-			settings.Kernel = "horizontal"
-			kernel = wav2png.Horizontal
+			a.Type = "horizontal"
+			a.kernel = wav2png.Horizontal
 
 		case "soft":
-			settings.Kernel = "soft"
-			kernel = wav2png.Soft
+			a.Type = "soft"
+			a.kernel = wav2png.Soft
 		}
 	}
+}
 
-	return kernel, settings
+func (a *Antialias) save() error {
+	return save(TagAntialias, a)
+}
+
+func (a *Antialias) restore() error {
+	antialias := options.antialias
+
+	if err := restore(TagAntialias, &antialias); err != nil {
+		return err
+	}
+
+	*a = antialias
+
+	return nil
 }

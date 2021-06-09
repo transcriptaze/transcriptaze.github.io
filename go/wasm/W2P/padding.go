@@ -4,8 +4,6 @@ import (
 	"syscall/js"
 )
 
-const PADDING = Padding(2)
-
 type Padding int
 
 func onPadding(this js.Value, inputs []js.Value) interface{} {
@@ -16,7 +14,7 @@ func onPadding(this js.Value, inputs []js.Value) interface{} {
 
 		if err := redraw(); err != nil {
 			callback.Invoke(err.Error())
-		} else if err := save(TagPadding, options.padding); err != nil {
+		} else if err := options.padding.save(); err != nil {
 			callback.Invoke(err.Error())
 		} else {
 			callback.Invoke(js.Null())
@@ -33,6 +31,10 @@ func (p *Padding) parse(object js.Value) {
 			*p = Padding(v)
 		}
 	}
+}
+
+func (p *Padding) save() error {
+	return save(TagPadding, p)
 }
 
 func (p *Padding) restore() error {

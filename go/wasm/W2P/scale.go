@@ -11,11 +11,6 @@ type Scale struct {
 	Vertical   float64 `json:"vertical"`
 }
 
-var SCALE = Scale{
-	Horizontal: 1.0,
-	Vertical:   1.0,
-}
-
 func onScale(this js.Value, inputs []js.Value) interface{} {
 	callback := inputs[0]
 
@@ -24,7 +19,7 @@ func onScale(this js.Value, inputs []js.Value) interface{} {
 
 		if err := redraw(); err != nil {
 			callback.Invoke(err.Error())
-		} else if err := save(TagScale, options.scale); err != nil {
+		} else if err := options.scale.save(); err != nil {
 			callback.Invoke(err.Error())
 		} else {
 			callback.Invoke(js.Null())
@@ -45,6 +40,10 @@ func (s *Scale) parse(horizontal, vertical js.Value) {
 
 	s.Horizontal = 1.0
 	s.Vertical = vscale
+}
+
+func (s *Scale) save() error {
+	return save(TagScale, s)
 }
 
 func (s *Scale) restore() error {

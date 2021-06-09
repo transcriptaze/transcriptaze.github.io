@@ -230,10 +230,4 @@ function restoreW2P (state) {
   if (blob !== null) {
     state.W2P.grid = JSON.parse(blob)
   }
-
-  // Restore W2P antialias
-  blob = window.localStorage.getItem(tags.W2P.antialias)
-  if (blob !== null) {
-    state.W2P.antialias = JSON.parse(blob)
-  }
 }
