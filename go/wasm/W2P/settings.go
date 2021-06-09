@@ -11,8 +11,8 @@ type Tag int
 
 const (
 	TagSize Tag = iota
-	TagPadding
 	TagCustomSize
+	TagPadding
 	TagPalettes
 	TagFill
 	TagGrid
@@ -21,7 +21,7 @@ const (
 )
 
 func (t Tag) String() string {
-	return "W2P." + [...]string{"size", "padding", "customSize", "palettes", "fill", "grid", "antialias", "scale"}[t]
+	return "W2P." + [...]string{"size", "customSize", "padding", "palettes", "fill", "grid", "antialias", "scale"}[t]
 }
 
 func save(tag Tag, value interface{}) error {

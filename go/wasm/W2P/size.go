@@ -37,19 +37,15 @@ func onCustomSize(this js.Value, inputs []js.Value) interface{} {
 	callback := inputs[0]
 
 	go func() {
-		// width, height, settings := size(inputs[1], inputs[2])
+		options.customSize.parse(inputs[1], inputs[2])
 
-		// // options.width = width
-		// // options.height = height
-
-		// if err := redraw(); err != nil {
-		// 	callback.Invoke(err.Error())
-		// } else if err := save(TagCustomSize, settings); err != nil {
-		// 	callback.Invoke(err.Error())
-		// } else {
-		// 	callback.Invoke(js.Null())
-		// }
-		callback.Invoke(js.Null())
+		if err := redraw(); err != nil {
+			callback.Invoke(err.Error())
+		} else if err := options.customSize.save(TagCustomSize); err != nil {
+			callback.Invoke(err.Error())
+		} else {
+			callback.Invoke(js.Null())
+		}
 	}()
 
 	return nil
@@ -110,23 +106,4 @@ func (s *Size) restore(tag Tag) error {
 
 func (s Size) MarshalJSON() ([]byte, error) {
 	return json.Marshal(fmt.Sprintf("%dx%d", s.width, s.height))
-}
-
-func size(width, height js.Value) (int, int, interface{}) {
-	w := options.size.width
-	h := options.size.height
-
-	if !width.IsNull() && !width.IsNaN() {
-		if v := width.Int(); v > 32 && v <= 8192 {
-			w = v
-		}
-	}
-
-	if !height.IsNull() && !height.IsNaN() {
-		if v := height.Int(); v > 32 && v <= 8192 {
-			h = v
-		}
-	}
-
-	return w, h, fmt.Sprintf("%dx%d", w, h)
 }

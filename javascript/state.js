@@ -192,15 +192,9 @@ function restoreW2P (state) {
   state.W2P.size = '645x390'
   state.W2P.customSize = ''
 
-  // Restore W2P custom size
-  blob = window.localStorage.getItem(tags.W2P.customSize)
-  if (blob !== null) {
-    state.W2P.customSize = blob.trim()
-  }
-
   // Restore W2P palettes
   try {
-    blob = window.localStorage.getItem(tags.W2P.palettes)
+    const blob = window.localStorage.getItem(tags.W2P.palettes)
     if (blob !== null) {
       const object = JSON.parse(blob)
 
@@ -214,7 +208,7 @@ function restoreW2P (state) {
   }
 
   // Restore W2P fill
-  blob = window.localStorage.getItem(tags.W2P.fill)
+  let blob = window.localStorage.getItem(tags.W2P.fill)
   if (blob !== null) {
     state.W2P.fill = JSON.parse(blob)
   }

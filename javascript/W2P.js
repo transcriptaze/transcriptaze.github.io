@@ -18,9 +18,6 @@ export function onInitialise () {
 
   state.restore('W2P')
 
-  // ... initialise custom size
-  document.getElementById('custom').value = state.W2P.customSize
-
   // ... initialise palettes
   for (let ix = 2; ix <= 6; ix++) {
     const tag = `palette${ix}`
@@ -125,9 +122,18 @@ function initialise (s) {
 
   // ... size
   const element = document.querySelector(`input[name="size"][value="${s.size}"]`)
+  const custom = document.getElementById('custom')
+
   if (element) {
     element.checked = true
+    custom.style.visibility = 'hidden'
+  } else if (s.size === s.customSize) {
+    document.getElementById('szx').checked = true
+    custom.style.visibility = 'visible'
   }
+
+  // ... custom size
+  document.getElementById('custom').value = s.customSize
 
   // ... padding
   document.getElementById('padding').value = s.padding
@@ -269,11 +275,11 @@ export function onCustomSize (event) {
       if (!isNaN(w) && !isNaN(h) && w >= 64 && w <= 8192 && h > 64 && h <= 8192) {
         const set = function () {
           return new Promise((resolve, reject) => {
-            goCustomSize((err, png) => {
+            goCustomSize((err) => {
               if (err) {
                 reject(err)
               } else {
-                resolve(png)
+                resolve()
               }
             }, w, h)
           })

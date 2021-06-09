@@ -30,10 +30,11 @@ type audio struct {
 var wav *audio
 
 var options = struct {
-	size     Size
-	padding  Padding
-	fillspec wav2png.FillSpec
-	palettes struct {
+	size       Size
+	customSize Size
+	padding    Padding
+	fillspec   wav2png.FillSpec
+	palettes   struct {
 		selected string
 	}
 	gridspec  wav2png.GridSpec
@@ -43,6 +44,11 @@ var options = struct {
 	size: Size{
 		width:  645,
 		height: 390,
+	},
+
+	customSize: Size{
+		width:  480,
+		height: 292,
 	},
 
 	padding: Padding(2),
