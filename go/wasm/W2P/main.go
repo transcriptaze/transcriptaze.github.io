@@ -30,8 +30,7 @@ type audio struct {
 var wav *audio
 
 var options = struct {
-	width    int
-	height   int
+	size     Size
 	padding  Padding
 	fillspec wav2png.FillSpec
 	palettes struct {
@@ -41,9 +40,13 @@ var options = struct {
 	antialias Antialias
 	scale     Scale
 }{
-	width:   WIDTH,
-	height:  HEIGHT,
+	size: Size{
+		width:  645,
+		height: 390,
+	},
+
 	padding: Padding(2),
+
 	palettes: struct {
 		selected string
 	}{
@@ -51,10 +54,12 @@ var options = struct {
 	},
 	fillspec: wav2png.NewSolidFill(FILL_COLOUR),
 	gridspec: wav2png.NewSquareGrid(GRID_COLOUR, GRID_SIZE, GRID_FIT, GRID_OVERLAY),
+
 	antialias: Antialias{
 		Type:   "vertical",
 		kernel: wav2png.Vertical,
 	},
+
 	scale: Scale{
 		Horizontal: 1.0,
 		Vertical:   1.0,

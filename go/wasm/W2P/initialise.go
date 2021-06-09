@@ -11,6 +11,11 @@ func onInitialise(this js.Value, inputs []js.Value) interface{} {
 	callback := inputs[0]
 
 	go func() {
+		if err := options.size.restore(TagSize); err != nil {
+			callback.Invoke(err.Error(), js.Null())
+			return
+		}
+
 		if err := options.padding.restore(); err != nil {
 			callback.Invoke(err.Error(), js.Null())
 			return
@@ -27,10 +32,12 @@ func onInitialise(this js.Value, inputs []js.Value) interface{} {
 		}
 
 		settings := struct {
+			Size      Size      `json:"size"`
 			Padding   Padding   `json:"padding"`
 			Antialias Antialias `json:"antialias"`
 			Scale     Scale     `json:"scale"`
 		}{
+			Size:      options.size,
 			Padding:   options.padding,
 			Antialias: options.antialias,
 			Scale:     options.scale,

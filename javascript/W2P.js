@@ -18,13 +18,8 @@ export function onInitialise () {
 
   state.restore('W2P')
 
-  // ... initialise size
+  // ... initialise custom size
   document.getElementById('custom').value = state.W2P.customSize
-
-  const element = document.querySelector(`input[name="size"][value="${state.W2P.size}"]`)
-  if (element) {
-    element.checked = true
-  }
 
   // ... initialise palettes
   for (let ix = 2; ix <= 6; ix++) {
@@ -105,6 +100,7 @@ export function onInitialise () {
     }
   }
 
+  // ... restore W2P settings
   const restore = function () {
     return new Promise((resolve, reject) => {
       goInitialise((err, settings) => {
@@ -125,6 +121,14 @@ export function onInitialise () {
 }
 
 function initialise (s) {
+  console.log(s)
+
+  // ... size
+  const element = document.querySelector(`input[name="size"][value="${s.size}"]`)
+  if (element) {
+    element.checked = true
+  }
+
   // ... padding
   document.getElementById('padding').value = s.padding
 

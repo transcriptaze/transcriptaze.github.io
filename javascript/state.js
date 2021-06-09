@@ -192,12 +192,6 @@ function restoreW2P (state) {
   state.W2P.size = '645x390'
   state.W2P.customSize = ''
 
-  // Restore W2P size
-  let blob = window.localStorage.getItem(tags.W2P.size)
-  if (blob !== null) {
-    state.W2P.size = blob.trim()
-  }
-
   // Restore W2P custom size
   blob = window.localStorage.getItem(tags.W2P.customSize)
   if (blob !== null) {

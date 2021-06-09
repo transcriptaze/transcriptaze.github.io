@@ -57,8 +57,8 @@ func restore(tag Tag, value interface{}) error {
 	bytes := []byte(blob.String())
 
 	switch v := value.(type) {
-	// case string:
-	// 	bytes = []byte(v)
+	case *string:
+		*v = string(bytes)
 
 	default:
 		if err := json.Unmarshal(bytes, v); err != nil {
