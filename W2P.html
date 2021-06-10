@@ -67,12 +67,11 @@
               <div id="wave" class="panel" ondrop="onDrop(event)"  ondragover="onDragOver(event)">
                 <div id="picker" class="picker">
                   <div id="samples">
-                    <div class="sample">
-                      <a href="./W2P/noise.wav" onclick="onSample('noise', './W2P/noise.wav')">NOISE</a>
-                    </div>
-                    <div class="sample">
-                      <a href="./W2P/entangled.wav" onclick="onSample('entangled', './W2P/entangled.wav')">ENTANGLED</a>
-                    </div>
+                    <ul class="samples">
+                      <p>Samples</p>
+                      <li><a href="./W2P/noise.wav"     onclick="onSample('noise', './W2P/noise.wav')">NOISE</a></li>
+                      <li><a href="./W2P/entangled.wav" onclick="onSample('entangled', './W2P/entangled.wav')">ENTANGLED</a></li>
+                    </ul>
                   </div>
                   
                   <input id="file" type="file" accept="audio/*" onchange="onPicked(event)" style="display: none;" />

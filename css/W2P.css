@@ -151,8 +151,19 @@ div#samples {
   padding-top: 8px;
 }
 
-.sample {
-  margin-left: 4px;
+ul.samples p {
+  color: var(--solarize-base00);
+  font-size: 0.8em;
+  font-style: italic;
+  font-family: sans-serif;
+  margin-bottom: 4px;
+  margin-left: -16px;
+}
+
+ul.samples li {
+  padding-inline-start: 0.5em;
+
+  margin-left: 14px;
   margin-top: 2px;
   margin-bottom: 2px;
   text-align: left;
@@ -160,6 +171,11 @@ div#samples {
   font-style: italic;
   font-family: sans-serif;
   font-variant-caps: small-caps;
+}
+
+ul.samples li::marker {
+  color: var(--solarize-base00);
+  content: "▪";
 }
 
 div#message {
