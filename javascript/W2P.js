@@ -53,30 +53,6 @@ export function onInitialise () {
     }
   }
 
-  // ... initialise grid
-  document.getElementById('gridcolour').value = state.W2P.grid.colour
-  document.getElementById('gridalpha').value = state.W2P.grid.alpha
-  document.getElementById('gridsize').value = state.W2P.grid.size
-  document.getElementById('gridwh').value = state.W2P.grid.wh
-  document.getElementById('overlay').checked = state.W2P.grid.overlay
-
-  switch (state.W2P.grid.type) {
-    case 'none':
-      document.getElementById('nogrid').click()
-      break
-
-    case 'square':
-      document.getElementById('square').click()
-      break
-
-    case 'rectangular':
-      document.getElementById('rectangular').click()
-      break
-
-    default:
-      document.getElementById('square').click()
-  }
-
   // ... initialise slider
   local.start = new Slider('start', 'from', onSetStart)
   local.end = new Slider('end', 'to', onSetEnd)
@@ -93,7 +69,7 @@ export function onInitialise () {
     }
   }
 
-  // ... restore W2P settings
+  // ... restore settings
   const restore = function () {
     return new Promise((resolve, reject) => {
       goInitialise((err, settings) => {
@@ -137,6 +113,15 @@ function initialise (s) {
 
   // ... padding
   document.getElementById('padding').value = s.padding
+
+  // initialise grid
+  document.getElementById('gridcolour').value = s.grid.colour
+  document.getElementById('gridalpha').value = s.grid.alpha
+  document.getElementById('gridsize').value = s.grid.size
+  document.getElementById('gridwh').value = s.grid.wh
+  document.getElementById('overlay').checked = s.grid.overlay
+
+  setGridType(s.grid.grid)
 
   // ... antialias
   switch (s.antialias.type) {
@@ -454,34 +439,7 @@ export function onGrid (event) {
     const v = document.querySelector('input[name="grid"]:checked')
 
     if (v && v.value) {
-      switch (v.value) {
-        case 'none':
-          document.getElementById('gridcolour').style.display = 'none'
-          document.getElementById('gridalpha').style.display = 'none'
-          document.getElementById('gridsize').style.display = 'none'
-          document.getElementById('gridwh').style.display = 'none'
-          document.getElementById('overlay').style.display = 'none'
-          document.querySelector('#overlay + label').style.display = 'none'
-          break
-
-        case 'square':
-          document.getElementById('gridcolour').style.display = 'block'
-          document.getElementById('gridalpha').style.display = 'block'
-          document.getElementById('gridsize').style.display = 'block'
-          document.getElementById('gridwh').style.display = 'none'
-          document.getElementById('overlay').style.display = 'block'
-          document.querySelector('#overlay + label').style.display = 'block'
-          break
-
-        case 'rectangular':
-          document.getElementById('gridcolour').style.display = 'block'
-          document.getElementById('gridalpha').style.display = 'block'
-          document.getElementById('gridsize').style.display = 'none'
-          document.getElementById('gridwh').style.display = 'block'
-          document.getElementById('overlay').style.display = 'block'
-          document.querySelector('#overlay + label').style.display = 'block'
-          break
-      }
+      setGridType(v.value)
     }
 
     const set = function () {
@@ -500,6 +458,50 @@ export function onGrid (event) {
       .then(b => set())
       .catch((err) => console.error(err))
       .finally(unbusy)
+  }
+}
+
+function setGridType (grid) {
+  switch (grid) {
+    case 'none':
+      document.getElementById('nogrid').checked = true
+      document.getElementById('gridcolour').style.display = 'none'
+      document.getElementById('gridalpha').style.display = 'none'
+      document.getElementById('gridsize').style.display = 'none'
+      document.getElementById('gridwh').style.display = 'none'
+      document.getElementById('overlay').style.display = 'none'
+      document.querySelector('#overlay + label').style.display = 'none'
+      break
+
+    case 'square':
+      document.getElementById('square').checked = true
+      document.getElementById('gridcolour').style.display = 'block'
+      document.getElementById('gridalpha').style.display = 'block'
+      document.getElementById('gridsize').style.display = 'block'
+      document.getElementById('gridwh').style.display = 'none'
+      document.getElementById('overlay').style.display = 'block'
+      document.querySelector('#overlay + label').style.display = 'block'
+      break
+
+    case 'rectangular':
+      document.getElementById('rectangular').checked = true
+      document.getElementById('gridcolour').style.display = 'block'
+      document.getElementById('gridalpha').style.display = 'block'
+      document.getElementById('gridsize').style.display = 'none'
+      document.getElementById('gridwh').style.display = 'block'
+      document.getElementById('overlay').style.display = 'block'
+      document.querySelector('#overlay + label').style.display = 'block'
+      break
+
+    default:
+      document.getElementById('square').checked = true
+      document.getElementById('gridcolour').style.display = 'block'
+      document.getElementById('gridalpha').style.display = 'block'
+      document.getElementById('gridsize').style.display = 'block'
+      document.getElementById('gridwh').style.display = 'none'
+      document.getElementById('overlay').style.display = 'block'
+      document.querySelector('#overlay + label').style.display = 'block'
+      break
   }
 }
 

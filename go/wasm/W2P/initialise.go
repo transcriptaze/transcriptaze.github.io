@@ -28,6 +28,10 @@ func onInitialise(this js.Value, inputs []js.Value) interface{} {
 			fmt.Printf("%v\n", err)
 		}
 
+		if err := options.grid.restore(); err != nil {
+			fmt.Printf("%v\n", err)
+		}
+
 		if err := options.scale.restore(); err != nil {
 			fmt.Printf("%v\n", err)
 		}
@@ -41,6 +45,7 @@ func onInitialise(this js.Value, inputs []js.Value) interface{} {
 			CustomSize Size      `json:"customSize"`
 			Fill       Fill      `json:"fill"`
 			Padding    Padding   `json:"padding"`
+			Grid       Grid      `json:"grid"`
 			Antialias  Antialias `json:"antialias"`
 			Scale      Scale     `json:"scale"`
 		}{
@@ -48,6 +53,7 @@ func onInitialise(this js.Value, inputs []js.Value) interface{} {
 			CustomSize: options.customSize,
 			Fill:       options.fill,
 			Padding:    options.padding,
+			Grid:       options.grid,
 			Antialias:  options.antialias,
 			Scale:      options.scale,
 		}

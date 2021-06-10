@@ -5,31 +5,29 @@ import (
 	"image/color"
 	"regexp"
 	"strconv"
-	"strings"
 	"syscall/js"
 
 	"github.com/transcriptaze/wav2png/wav2png"
 )
 
-var GRID_COLOUR = DARKGREEN
-
-const GRID_SIZE = 64
-const GRID_WIDTH = 64
-const GRID_HEIGHT = 48
-const GRID_FIT = wav2png.Approximate
-const GRID_OVERLAY = false
+type Grid struct {
+	Grid    string `json:"grid"`
+	Colour  string `json:"colour"`
+	Alpha   uint8  `json:"alpha"`
+	Size    string `json:"size"`
+	WH      string `json:"wh"`
+	Overlay bool   `json:"overlay"`
+}
 
 func onGrid(this js.Value, inputs []js.Value) interface{} {
 	callback := inputs[0]
 
 	go func() {
-		gridspec, settings := grid(inputs[1])
-
-		options.gridspec = gridspec
+		options.grid.parse(inputs[1])
 
 		if err := redraw(); err != nil {
 			callback.Invoke(err.Error())
-		} else if err := save(TagGrid, settings); err != nil {
+		} else if err := options.grid.save(); err != nil {
 			callback.Invoke(err.Error())
 		} else {
 			callback.Invoke(js.Null())
@@ -39,21 +37,9 @@ func onGrid(this js.Value, inputs []js.Value) interface{} {
 	return nil
 }
 
-func grid(object js.Value) (wav2png.GridSpec, interface{}) {
-	settings := gridSettings(object)
-
-	clean := func(v js.Value) string {
-		return strings.ReplaceAll(strings.ToLower(v.String()), " ", "")
-	}
-
+func (g *Grid) parse(object js.Value) {
 	if !object.IsNull() {
 		grid := clean(object.Get("type"))
-		colour := GRID_COLOUR
-		size := GRID_SIZE
-		width := GRID_WIDTH
-		height := GRID_HEIGHT
-		fit := GRID_FIT
-		overlay := GRID_OVERLAY
 
 		if c := object.Get("colour"); !c.IsNull() && !c.IsUndefined() {
 			s := clean(c)
@@ -64,147 +50,188 @@ func grid(object js.Value) (wav2png.GridSpec, interface{}) {
 				alpha := uint8(0xff)
 
 				if _, err := fmt.Sscanf(s, "#%02x%02x%02x%02x", &red, &green, &blue, &alpha); err == nil {
-					colour = color.NRGBA{R: red, G: green, B: blue, A: alpha}
+					g.Colour = fmt.Sprintf("#%02x%02x%02x", red, green, blue)
+					g.Alpha = alpha
 				}
 			}
 		}
 
 		if sz := object.Get("size"); !sz.IsNull() && !sz.IsUndefined() {
-			if matched := regexp.MustCompile(`([~=><≥≤]).*`).FindStringSubmatch(clean(sz)); matched != nil && len(matched) == 2 {
+			fit := wav2png.Approximate
+			size := uint(64)
+
+			if matched := regexp.MustCompile(`([~=><≥≤])?\s*([0-9]+)`).FindStringSubmatch(clean(sz)); matched != nil && len(matched) == 3 {
 				switch matched[1] {
 				case "~":
 					fit = wav2png.Approximate
 				case "=":
 					fit = wav2png.Exact
-				case ">":
-					fit = wav2png.AtLeast
-					size += 1
-				case "<":
-					fit = wav2png.AtMost
-					size -= 1
 				case "≥":
 					fit = wav2png.AtLeast
 				case "≤":
 					fit = wav2png.AtMost
+				case ">":
+					fit = wav2png.LargerThan
+				case "<":
+					fit = wav2png.SmallerThan
+				}
+
+				if v, err := strconv.ParseUint(matched[2], 10, 32); err == nil && v >= 16 && v <= 1024 {
+					size = uint(v)
 				}
 			}
 
-			if matched := regexp.MustCompile(`([~=><≥≤])?\s*([0-9]+)`).FindStringSubmatch(clean(sz)); matched != nil && len(matched) == 3 {
-				if v, err := strconv.ParseInt(matched[2], 10, 32); err == nil && v >= 16 && v <= 1024 {
-					size = int(v)
-				}
-			}
+			g.Size = fmt.Sprintf("%v%v", fit, size)
 		}
 
 		if sz := object.Get("wh"); !sz.IsNull() && !sz.IsUndefined() {
-			if matched := regexp.MustCompile(`([~=><≥≤]).*`).FindStringSubmatch(clean(sz)); matched != nil && len(matched) == 2 {
+			fit := wav2png.Approximate
+			width := uint(64)
+			height := uint(48)
+
+			if matched := regexp.MustCompile(`([~=><≥≤])?\s*([0-9]+)x([0-9]+)`).FindStringSubmatch(clean(sz)); matched != nil && len(matched) == 4 {
 				switch matched[1] {
 				case "~":
 					fit = wav2png.Approximate
 				case "=":
 					fit = wav2png.Exact
-				case ">":
-					fit = wav2png.AtLeast
-					size += 1
-				case "<":
-					fit = wav2png.AtMost
-					size -= 1
 				case "≥":
 					fit = wav2png.AtLeast
 				case "≤":
 					fit = wav2png.AtMost
+				case ">":
+					fit = wav2png.LargerThan
+				case "<":
+					fit = wav2png.SmallerThan
+				}
+
+				if v, err := strconv.ParseUint(matched[2], 10, 32); err == nil && v >= 16 && v <= 1024 {
+					width = uint(v)
+				}
+
+				if v, err := strconv.ParseUint(matched[3], 10, 32); err == nil && v >= 16 && v <= 1024 {
+					height = uint(v)
 				}
 			}
 
-			if matched := regexp.MustCompile(`([~=><≥≤])?\s*([0-9]+)x([0-9]+)`).FindStringSubmatch(clean(sz)); matched != nil && len(matched) == 4 {
-				if v, err := strconv.ParseInt(matched[2], 10, 32); err == nil && v >= 16 && v <= 1024 {
-					width = int(v)
-				}
-
-				if v, err := strconv.ParseInt(matched[3], 10, 32); err == nil && v >= 16 && v <= 1024 {
-					height = int(v)
-				}
-			}
+			g.WH = fmt.Sprintf("%v%vx%v", fit, width, height)
 		}
 
 		if o := object.Get("overlay"); !o.IsNull() && !o.IsUndefined() {
-			overlay = o.Bool()
+			g.Overlay = o.Bool()
 		}
 
 		switch grid {
 		case "none":
-			return wav2png.NewNoGrid(), settings
+			g.Grid = "none"
 
 		case "square":
-			return wav2png.NewSquareGrid(colour, uint(size), fit, overlay), settings
+			g.Grid = "square"
 
 		case "rectangular":
-			return wav2png.NewRectangularGrid(colour, uint(width), uint(height), fit, overlay), settings
+			g.Grid = "rectangular"
+
+		default:
+			g.Grid = "square"
 		}
 	}
-
-	return wav2png.NewSquareGrid(GRID_COLOUR, GRID_SIZE, GRID_FIT, GRID_OVERLAY), settings
 }
 
-func gridSettings(object js.Value) interface{} {
-	settings := struct {
-		Grid    string `json:"type"`
-		Colour  string `json:"colour"`
-		Alpha   uint   `json:"alpha"`
-		Size    string `json:"size"`
-		WxH     string `json:"wh"`
-		Overlay bool   `json:"overlay"`
-	}{
-		Grid:    "square",
-		Colour:  "#008000",
-		Alpha:   255,
-		Size:    "~64",
-		WxH:     "~64x48",
-		Overlay: false,
+func (g *Grid) save() error {
+	return save(TagGrid, g)
+}
+
+func (g *Grid) restore() error {
+	grid := options.grid
+
+	if err := restore(TagGrid, &grid); err != nil {
+		return err
 	}
 
-	clean := func(v js.Value) string {
-		return strings.ReplaceAll(strings.ToLower(v.String()), " ", "")
+	*g = grid
+
+	return nil
+}
+
+func (g *Grid) gridspec() wav2png.GridSpec {
+	// ... overlay
+	overlay := g.Overlay
+
+	// ... colour
+	red := uint8(0)
+	green := uint8(128)
+	blue := uint8(0)
+	alpha := g.Alpha
+
+	colour := color.NRGBA{R: red, G: green, B: blue, A: alpha}
+
+	if _, err := fmt.Sscanf(g.Colour, "#%02x%02x%02x", &red, &green, &blue); err == nil {
+		colour = color.NRGBA{R: red, G: green, B: blue, A: g.Alpha}
 	}
 
-	if !object.IsNull() {
-		settings.Grid = object.Get("type").String()
+	// ... no grid
+	if g.Grid == "none" {
+		return wav2png.NewNoGrid()
+	}
 
-		if c := object.Get("colour"); !c.IsNull() && !c.IsUndefined() {
-			if match := regexp.MustCompile("#([[:xdigit:]]{6})([[:xdigit:]]{2})").FindStringSubmatch(clean(c)); match != nil && len(match) == 3 {
-				colour, _ := strconv.ParseInt(match[1], 16, 32)
-				alpha, _ := strconv.ParseInt(match[2], 16, 16)
+	// ... rectangular
+	if g.Grid == "rectangular" {
+		fit := wav2png.Approximate
+		width := uint(64)
+		height := uint(48)
 
-				settings.Colour = fmt.Sprintf("#%06x", colour)
+		if matched := regexp.MustCompile(`([~=><≥≤])?\s*([0-9]+)x([0-9]+)`).FindStringSubmatch(g.WH); matched != nil && len(matched) == 4 {
+			switch matched[1] {
+			case "~":
+				fit = wav2png.Approximate
+			case "=":
+				fit = wav2png.Exact
+			case "≥":
+				fit = wav2png.AtLeast
+			case "≤":
+				fit = wav2png.AtMost
+			case ">":
+				fit = wav2png.LargerThan
+			case "<":
+				fit = wav2png.SmallerThan
+			}
 
-				if alpha >= 0 && alpha < 256 {
-					settings.Alpha = uint(alpha)
-				}
+			if v, err := strconv.ParseUint(matched[2], 10, 32); err == nil && v >= 16 && v <= 1024 {
+				width = uint(v)
+			}
+
+			if v, err := strconv.ParseUint(matched[3], 10, 32); err == nil && v >= 16 && v <= 1024 {
+				height = uint(v)
 			}
 		}
 
-		if sz := object.Get("size"); !sz.IsNull() && !sz.IsUndefined() {
-			if match := regexp.MustCompile(`([~=><≥≤]?\s*([0-9]+))`).FindStringSubmatch(clean(sz)); match != nil {
-				if v, err := strconv.ParseInt(match[2], 10, 32); err == nil && v >= 16 && v <= 1024 {
-					settings.Size = match[1]
-				}
-			}
+		return wav2png.NewRectangularGrid(colour, width, height, fit, overlay)
+	}
+
+	// ... default to square
+	fit := wav2png.Approximate
+	size := uint(64)
+
+	if matched := regexp.MustCompile(`([~=><≥≤])?\s*([0-9]+)`).FindStringSubmatch(g.Size); matched != nil && len(matched) == 3 {
+		switch matched[1] {
+		case "~":
+			fit = wav2png.Approximate
+		case "=":
+			fit = wav2png.Exact
+		case "≥":
+			fit = wav2png.AtLeast
+		case "≤":
+			fit = wav2png.AtMost
+		case ">":
+			fit = wav2png.LargerThan
+		case "<":
+			fit = wav2png.SmallerThan
 		}
 
-		if sz := object.Get("wh"); !sz.IsNull() && !sz.IsUndefined() {
-			if match := regexp.MustCompile(`([~=><≥≤]?([0-9]+)x([0-9]+))`).FindStringSubmatch(clean(sz)); match != nil && len(match) == 4 {
-				if v, err := strconv.ParseInt(match[2], 10, 32); err == nil && v >= 16 && v <= 1024 {
-					if v, err := strconv.ParseInt(match[3], 10, 32); err == nil && v >= 16 && v <= 1024 {
-						settings.WxH = match[1]
-					}
-				}
-			}
-		}
-
-		if o := object.Get("overlay"); !o.IsNull() && !o.IsUndefined() {
-			settings.Overlay = o.Bool()
+		if v, err := strconv.ParseUint(matched[2], 10, 32); err == nil && v >= 16 && v <= 1024 {
+			size = uint(v)
 		}
 	}
 
-	return settings
+	return wav2png.NewSquareGrid(colour, size, fit, overlay)
 }

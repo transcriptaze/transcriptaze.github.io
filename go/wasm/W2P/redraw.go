@@ -19,7 +19,8 @@ func redraw() error {
 	width := options.size.width
 	height := options.size.height
 	padding := int(options.padding)
-	fillspec := options.fill.fillspec
+	fillspec := options.fill.fillspec()
+	gridspec := options.grid.gridspec()
 	kernel := options.antialias.kernel
 	vscale := options.scale.Vertical
 
@@ -54,7 +55,7 @@ func redraw() error {
 	duration, _ := seconds(float64(len(samples)) / fs)
 
 	img := image.NewNRGBA(image.Rect(0, 0, width, height))
-	grid := wav2png.Grid(options.gridspec, width, height, padding)
+	grid := wav2png.Grid(gridspec, width, height, padding)
 	waveform := wav2png.Render(duration, samples, w, h, cache.palette, vscale)
 	antialiased := wav2png.Antialias(waveform, kernel)
 
@@ -64,7 +65,7 @@ func redraw() error {
 
 	wav2png.Fill(img, fillspec)
 
-	if options.gridspec.Overlay() {
+	if gridspec.Overlay() {
 		draw.Draw(img, rect, antialiased, origin, draw.Over)
 		draw.Draw(img, rectg, grid, origin, draw.Over)
 	} else {

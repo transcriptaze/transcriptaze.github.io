@@ -6,7 +6,6 @@
       - use current settings to initialise `options`
       - move grid/fill/etc validation to Go 
       - palette
-      - use current settings as initial values when parsing inputs in onFill, onAntialias, etc
 
 - [ ] Update transcriptaze Github page
 - [ ] Optimize draw/redraw

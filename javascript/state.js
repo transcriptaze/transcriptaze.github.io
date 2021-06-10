@@ -206,10 +206,4 @@ function restoreW2P (state) {
   } catch (err) {
     // IGNORE
   }
-
-  // Restore W2P grid
-  const blob = window.localStorage.getItem(tags.W2P.grid)
-  if (blob !== null) {
-    state.W2P.grid = JSON.parse(blob)
-  }
 }

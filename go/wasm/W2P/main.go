@@ -33,12 +33,11 @@ var options = struct {
 	size       Size
 	customSize Size
 	padding    Padding
-
-	fill     Fill
-	palettes struct {
+	fill       Fill
+	palettes   struct {
 		selected string
 	}
-	gridspec  wav2png.GridSpec
+	grid      Grid
 	antialias Antialias
 	scale     Scale
 }{
@@ -52,23 +51,27 @@ var options = struct {
 		height: 292,
 	},
 
-	fill: Fill{
-		Fill:   "solid",
-		Colour: "#000000",
-		Alpha:  255,
-
-		fillspec: wav2png.NewSolidFill(BLACK),
-	},
-
-	padding: Padding(2),
-
 	palettes: struct {
 		selected string
 	}{
 		selected: "palette1",
 	},
 
-	gridspec: wav2png.NewSquareGrid(GRID_COLOUR, GRID_SIZE, GRID_FIT, GRID_OVERLAY),
+	fill: Fill{
+		Fill:   "solid",
+		Colour: "#000000",
+		Alpha:  255,
+	},
+
+	padding: Padding(2),
+
+	grid: Grid{
+		Grid:   "square",
+		Colour: "#008000",
+		Alpha:  255,
+		Size:   "~64",
+		WH:     "~64x48",
+	},
 
 	antialias: Antialias{
 		Type:   "vertical",
