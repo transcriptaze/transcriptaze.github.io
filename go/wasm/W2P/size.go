@@ -19,11 +19,11 @@ func onSize(this js.Value, inputs []js.Value) interface{} {
 	callback := inputs[0]
 
 	go func() {
-		options.size.parse(inputs[1], inputs[2])
+		options.Size.parse(inputs[1], inputs[2])
 
 		if err := redraw(); err != nil {
 			callback.Invoke(err.Error())
-		} else if err := options.size.save(TagSize); err != nil {
+		} else if err := options.Size.save(TagSize); err != nil {
 			callback.Invoke(err.Error())
 		} else {
 			callback.Invoke(js.Null())
@@ -37,11 +37,11 @@ func onCustomSize(this js.Value, inputs []js.Value) interface{} {
 	callback := inputs[0]
 
 	go func() {
-		options.customSize.parse(inputs[1], inputs[2])
+		options.CustomSize.parse(inputs[1], inputs[2])
 
 		if err := redraw(); err != nil {
 			callback.Invoke(err.Error())
-		} else if err := options.customSize.save(TagCustomSize); err != nil {
+		} else if err := options.CustomSize.save(TagCustomSize); err != nil {
 			callback.Invoke(err.Error())
 		} else {
 			callback.Invoke(js.Null())

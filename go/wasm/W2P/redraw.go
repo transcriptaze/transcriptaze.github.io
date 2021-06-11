@@ -16,13 +16,13 @@ func redraw() error {
 		return nil
 	}
 
-	width := options.size.width
-	height := options.size.height
-	padding := int(options.padding)
-	fillspec := options.fill.fillspec()
-	gridspec := options.grid.gridspec()
-	kernel := options.antialias.kernel
-	vscale := options.scale.Vertical
+	width := options.Size.width
+	height := options.Size.height
+	padding := int(options.Padding)
+	fillspec := options.Fill.fillspec()
+	gridspec := options.Grid.gridspec()
+	kernel := options.Antialias.kernel
+	vscale := options.Scale.Vertical
 
 	w := width
 	h := height

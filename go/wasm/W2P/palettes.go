@@ -22,13 +22,18 @@ func onPalette(this js.Value, inputs []js.Value) interface{} {
 	buffer := inputs[2]
 
 	go func() {
-		if buffer.IsNull() {
-			delete(options.palettes.Palettes, tag)
+		if !buffer.IsNull() {
+			options.Palettes.Palettes[tag] = arrayBufferToBytes(buffer)
 		} else {
-			options.palettes.Palettes[tag] = arrayBufferToBytes(buffer)
+			delete(options.Palettes.Palettes, tag)
+
+			if options.Palettes.Selected == tag {
+				options.Palettes.Selected = "palette1"
+				cache.palette = wav2png.Ice
+			}
 		}
 
-		if err := options.palettes.save(); err != nil {
+		if err := options.Palettes.save(); err != nil {
 			callback.Invoke(err.Error())
 		} else {
 			callback.Invoke(js.Null())
@@ -55,9 +60,11 @@ func onSelectPalette(this js.Value, inputs []js.Value) interface{} {
 		} else {
 			cache.palette = *p
 
-			options.palettes.Selected = tag.String()
+			options.Palettes.Selected = tag.String()
 
 			if err := redraw(); err != nil {
+				callback.Invoke(err.Error())
+			} else if err := options.Palettes.save(); err != nil {
 				callback.Invoke(err.Error())
 			} else {
 				callback.Invoke(js.Null())

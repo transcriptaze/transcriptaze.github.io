@@ -15,11 +15,11 @@ func onAntialias(this js.Value, inputs []js.Value) interface{} {
 	callback := inputs[0]
 
 	go func() {
-		options.antialias.parse(inputs[1])
+		options.Antialias.parse(inputs[1])
 
 		if err := redraw(); err != nil {
 			callback.Invoke(err.Error())
-		} else if err := options.antialias.save(); err != nil {
+		} else if err := options.Antialias.save(); err != nil {
 			callback.Invoke(err.Error())
 		} else {
 			callback.Invoke(js.Null())
@@ -58,7 +58,7 @@ func (a *Antialias) save() error {
 }
 
 func (a *Antialias) restore() error {
-	antialias := options.antialias
+	antialias := options.Antialias
 
 	if err := restore(TagAntialias, &antialias); err != nil {
 		return err

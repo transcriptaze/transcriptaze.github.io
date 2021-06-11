@@ -18,20 +18,6 @@ export function onInitialise () {
 
   state.restore('W2P')
 
-  // const tag = state.W2P.palette.selected
-  // if (tag && tag.match('palette[1-6]')) {
-  //   const input = document.getElementById(tag)
-  //   const img = document.querySelector(`img[data-palette="${tag}"]`)
-
-  //   if (input) {
-  //     input.checked = true
-  //   }
-
-  //   if (img) {
-  //     palette(tag, img).catch((err) => console.error(err))
-  //   }
-  // }
-
   // ... initialise slider
   local.start = new Slider('start', 'from', onSetStart)
   local.end = new Slider('end', 'to', onSetEnd)
@@ -148,6 +134,20 @@ function initialise (s) {
 
       if (url) {
         URL.revokeObjectURL(url)
+      }
+    }
+  }
+
+  // ... selected paletee
+  const tag = s.palettes.selected
+  if (tag && tag.match('palette[1-6]')) {
+    const input = document.getElementById(tag)
+    const img = document.querySelector(`img[data-palette="${tag}"]`)
+
+    if (input) {
+      input.checked = true
+      if (img) {
+        palette(tag, img).catch((err) => console.error(err))
       }
     }
   }
@@ -284,8 +284,6 @@ export function onPalette (event) {
   const img = document.querySelector(`img[data-palette="${tag}"]`)
 
   if (img) {
-    state.setSelectedPalette(tag)
-
     busy()
       .then(palette(tag, img))
       .catch((err) => console.error(err))
@@ -347,12 +345,15 @@ export function onPaletteDelete (event, tag) {
   event.preventDefault()
 
   const input = document.getElementById(tag)
+  const slot = document.querySelector(`img[data-palette="${tag}"]`)
+
+  slot.src = './images/palette.png'
 
   if (input.checked) {
     document.getElementById('palette1').checked = true
-    state.setSelectedPalette('palette1')
   }
 
+  input.disabled = true
   input.checked = false
 
   storePalette(tag, null)
@@ -388,9 +389,6 @@ function storePalette (tag, blob) {
       .arrayBuffer()
       .then(b => set(tag, new Uint8Array(b)))
   } else {
-    slot.src = './images/palette.png'
-    input.disabled = true
-
     set(tag, null)
   }
 }

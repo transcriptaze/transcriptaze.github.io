@@ -3,9 +3,6 @@
 ### W2P
 
 - [ ] Move event handling+redraw to Go
-      - palette
-        - select
-      - use current settings to initialise `options`
       - move grid/fill/etc validation to Go 
 
 - [ ] Update transcriptaze Github page

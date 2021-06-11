@@ -23,11 +23,11 @@ func onGrid(this js.Value, inputs []js.Value) interface{} {
 	callback := inputs[0]
 
 	go func() {
-		options.grid.parse(inputs[1])
+		options.Grid.parse(inputs[1])
 
 		if err := redraw(); err != nil {
 			callback.Invoke(err.Error())
-		} else if err := options.grid.save(); err != nil {
+		} else if err := options.Grid.save(); err != nil {
 			callback.Invoke(err.Error())
 		} else {
 			callback.Invoke(js.Null())
@@ -142,7 +142,7 @@ func (g *Grid) save() error {
 }
 
 func (g *Grid) restore() error {
-	grid := options.grid
+	grid := options.Grid
 
 	if err := restore(TagGrid, &grid); err != nil {
 		return err

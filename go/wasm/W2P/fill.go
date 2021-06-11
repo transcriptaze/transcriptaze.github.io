@@ -19,11 +19,11 @@ func onFill(this js.Value, inputs []js.Value) interface{} {
 	callback := inputs[0]
 
 	go func() {
-		options.fill.parse(inputs[1])
+		options.Fill.parse(inputs[1])
 
 		if err := redraw(); err != nil {
 			callback.Invoke(err.Error())
-		} else if err := options.fill.save(); err != nil {
+		} else if err := options.Fill.save(); err != nil {
 			callback.Invoke(err.Error())
 		} else {
 			callback.Invoke(js.Null())
@@ -59,7 +59,7 @@ func (f *Fill) save() error {
 }
 
 func (f *Fill) restore() error {
-	fill := options.fill
+	fill := options.Fill
 
 	if err := restore(TagFill, &fill); err != nil {
 		return err

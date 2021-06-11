@@ -79,17 +79,6 @@ export const State = function () {
 
     window.localStorage.setItem(tags.T2B.apikey, this.T2B.apikey)
   }
-
-  this.setSelectedPalette = function (selected) {
-    // this.W2P.palette.selected = selected
-
-    // const object = {
-    //   selected: this.W2P.palette.selected,
-    //   palettes: Array.from(this.W2P.palette.palettes.entries())
-    // }
-
-    // window.localStorage.setItem(tags.W2P.palettes, JSON.stringify(object))
-  }
 }
 
 function restoreT2B (state) {

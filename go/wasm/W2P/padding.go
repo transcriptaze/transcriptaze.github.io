@@ -10,11 +10,11 @@ func onPadding(this js.Value, inputs []js.Value) interface{} {
 	callback := inputs[0]
 
 	go func() {
-		options.padding.parse(inputs[1])
+		options.Padding.parse(inputs[1])
 
 		if err := redraw(); err != nil {
 			callback.Invoke(err.Error())
-		} else if err := options.padding.save(); err != nil {
+		} else if err := options.Padding.save(); err != nil {
 			callback.Invoke(err.Error())
 		} else {
 			callback.Invoke(js.Null())
@@ -38,7 +38,7 @@ func (p *Padding) save() error {
 }
 
 func (p *Padding) restore() error {
-	padding := int(options.padding)
+	padding := int(options.Padding)
 
 	if err := restore(TagPadding, &padding); err != nil {
 		return err
