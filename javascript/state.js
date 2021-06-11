@@ -8,14 +8,6 @@ const tags = {
   },
 
   W2P: {
-    size: 'W2P.size',
-    customSize: 'W2P.customSize',
-    padding: 'W2P.padding',
-    palettes: 'W2P.palettes',
-    fill: 'W2P.fill',
-    grid: 'W2P.grid',
-    antialias: 'W2P.antialias',
-    scale: 'W2P.scale'
   }
 }
 
@@ -31,37 +23,6 @@ export const State = function () {
   }
 
   this.W2P = {
-    size: '645x390',
-    padding: 2,
-    customSize: '',
-    palette: {
-      selected: 'palette1',
-      palettes: new Map()
-    },
-
-    fill: {
-      type: 'solid',
-      colour: '#000000',
-      alpha: 255
-    },
-
-    grid: {
-      type: 'square',
-      colour: '#008000',
-      alpha: 255,
-      size: '~64',
-      wh: '~64x48',
-      overlay: false
-    },
-
-    antialias: {
-      type: 'vertical'
-    },
-
-    scale: {
-      horizontal: 1.0,
-      vertical: 1.0
-    }
   }
 
   this.restore = function (page) {
@@ -120,29 +81,14 @@ export const State = function () {
   }
 
   this.setSelectedPalette = function (selected) {
-    this.W2P.palette.selected = selected
+    // this.W2P.palette.selected = selected
 
-    const object = {
-      selected: this.W2P.palette.selected,
-      palettes: Array.from(this.W2P.palette.palettes.entries())
-    }
+    // const object = {
+    //   selected: this.W2P.palette.selected,
+    //   palettes: Array.from(this.W2P.palette.palettes.entries())
+    // }
 
-    window.localStorage.setItem(tags.W2P.palettes, JSON.stringify(object))
-  }
-
-  this.setPalette = function (slot, png) {
-    if (png) {
-      this.W2P.palette.palettes.set(slot, [...png])
-    } else {
-      this.W2P.palette.palettes.delete(slot)
-    }
-
-    const object = {
-      selected: this.W2P.palette.selected,
-      palettes: Array.from(this.W2P.palette.palettes.entries())
-    }
-
-    window.localStorage.setItem(tags.W2P.palettes, JSON.stringify(object))
+    // window.localStorage.setItem(tags.W2P.palettes, JSON.stringify(object))
   }
 }
 
@@ -189,21 +135,4 @@ function restoreT2B (state) {
 }
 
 function restoreW2P (state) {
-  state.W2P.size = '645x390'
-  state.W2P.customSize = ''
-
-  // Restore W2P palettes
-  try {
-    const blob = window.localStorage.getItem(tags.W2P.palettes)
-    if (blob !== null) {
-      const object = JSON.parse(blob)
-
-      state.W2P.palette.selected = object.selected
-      object.palettes.forEach(([k, v]) => {
-        state.W2P.palette.palettes.set(k, v)
-      })
-    }
-  } catch (err) {
-    // IGNORE
-  }
 }

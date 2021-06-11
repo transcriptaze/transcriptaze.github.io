@@ -65,7 +65,7 @@ func (s *Size) parse(width, height js.Value) {
 	}
 }
 
-func (s *Size) save(tag Tag) error {
+func (s Size) save(tag Tag) error {
 	v := fmt.Sprintf("%dx%d", s.width, s.height)
 
 	return save(tag, v)

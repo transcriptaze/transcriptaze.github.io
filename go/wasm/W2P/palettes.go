@@ -4,12 +4,36 @@ package main
 
 import (
 	"bytes"
+	// "encoding/json"
 	"fmt"
 	"image/png"
 	"syscall/js"
 
 	"github.com/transcriptaze/wav2png/wav2png"
 )
+
+type Palettes struct {
+	Selected string            `json:"selected"`
+	Palettes map[string][]byte `json:"palettes"`
+}
+
+func onPalette(this js.Value, inputs []js.Value) interface{} {
+	callback := inputs[0]
+	tag := inputs[1].String()
+	buffer := inputs[2]
+
+	go func() {
+		options.palettes.Palettes[tag] = arrayBufferToBytes(buffer)
+
+		if err := options.palettes.save(); err != nil {
+			callback.Invoke(err.Error())
+		} else {
+			callback.Invoke(js.Null())
+		}
+	}()
+
+	return nil
+}
 
 func onSelectPalette(this js.Value, inputs []js.Value) interface{} {
 	callback := inputs[0]
@@ -28,7 +52,7 @@ func onSelectPalette(this js.Value, inputs []js.Value) interface{} {
 		} else {
 			cache.palette = *p
 
-			options.palettes.selected = tag.String()
+			options.palettes.Selected = tag.String()
 
 			if err := redraw(); err != nil {
 				callback.Invoke(err.Error())
@@ -39,4 +63,12 @@ func onSelectPalette(this js.Value, inputs []js.Value) interface{} {
 	}()
 
 	return nil
+}
+
+func (p Palettes) save() error {
+	return save(TagPalettes, p)
+}
+
+func (p *Palettes) restore() error {
+	return restore(TagPalettes, p)
 }

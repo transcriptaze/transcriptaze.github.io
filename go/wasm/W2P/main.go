@@ -29,61 +29,6 @@ type audio struct {
 
 var wav *audio
 
-var options = struct {
-	size       Size
-	customSize Size
-	padding    Padding
-	fill       Fill
-	palettes   struct {
-		selected string
-	}
-	grid      Grid
-	antialias Antialias
-	scale     Scale
-}{
-	size: Size{
-		width:  645,
-		height: 390,
-	},
-
-	customSize: Size{
-		width:  480,
-		height: 292,
-	},
-
-	palettes: struct {
-		selected string
-	}{
-		selected: "palette1",
-	},
-
-	fill: Fill{
-		Fill:   "solid",
-		Colour: "#000000",
-		Alpha:  255,
-	},
-
-	padding: Padding(2),
-
-	grid: Grid{
-		Grid:   "square",
-		Colour: "#008000",
-		Alpha:  255,
-		Size:   "~64",
-		WH:     "~64x48",
-	},
-
-	antialias: Antialias{
-		Type:   "vertical",
-		kernel: wav2png.Vertical,
-	},
-
-	scale: Scale{
-		Horizontal: 1.0,
-		Vertical:   1.0,
-	},
-}
-
 var cache = struct {
 	palette wav2png.Palette
 	from    *time.Duration
@@ -101,6 +46,7 @@ func main() {
 	js.Global().Set("goClear", js.FuncOf(clear))
 	js.Global().Set("goSize", js.FuncOf(onSize))
 	js.Global().Set("goCustomSize", js.FuncOf(onCustomSize))
+	js.Global().Set("goPalette", js.FuncOf(onPalette))
 	js.Global().Set("goSelectPalette", js.FuncOf(onSelectPalette))
 	js.Global().Set("goFill", js.FuncOf(onFill))
 	js.Global().Set("goGrid", js.FuncOf(onGrid))

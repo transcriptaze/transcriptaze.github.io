@@ -6,7 +6,63 @@ import (
 	"encoding/json"
 	"fmt"
 	"syscall/js"
+
+	"github.com/transcriptaze/wav2png/wav2png"
 )
+
+type Options struct {
+	size       Size
+	customSize Size
+	padding    Padding
+	fill       Fill
+	palettes   Palettes
+	grid       Grid
+	antialias  Antialias
+	scale      Scale
+}
+
+var options = Options{
+	size: Size{
+		width:  645,
+		height: 390,
+	},
+
+	customSize: Size{
+		width:  480,
+		height: 292,
+	},
+
+	palettes: Palettes{
+		Selected: "palette1",
+		Palettes: map[string][]byte{},
+	},
+
+	fill: Fill{
+		Fill:   "solid",
+		Colour: "#000000",
+		Alpha:  255,
+	},
+
+	padding: Padding(2),
+
+	grid: Grid{
+		Grid:   "square",
+		Colour: "#008000",
+		Alpha:  255,
+		Size:   "~64",
+		WH:     "~64x48",
+	},
+
+	antialias: Antialias{
+		Type:   "vertical",
+		kernel: wav2png.Vertical,
+	},
+
+	scale: Scale{
+		Horizontal: 1.0,
+		Vertical:   1.0,
+	},
+}
 
 func onInitialise(this js.Value, inputs []js.Value) interface{} {
 	callback := inputs[0]
@@ -17,6 +73,10 @@ func onInitialise(this js.Value, inputs []js.Value) interface{} {
 		}
 
 		if err := options.customSize.restore(TagCustomSize); err != nil {
+			fmt.Printf("%v\n", err)
+		}
+
+		if err := options.palettes.restore(); err != nil {
 			fmt.Printf("%v\n", err)
 		}
 
@@ -43,6 +103,7 @@ func onInitialise(this js.Value, inputs []js.Value) interface{} {
 		settings := struct {
 			Size       Size      `json:"size"`
 			CustomSize Size      `json:"customSize"`
+			Palettes   Palettes  `json:"palettes"`
 			Fill       Fill      `json:"fill"`
 			Padding    Padding   `json:"padding"`
 			Grid       Grid      `json:"grid"`
@@ -51,6 +112,7 @@ func onInitialise(this js.Value, inputs []js.Value) interface{} {
 		}{
 			Size:       options.size,
 			CustomSize: options.customSize,
+			Palettes:   options.palettes,
 			Fill:       options.fill,
 			Padding:    options.padding,
 			Grid:       options.grid,

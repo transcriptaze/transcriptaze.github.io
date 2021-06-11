@@ -1,7 +1,7 @@
 /* global goInitialise,
           goAudio,goClear, goSelect ,
           goSize, goCustomSize,
-          goSelectPalette, goFill,
+          goPalette, goSelectPalette, goFill,
           goGrid, goPadding, goAntialias, goScale */
 
 import { State } from './state.js'
@@ -18,40 +18,19 @@ export function onInitialise () {
 
   state.restore('W2P')
 
-  // ... initialise palettes
-  for (let ix = 2; ix <= 6; ix++) {
-    const tag = `palette${ix}`
-    const input = document.getElementById(tag)
-    const slot = document.querySelector(`img[data-palette="${tag}"]`)
-    const bytes = state.W2P.palette.palettes.get(tag)
+  // const tag = state.W2P.palette.selected
+  // if (tag && tag.match('palette[1-6]')) {
+  //   const input = document.getElementById(tag)
+  //   const img = document.querySelector(`img[data-palette="${tag}"]`)
 
-    if (bytes) {
-      const array = new Uint8Array(bytes)
-      const png = new Blob([array], { type: 'image/png' })
-      const url = slot.src
+  //   if (input) {
+  //     input.checked = true
+  //   }
 
-      slot.src = URL.createObjectURL(png)
-      input.disabled = false
-
-      if (url) {
-        URL.revokeObjectURL(url)
-      }
-    }
-  }
-
-  const tag = state.W2P.palette.selected
-  if (tag && tag.match('palette[1-6]')) {
-    const input = document.getElementById(tag)
-    const img = document.querySelector(`img[data-palette="${tag}"]`)
-
-    if (input) {
-      input.checked = true
-    }
-
-    if (img) {
-      palette(tag, img).catch((err) => console.error(err))
-    }
-  }
+  //   if (img) {
+  //     palette(tag, img).catch((err) => console.error(err))
+  //   }
+  // }
 
   // ... initialise slider
   local.start = new Slider('start', 'from', onSetStart)
@@ -151,6 +130,33 @@ function initialise (s) {
   const c = 0.25
   const v = Math.round(a + b * Math.log(s.scale.vertical / c))
   document.getElementById('vscale').value = v
+
+  // ... palettes
+
+  const decode = function (s) {
+    const bytes = Uint8Array.from(atob(s), c => c.charCodeAt(0))
+
+    return new Blob([bytes], { type: 'image/png' })
+  }
+
+  for (let ix = 2; ix <= 6; ix++) {
+    const tag = `palette${ix}`
+    const input = document.getElementById(tag)
+    const slot = document.querySelector(`img[data-palette="${tag}"]`)
+    const bytes = s.palettes.palettes[tag]
+
+    if (bytes) {
+      const png = decode(bytes)
+      const url = slot.src
+
+      slot.src = URL.createObjectURL(png)
+      input.disabled = false
+
+      if (url) {
+        URL.revokeObjectURL(url)
+      }
+    }
+  }
 }
 
 export function onDraw (bytes, width, height) {
@@ -310,46 +316,25 @@ export function onPalettePicked (event) {
 
   if ((files.length > 0) && (files[0] !== undefined)) {
     const tag = event.target.dataset.palette
-    const input = document.getElementById(tag)
-    const slot = document.querySelector(`img[data-palette="${tag}"]`)
-    const url = slot.src
     const blob = files[0]
 
     if (blob && blob.type && blob.type === 'image/png') {
-      slot.src = URL.createObjectURL(blob)
-      input.disabled = false
-
-      if (url) {
-        URL.revokeObjectURL(url)
-      }
-
-      blob
-        .arrayBuffer()
-        .then(b => state.setPalette(tag, new Uint8Array(b)))
+      storePalette(tag, blob)
     }
   }
+}
+
+export function onPaletteDragOver (event) {
+  event.preventDefault()
 }
 
 export function onPaletteDrop (event) {
   event.preventDefault()
 
   const tag = event.target.dataset.palette
-  const input = document.getElementById(tag)
-  const slot = event.target
-  const url = slot.src
-
   const drop = function (blob) {
     if (blob && blob.type && blob.type === 'image/png') {
-      slot.src = URL.createObjectURL(blob)
-      input.disabled = false
-
-      if (url) {
-        URL.revokeObjectURL(url)
-      }
-
-      blob
-        .arrayBuffer()
-        .then(b => state.setPalette(tag, new Uint8Array(b)))
+      storePalette(tag, blob)
     }
   }
 
@@ -364,8 +349,34 @@ export function onPaletteDrop (event) {
   }
 }
 
-export function onPaletteDragOver (event) {
-  event.preventDefault()
+function storePalette (tag, blob) {
+  const input = document.getElementById(tag)
+  const slot = document.querySelector(`img[data-palette="${tag}"]`)
+  const url = slot.src
+
+  const set = function (tag, png) {
+    return new Promise((resolve, reject) => {
+      goPalette((err) => {
+        if (err) {
+          reject(err)
+        } else {
+          console.log('ok')
+          resolve()
+        }
+      }, tag, png)
+    })
+  }
+
+  slot.src = URL.createObjectURL(blob)
+  input.disabled = false
+
+  if (url) {
+    URL.revokeObjectURL(url)
+  }
+
+  blob
+    .arrayBuffer()
+    .then(b => set(tag, new Uint8Array(b)))
 }
 
 export function onPaletteDelete (event, tag) {
