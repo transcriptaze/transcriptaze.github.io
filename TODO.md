@@ -4,7 +4,6 @@
 
 - [ ] Move event handling+redraw to Go
       - palette
-        - delete
         - select
       - use current settings to initialise `options`
       - move grid/fill/etc validation to Go 

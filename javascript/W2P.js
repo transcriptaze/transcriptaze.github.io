@@ -132,21 +132,15 @@ function initialise (s) {
   document.getElementById('vscale').value = v
 
   // ... palettes
-
-  const decode = function (s) {
-    const bytes = Uint8Array.from(atob(s), c => c.charCodeAt(0))
-
-    return new Blob([bytes], { type: 'image/png' })
-  }
-
   for (let ix = 2; ix <= 6; ix++) {
     const tag = `palette${ix}`
     const input = document.getElementById(tag)
     const slot = document.querySelector(`img[data-palette="${tag}"]`)
-    const bytes = s.palettes.palettes[tag]
+    const data = s.palettes.palettes[tag]
 
-    if (bytes) {
-      const png = decode(bytes)
+    if (data) {
+      const bytes = Uint8Array.from(atob(data), c => c.charCodeAt(0))
+      const png = new Blob([bytes], { type: 'image/png' })
       const url = slot.src
 
       slot.src = URL.createObjectURL(png)
@@ -349,6 +343,21 @@ export function onPaletteDrop (event) {
   }
 }
 
+export function onPaletteDelete (event, tag) {
+  event.preventDefault()
+
+  const input = document.getElementById(tag)
+
+  if (input.checked) {
+    document.getElementById('palette1').checked = true
+    state.setSelectedPalette('palette1')
+  }
+
+  input.checked = false
+
+  storePalette(tag, null)
+}
+
 function storePalette (tag, blob) {
   const input = document.getElementById(tag)
   const slot = document.querySelector(`img[data-palette="${tag}"]`)
@@ -367,40 +376,23 @@ function storePalette (tag, blob) {
     })
   }
 
-  slot.src = URL.createObjectURL(blob)
-  input.disabled = false
-
   if (url) {
     URL.revokeObjectURL(url)
   }
 
-  blob
-    .arrayBuffer()
-    .then(b => set(tag, new Uint8Array(b)))
-}
+  if (blob) {
+    slot.src = URL.createObjectURL(blob)
+    input.disabled = false
 
-export function onPaletteDelete (event, tag) {
-  event.preventDefault()
+    blob
+      .arrayBuffer()
+      .then(b => set(tag, new Uint8Array(b)))
+  } else {
+    slot.src = './images/palette.png'
+    input.disabled = true
 
-  const palette1 = document.getElementById('palette1')
-  const input = document.getElementById(tag)
-  const slot = document.querySelector(`img[data-palette="${tag}"]`)
-  const url = slot.src
-
-  if (input.checked) {
-    palette1.checked = true
-    state.setSelectedPalette('palette1')
+    set(tag, null)
   }
-
-  input.disabled = true
-  input.checked = false
-  slot.src = './images/palette.png'
-
-  if (url) {
-    URL.revokeObjectURL(url)
-  }
-
-  state.setPalette(tag)
 }
 
 export function onFill (event) {

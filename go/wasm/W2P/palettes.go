@@ -4,7 +4,6 @@ package main
 
 import (
 	"bytes"
-	// "encoding/json"
 	"fmt"
 	"image/png"
 	"syscall/js"
@@ -23,7 +22,11 @@ func onPalette(this js.Value, inputs []js.Value) interface{} {
 	buffer := inputs[2]
 
 	go func() {
-		options.palettes.Palettes[tag] = arrayBufferToBytes(buffer)
+		if buffer.IsNull() {
+			delete(options.palettes.Palettes, tag)
+		} else {
+			options.palettes.Palettes[tag] = arrayBufferToBytes(buffer)
+		}
 
 		if err := options.palettes.save(); err != nil {
 			callback.Invoke(err.Error())
