@@ -55,8 +55,6 @@ export function onInitialise () {
 }
 
 function initialise (s) {
-  console.log(s)
-
   // ... size
   const element = document.querySelector(`input[name="size"][value="${s.size}"]`)
   const custom = document.getElementById('custom')
@@ -91,23 +89,23 @@ function initialise (s) {
   // ... antialias
   switch (s.antialias.type) {
     case 'none':
-      document.getElementById('noantialias').click()
+      document.getElementById('noantialias').checked = true
       break
 
     case 'vertical':
-      document.getElementById('vertical').click()
+      document.getElementById('vertical').checked = true
       break
 
     case 'horizontal':
-      document.getElementById('horizontal').click()
+      document.getElementById('horizontal').checked = true
       break
 
     case 'soft':
-      document.getElementById('soft').click()
+      document.getElementById('soft').checked = true
       break
 
     default:
-      document.getElementById('vertical').click()
+      document.getElementById('vertical').checked = true
   }
 
   // ... vscale
@@ -508,6 +506,8 @@ function setGridType (grid) {
 
 export function onAntiAlias (event) {
   if (event.type === 'change' || (event.type === 'keydown' && event.key === 'Enter')) {
+    const v = document.querySelector('input[name="antialias"]:checked').value
+
     const set = function () {
       return new Promise((resolve, reject) => {
         goAntialias((err, png) => {
@@ -516,7 +516,7 @@ export function onAntiAlias (event) {
           } else {
             resolve(png)
           }
-        }, antialias())
+        }, { type: v })
       })
     }
 
@@ -942,27 +942,6 @@ function grid () {
 
     default:
       return { type: 'square', colour: colour, size: gridsize, wh: gridwh, overlay: overlay }
-  }
-}
-
-function antialias () {
-  const v = document.querySelector('input[name="antialias"]:checked').value
-
-  switch (v) {
-    case 'none':
-      return { type: 'none' }
-
-    case 'vertical':
-      return { type: 'vertical' }
-
-    case 'horizontal':
-      return { type: 'horizontal' }
-
-    case 'soft':
-      return { type: 'soft' }
-
-    default:
-      return { type: 'vertical' }
   }
 }
 
