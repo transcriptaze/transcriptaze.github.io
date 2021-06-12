@@ -25,7 +25,7 @@ func onPadding(this js.Value, inputs []js.Value) interface{} {
 }
 
 func (p *Padding) parse(object js.Value) {
-	if !object.IsNull() && !object.IsUndefined() && !object.IsNaN() {
+	if object.Type() == js.TypeNumber && !object.IsNaN() {
 		v := object.Int()
 		if v >= -16 && v <= 32 {
 			*p = Padding(v)

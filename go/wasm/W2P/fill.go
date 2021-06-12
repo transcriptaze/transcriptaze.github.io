@@ -37,18 +37,22 @@ func (f *Fill) parse(object js.Value) {
 	if !object.IsNull() {
 		f.Fill = clean(object.Get("fill"))
 
-		if c := object.Get("colour"); !c.IsNull() && !c.IsUndefined() {
+		if c := object.Get("colour"); !c.IsNull() && !c.IsUndefined() && c.Type() == js.TypeString {
 			s := clean(c)
-			if regexp.MustCompile("#[[:xdigit:]]{8}").MatchString(s) {
-				red := uint8(0)
-				green := uint8(0x0)
-				blue := uint8(0)
-				alpha := uint8(0xff)
+			if regexp.MustCompile("#[[:xdigit:]]{6}").MatchString(s) {
+				f.Colour = s
+			}
+		}
 
-				if _, err := fmt.Sscanf(s, "#%02x%02x%02x%02x", &red, &green, &blue, &alpha); err == nil {
-					f.Colour = fmt.Sprintf("#%02x%02x%02x", red, green, blue)
-					f.Alpha = alpha
-				}
+		if c := object.Get("alpha"); !c.IsNull() && !c.IsUndefined() && c.Type() == js.TypeNumber {
+			v := c.Int()
+			switch {
+			case v < 0:
+				f.Alpha = 0
+			case v > 255:
+				f.Alpha = 255
+			default:
+				f.Alpha = uint8(v)
 			}
 		}
 	}

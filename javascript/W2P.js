@@ -393,6 +393,9 @@ function storePalette (tag, blob) {
 
 export function onFill (event) {
   if (event.type === 'change') {
+    const c = document.getElementById('fillcolour').value
+    const a = document.getElementById('fillalpha').value
+
     const set = function () {
       return new Promise((resolve, reject) => {
         goFill((err, png) => {
@@ -401,7 +404,7 @@ export function onFill (event) {
           } else {
             resolve(png)
           }
-        }, fill())
+        }, { type: 'solid', colour: c, alpha: parseInt(a, 10) })
       })
     }
 
@@ -532,9 +535,9 @@ export function onAntiAlias (event) {
 
 export function onVScale (event) {
   if (event.type === 'change' || (event.type === 'keydown' && event.key === 'Enter')) {
+    const v = parseInt(document.getElementById('vscale').value, 10)
     const hscale = 1.0
     let vscale = 1.0
-    const v = parseInt(document.getElementById('vscale').value, 10)
 
     if (v && !Number.isNaN(v)) {
       const a = 1.0
@@ -685,7 +688,7 @@ export function onClear (event) {
       if (err) {
         reject(err)
       } else {
-        resolve(true)
+        resolve()
       }
     })
   }).catch(function (err) {
@@ -843,21 +846,6 @@ function size () {
   }
 
   return { width: png.width, height: png.height }
-}
-
-function fill () {
-  const c = document.getElementById('fillcolour').value
-  const a = document.getElementById('fillalpha').value
-
-  let colour = c + 'ff'
-  const alpha = parseInt(a, 10)
-  if (!isNaN(alpha) && alpha < 16) {
-    colour = c + '0' + alpha.toString(16)
-  } else if (!isNaN(alpha) && alpha < 255) {
-    colour = c + alpha.toString(16)
-  }
-
-  return { type: 'solid', colour: colour }
 }
 
 function grid () {

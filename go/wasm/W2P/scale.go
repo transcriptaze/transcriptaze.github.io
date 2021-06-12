@@ -30,16 +30,11 @@ func onScale(this js.Value, inputs []js.Value) interface{} {
 }
 
 func (s *Scale) parse(horizontal, vertical js.Value) {
-	vscale := options.Scale.Vertical
-
-	if !vertical.IsNull() && !vertical.IsNaN() {
+	if vertical.Type() == js.TypeNumber && !vertical.IsNaN() {
 		if v := vertical.Float(); v >= 0.25 && v <= 4.0 {
-			vscale = v
+			s.Vertical = v
 		}
 	}
-
-	s.Horizontal = 1.0
-	s.Vertical = vscale
 }
 
 func (s *Scale) save() error {
