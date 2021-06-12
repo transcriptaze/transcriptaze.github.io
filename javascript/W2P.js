@@ -56,11 +56,11 @@ export function onInitialise () {
 
 function initialise (s) {
   // ... size
-  const element = document.querySelector(`input[name="size"][value="${s.size}"]`)
+  const size = document.querySelector(`input[name="size"][value="${s.size}"]`)
   const custom = document.getElementById('custom')
 
-  if (element) {
-    element.checked = true
+  if (size) {
+    size.checked = true
     custom.style.visibility = 'hidden'
   } else if (s.size === s.customSize) {
     document.getElementById('szx').checked = true
@@ -87,26 +87,7 @@ function initialise (s) {
   setGridType(s.grid.grid)
 
   // ... antialias
-  switch (s.antialias.type) {
-    case 'none':
-      document.getElementById('noantialias').checked = true
-      break
-
-    case 'vertical':
-      document.getElementById('vertical').checked = true
-      break
-
-    case 'horizontal':
-      document.getElementById('horizontal').checked = true
-      break
-
-    case 'soft':
-      document.getElementById('soft').checked = true
-      break
-
-    default:
-      document.getElementById('vertical').checked = true
-  }
+  document.querySelector(`input[name="antialias"][value="${s.antialias.type}"]`).checked = true
 
   // ... vscale
   const a = 1.0
@@ -217,15 +198,15 @@ export function onPicked (event) {
 export function onSize (event) {
   const v = document.querySelector('input[name="size"]:checked').value
   const custom = document.getElementById('custom')
+  let size = v
 
   if (v === 'custom') {
+    size = custom.value
     custom.style.visibility = 'visible'
     custom.focus()
   } else {
     custom.style.visibility = 'hidden'
   }
-
-  const sz = size()
 
   const set = function () {
     return new Promise((resolve, reject) => {
@@ -235,7 +216,7 @@ export function onSize (event) {
         } else {
           resolve()
         }
-      }, sz.width, sz.height)
+      }, size)
     })
   }
 
@@ -248,32 +229,23 @@ export function onSize (event) {
 export function onCustomSize (event) {
   if (event.type === 'keydown' && event.key === 'Enter') {
     const v = document.getElementById('custom').value
-    const re = /([0-9]+)\s*x\s*([0-9]+)/
-    const match = re.exec(v)
 
-    if (match) {
-      const w = parseInt(match[1], 10)
-      const h = parseInt(match[2], 10)
-
-      if (!isNaN(w) && !isNaN(h) && w >= 64 && w <= 8192 && h > 64 && h <= 8192) {
-        const set = function () {
-          return new Promise((resolve, reject) => {
-            goCustomSize((err) => {
-              if (err) {
-                reject(err)
-              } else {
-                resolve()
-              }
-            }, w, h)
-          })
-        }
-
-        busy()
-          .then(b => set())
-          .catch((err) => console.error(err))
-          .finally(unbusy)
-      }
+    const set = function () {
+      return new Promise((resolve, reject) => {
+        goCustomSize((err) => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve()
+          }
+        }, v)
+      })
     }
+
+    busy()
+      .then(b => set())
+      .catch((err) => console.error(err))
+      .finally(unbusy)
   }
 }
 

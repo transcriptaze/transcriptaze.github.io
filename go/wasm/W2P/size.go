@@ -19,7 +19,7 @@ func onSize(this js.Value, inputs []js.Value) interface{} {
 	callback := inputs[0]
 
 	go func() {
-		options.Size.parse(inputs[1], inputs[2])
+		options.Size.parse(inputs[1])
 
 		if err := redraw(); err != nil {
 			callback.Invoke(err.Error())
@@ -37,7 +37,8 @@ func onCustomSize(this js.Value, inputs []js.Value) interface{} {
 	callback := inputs[0]
 
 	go func() {
-		options.CustomSize.parse(inputs[1], inputs[2])
+		options.Size.parse(inputs[1])
+		options.CustomSize.parse(inputs[1])
 
 		if err := redraw(); err != nil {
 			callback.Invoke(err.Error())
@@ -51,16 +52,14 @@ func onCustomSize(this js.Value, inputs []js.Value) interface{} {
 	return nil
 }
 
-func (s *Size) parse(width, height js.Value) {
-	if !width.IsNull() && !width.IsNaN() {
-		if v := width.Int(); v > 32 && v <= 8192 {
-			s.width = v
-		}
-	}
+func (s *Size) parse(wh js.Value) {
+	if match := regexp.MustCompile("([0-9]+)x([0-9]+)").FindStringSubmatch(wh.String()); match != nil && len(match) == 3 {
+		w, _ := strconv.Atoi(match[1])
+		h, _ := strconv.Atoi(match[2])
 
-	if !height.IsNull() && !height.IsNaN() {
-		if v := height.Int(); v > 32 && v <= 8192 {
-			s.height = v
+		if w >= 32 && w <= 8192 && h >= 32 && h <= 8192 {
+			s.width = w
+			s.height = h
 		}
 	}
 }
@@ -93,11 +92,11 @@ func (s *Size) restore(tag Tag) error {
 		return err
 	}
 
-	if w > 32 && w <= 8192 {
+	if w >= 32 && w <= 8192 {
 		s.width = w
 	}
 
-	if h > 32 && h <= 8192 {
+	if h >= 32 && h <= 8192 {
 		s.height = h
 	}
 
