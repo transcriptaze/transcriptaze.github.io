@@ -414,6 +414,9 @@ export function onFill (event) {
 
 export function onPadding (event) {
   if (event.type === 'change') {
+    const v = document.getElementById('padding').value
+    const padding = parseInt(v, 10)
+
     const set = function () {
       return new Promise((resolve, reject) => {
         goPadding((err) => {
@@ -422,7 +425,7 @@ export function onPadding (event) {
           } else {
             resolve()
           }
-        }, padding())
+        }, padding)
       })
     }
 
@@ -529,7 +532,18 @@ export function onAntiAlias (event) {
 
 export function onVScale (event) {
   if (event.type === 'change' || (event.type === 'keydown' && event.key === 'Enter')) {
-    const v = scale()
+    const hscale = 1.0
+    let vscale = 1.0
+    const v = parseInt(document.getElementById('vscale').value, 10)
+
+    if (v && !Number.isNaN(v)) {
+      const a = 1.0
+      const b = 4 / Math.log(4.0)
+      const c = 25
+
+      vscale = Math.round(c * Math.exp((v - a) / b)) / 100.0
+    }
+
     const set = function () {
       return new Promise((resolve, reject) => {
         goScale((err, png) => {
@@ -538,7 +552,7 @@ export function onVScale (event) {
           } else {
             resolve(png)
           }
-        }, v.horizontal, v.vertical)
+        }, hscale, vscale)
       })
     }
 
@@ -772,7 +786,7 @@ async function transcode (bytes) {
   return offline.startRendering()
 }
 
-async function store (buffer) {
+function store (buffer) {
   return new Promise((resolve, reject) => {
     goAudio((err) => {
       if (err) {
@@ -829,17 +843,6 @@ function size () {
   }
 
   return { width: png.width, height: png.height }
-}
-
-function padding () {
-  const v = document.getElementById('padding').value
-  const padding = parseInt(v, 10)
-
-  if (!isNaN(padding) && padding >= -16 && padding <= 32) {
-    return padding
-  }
-
-  return 2
 }
 
 function fill () {
@@ -943,23 +946,6 @@ function grid () {
     default:
       return { type: 'square', colour: colour, size: gridsize, wh: gridwh, overlay: overlay }
   }
-}
-
-function scale () {
-  const v = parseInt(document.getElementById('vscale').value, 10)
-
-  const hscale = 1.0
-  let vscale = 1.0
-
-  if (v && !Number.isNaN(v)) {
-    const a = 1.0
-    const b = 4 / Math.log(4.0)
-    const c = 25
-
-    vscale = Math.round(c * Math.exp((v - a) / b)) / 100.0
-  }
-
-  return { horizontal: hscale, vertical: vscale }
 }
 
 function busy () {
