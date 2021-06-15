@@ -2,13 +2,10 @@
 
 ### W2P
 
-- [ ] Move event handling+redraw to Go
-      - move grid/fill/etc validation to Go 
-
 - [ ] Update transcriptaze Github page
 - [ ] Optimize draw/redraw
-- [ ] (optionally) show audio info
 
+- [x] Move event handling+redraw to Go
 - [x] Put some audio samples on the page      
 - [x] Let busy() return a Promise and then chain everything off that (?)
 - [x] Rectangular grid: handle partial entry e.g. ~64

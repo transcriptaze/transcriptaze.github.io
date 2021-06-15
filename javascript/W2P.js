@@ -365,8 +365,8 @@ function storePalette (tag, blob) {
 
 export function onFill (event) {
   if (event.type === 'change') {
-    const c = document.getElementById('fillcolour').value
-    const a = document.getElementById('fillalpha').value
+    const colour = document.getElementById('fillcolour').value
+    const alpha = parseInt(document.getElementById('fillalpha').value, 10)
 
     const set = function () {
       return new Promise((resolve, reject) => {
@@ -376,7 +376,7 @@ export function onFill (event) {
           } else {
             resolve(png)
           }
-        }, { type: 'solid', colour: c, alpha: parseInt(a, 10) })
+        }, { type: 'solid', colour: colour, alpha: clamp(alpha, 0, 255) })
       })
     }
 
@@ -419,6 +419,22 @@ export function onGrid (event) {
       setGridType(v.value)
     }
 
+    const type = document.querySelector('input[name="grid"]:checked').value
+    const colour = document.getElementById('gridcolour').value
+    const alpha = parseInt(document.getElementById('gridalpha').value, 10)
+    const size = document.getElementById('gridsize').value
+    const wh = document.getElementById('gridwh').value
+    const overlay = document.getElementById('overlay').checked
+
+    const grid = {
+      type: type,
+      colour: colour,
+      alpha: clamp(alpha, 0, 255),
+      size: size,
+      wh: wh,
+      overlay: overlay
+    }
+
     const set = function () {
       return new Promise((resolve, reject) => {
         goGrid((err, png) => {
@@ -427,7 +443,7 @@ export function onGrid (event) {
           } else {
             resolve(png)
           }
-        }, grid())
+        }, grid)
       })
     }
 
@@ -686,7 +702,7 @@ function load (name, blob) {
   busy()
     .then(b => blob.arrayBuffer())
     .then(b => transcode(b))
-    .then(b => store(b))
+    .then(b => audio(b))
     .then(b => {
       waveform.dataset.filename = name
       picker.style.visibility = 'hidden'
@@ -761,7 +777,7 @@ async function transcode (bytes) {
   return offline.startRendering()
 }
 
-function store (buffer) {
+function audio (buffer) {
   return new Promise((resolve, reject) => {
     goAudio((err) => {
       if (err) {
@@ -790,122 +806,6 @@ function palette (tag, img) {
     .then(response => response.blob())
     .then(blob => blob.arrayBuffer())
     .then(buffer => set(buffer))
-}
-
-function size () {
-  let v = '645x390'
-
-  const option = document.querySelector('input[name="size"]:checked')
-  if (option) {
-    v = option.value
-  }
-
-  if (v === 'custom') {
-    v = document.getElementById('custom').value
-  }
-
-  const png = document.getElementById('png')
-  const re = /([0-9]+)\s*x\s*([0-9]+)/
-  const match = re.exec(v)
-
-  if (match) {
-    const w = parseInt(match[1], 10)
-    const h = parseInt(match[2], 10)
-
-    if (w > 0 && w <= 8192 && h > 0 && h <= 8192) {
-      return { width: w, height: h }
-    }
-  }
-
-  return { width: png.width, height: png.height }
-}
-
-function grid () {
-  const v = document.querySelector('input[name="grid"]:checked').value
-  const c = document.getElementById('gridcolour').value
-  const a = document.getElementById('gridalpha').value
-  const s = document.getElementById('gridsize').value
-  const wh = document.getElementById('gridwh').value
-  const o = document.getElementById('overlay')
-  const sz = size()
-
-  // colour
-  let colour = c + 'ff'
-  const alpha = parseInt(a, 10)
-  if (!isNaN(alpha) && alpha < 16) {
-    colour = c + '0' + alpha.toString(16)
-  } else if (!isNaN(alpha) && alpha < 255) {
-    colour = c + alpha.toString(16)
-  }
-
-  // size
-  let gridsize = '~64'
-
-  if (Math.min(sz.width, sz.height) <= 320) {
-    gridsize = '~32'
-  } else if (Math.min(sz.width, sz.height) <= 1024) {
-    gridsize = '~64'
-  } else {
-    gridsize = '~128'
-  }
-
-  let match = /([~=><≥≤])?\s*([0-9]+)/.exec(s)
-  if (match) {
-    const v = parseInt(match[2], 10)
-    if (!Number.isNaN(v) && v >= 16 && v <= 1024) {
-      gridsize = match[1] + v
-    }
-  }
-
-  // width x height
-  let gridwh = '~64x48'
-
-  if (Math.min(sz.width, sz.height) <= 320) {
-    gridwh = '~32x32'
-  } else if (Math.min(sz.width, sz.height) <= 1024) {
-    gridwh = '~64x48'
-  } else {
-    gridwh = '~128x80'
-  }
-
-  match = /([~=><≥≤])?\s*([0-9]+)\s*x\s*([0-9]+)/.exec(wh)
-  if (match) {
-    const w = parseInt(match[2], 10)
-    const h = parseInt(match[3], 10)
-    if (!Number.isNaN(w) && w >= 16 && w <= 1024 && !Number.isNaN(h) && h >= 16 && h <= 1024) {
-      gridwh = match[1] + w + 'x' + h
-    }
-  } else {
-    match = /([~=><≥≤])?\s*([0-9]+)/.exec(wh)
-    if (match) {
-      const v = parseInt(match[2], 10)
-      if (!Number.isNaN(v) && v >= 16 && v <= 1024) {
-        gridwh = match[1] + v + 'x' + v
-      }
-    }
-  }
-
-  // overlay
-  let overlay = false
-  if (o.checked) {
-    overlay = true
-  }
-
-  // grid
-
-  switch (v) {
-    case 'none':
-      return { type: 'none', colour: colour, size: gridsize, wh: gridwh, overlay: overlay }
-
-    case 'square':
-      return { type: 'square', colour: colour, size: gridsize, wh: gridwh, overlay: overlay }
-
-    case 'rectangular':
-      return { type: 'rectangular', colour: colour, size: gridwh, wh: gridwh, overlay: overlay }
-
-    default:
-      return { type: 'square', colour: colour, size: gridsize, wh: gridwh, overlay: overlay }
-  }
 }
 
 function busy () {
@@ -943,4 +843,8 @@ function format (t) {
   }
 
   return String(minutes) + ':' + String(seconds).padStart(2, '0')
+}
+
+function clamp (number, min, max) {
+  return Math.max(min, Math.min(number, max))
 }

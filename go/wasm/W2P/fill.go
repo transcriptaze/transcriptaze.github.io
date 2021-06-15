@@ -44,17 +44,7 @@ func (f *Fill) parse(object js.Value) {
 			}
 		}
 
-		if c := object.Get("alpha"); !c.IsNull() && !c.IsUndefined() && c.Type() == js.TypeNumber {
-			v := c.Int()
-			switch {
-			case v < 0:
-				f.Alpha = 0
-			case v > 255:
-				f.Alpha = 255
-			default:
-				f.Alpha = uint8(v)
-			}
-		}
+		f.Alpha = uint8(object.Get("alpha").Int())
 	}
 }
 
