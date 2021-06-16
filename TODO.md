@@ -2,9 +2,9 @@
 
 ### W2P
 
-- [ ] Update transcriptaze Github page
 - [ ] Optimize draw/redraw
 
+- [x] Update transcriptaze Github page
 - [x] Move event handling+redraw to Go
 - [x] Put some audio samples on the page      
 - [x] Let busy() return a Promise and then chain everything off that (?)
@@ -35,14 +35,14 @@
 - [ ] Store slider settings with video ID (for playing along!)
 - [ ] Finer slider increments (for playing along)
 - [ ] 'clear' entirely messes up the slider
-
-## TODO
-
 - [ ] Export as MIDI
 - [ ] Load audio from file
 - [ ] View as JSON
 - [ ] Dangling left slider label
 - [ ] Double sliders (one for visible range, one for audio range) (?)
+
+## TODO
+
 - [ ] Go all neumorphic (?)
       - https://codepen.io/ma_suwa/pen/eYdZVML
       - https://github.com/jvnaveenbabu/Neumorphism-Designs

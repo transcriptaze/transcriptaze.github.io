@@ -1,21 +1,16 @@
 ### transcriptaze
 
-**IN DEVELOPMENT**
+`transcriptaze` is home to a set of experimental and somewhat _(?)_ oddball audio utilities that explore the interface between Go, WASM and WebAudio:
 
-`transcriptaze` is the home of the Github Pages that host an experimental and somewhat _(?)_ oddball utility that estimates
-the beats of a piece of music from a file of the beats as _tapped_ on a keyboard:
+- [T2B](https://transcriptaze.github.io/T2B.html) identifies the beats of song on YouTube by applying
+statistical analysis to _taps_ on a keyboard
+- [W2P](https://transcriptaze.github.io/W2P.html) is an in-browser utility to convert an audio file to a PNG
 
-[https://transcriptaze.github.io](https://transcriptaze.github.io)
 
-#### `taps2beats`
-
-Implementation project for the estimation code:
-
-- [taps2beats](https://github.com/transcriptaze/taps2beats). 
-
-#### `wav2png`
-
-NOTE: 'zoomable' PNG's need to be enabled in the Firefox [experimental settings](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/showModal)
+In addition to the web interface, command line implementations of the above, with slightly different feature sets
+can be found at:
+- [taps2beats](https://github.com/transcriptaze/taps2beats)
+- [wav2png](https://github.com/transcriptaze/wav2png)
 
 #### Issues and Feature Requests
 
