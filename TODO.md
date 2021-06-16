@@ -4,32 +4,6 @@
 
 - [ ] Optimize draw/redraw
 
-- [x] Update transcriptaze Github page
-- [x] Move event handling+redraw to Go
-- [x] Put some audio samples on the page      
-- [x] Let busy() return a Promise and then chain everything off that (?)
-- [x] Rectangular grid: handle partial entry e.g. ~64
-- [x] Segment of audio
-- [x] Save/restore selected palette
-- [x] v-scale
-- [x] Palette
-- [x] Browser tab icon
-- [x] Move padding out of grid
-- [x] Fill settings
-- [x] Anti-alias settings
-- [x] Grid settings
-- [x] Dismissable cookie message
-- [x] Zoom
-- [x] Export button
-- [x] Clear button
-- [x] Fix grid
-- [x] Loading windmill
-- [x] Size settings
-- [x] Padding
-- [x] Pass width and height as parameters
-- [x] Make PNG downloadable
-- [x] Separate antialias and render passes
-
 ### T2B
 
 - [ ] Store slider settings with video ID (for playing along!)
