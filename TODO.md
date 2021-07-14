@@ -2,6 +2,8 @@
 
 ### W2P
 
+- [x] Rebuild webapp with wav2png fixes
+- [x] Fix sample filenames
 - [ ] Optimize draw/redraw
 
 ### T2B

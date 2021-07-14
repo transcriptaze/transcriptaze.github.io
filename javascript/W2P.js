@@ -626,7 +626,7 @@ export function onExport (event) {
   let filename = 'waveform.png'
 
   if (audiofile && audiofile !== '') {
-    const match = /(.*?)(?:\.[^.]*)$/.exec(audiofile)
+    const match = /(.*?)(?:\.[^.]*)?$/.exec(audiofile)
     if (match && match.length > 1 && match[1].trim() !== '') {
       filename = match[1].trim() + '.png'
     }

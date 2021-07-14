@@ -2,3 +2,5 @@ github.com/transcriptaze/taps2beats v0.0.0-20210309001227-c9c5f753542d h1:UlbpEe
 github.com/transcriptaze/taps2beats v0.0.0-20210309001227-c9c5f753542d/go.mod h1:VvD3fS4HlOfLiaOHclZyjUHuLfeO9S36nEQ9DnvTyYA=
 github.com/transcriptaze/wav2png v1.0.0 h1:EW/uInlsm/0BJifF0C/M0VfKjBpgI8OiMcGJmqVWXbM=
 github.com/transcriptaze/wav2png v1.0.0/go.mod h1:U4xnVgLJOAjVhJYeZvAXOkBe5e5bcjPedd1irOg63WY=
+github.com/transcriptaze/wav2png v1.1.0 h1:vSAW6P9/P2sMfM4R2rP6bS4t/uDKfwLav4QPtjmRfN0=
+github.com/transcriptaze/wav2png v1.1.0/go.mod h1:U4xnVgLJOAjVhJYeZvAXOkBe5e5bcjPedd1irOg63WY=

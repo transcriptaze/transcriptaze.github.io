@@ -27,8 +27,8 @@ func redraw() error {
 	w := width
 	h := height
 	if padding > 0 {
-		w = width - padding
-		h = height - padding
+		w = width - 2*padding
+		h = height - 2*padding
 	}
 
 	start := 0
@@ -57,8 +57,13 @@ func redraw() error {
 	waveform := wav2png.Render(samples, fs, w, h, cache.palette, vscale)
 	antialiased := wav2png.Antialias(waveform, kernel)
 
+	x0 := padding
+	y0 := padding
+	x1 := x0 + w
+	y1 := y0 + h
+
 	origin := image.Pt(0, 0)
-	rect := image.Rect(padding, padding, w, h)
+	rect := image.Rect(x0, y0, x1, y1)
 	rectg := img.Bounds()
 
 	wav2png.Fill(img, fillspec)
