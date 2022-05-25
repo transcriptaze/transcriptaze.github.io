@@ -1,3 +1,4 @@
+//go:build js && wasm
 // +build js,wasm
 
 // WASM interface for the taps2beats functions

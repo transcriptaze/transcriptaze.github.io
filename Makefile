@@ -11,8 +11,9 @@ build:
 build-all: build
 	cd go; gofmt -l -w .
 	cd go; GOOS=js GOARCH=wasm go build -o ../wasm/ ./...
-	mv ./wasm/T2B ./wasm/T2B.wasm
-	mv ./wasm/W2P ./wasm/W2P.wasm
+	mv ./wasm/T2B     ./wasm/T2B.wasm
+	mv ./wasm/W2P     ./wasm/W2P.wasm
+	mv ./wasm/midiasm ./wasm/midiasm.wasm
 
 test: build-all
 	npm test

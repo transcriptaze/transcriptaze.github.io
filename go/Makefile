@@ -13,13 +13,15 @@ debug: build
 
 build: format
 	GOOS=js GOARCH=wasm go build -o ../wasm/ ./...
-	mv ../wasm/T2B ../wasm/T2B.wasm
-	mv ../wasm/W2P ../wasm/W2P.wasm
+	mv ../wasm/T2B     ../wasm/T2B.wasm
+	mv ../wasm/W2P     ../wasm/W2P.wasm
+	mv ../wasm/midiasm ../wasm/midiasm.wasm
 
 build-all: format
 	GOOS=js GOARCH=wasm go build -o ../wasm/ ./...
-	mv ../wasm/T2B ../wasm/T2B.wasm
-	mv ../wasm/W2P ../wasm/W2P.wasm
+	mv ../wasm/T2B     ../wasm/T2B.wasm
+	mv ../wasm/W2P     ../wasm/W2P.wasm
+	mv ../wasm/midiasm ../wasm/midiasm.wasm
 
 vet: build
 	go vet ./...

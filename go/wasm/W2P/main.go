@@ -1,3 +1,4 @@
+//go:build js && wasm
 // +build js,wasm
 
 // WASM interface for the wav2png functions
