@@ -4,43 +4,43 @@
 package main
 
 import (
-	"fmt"
 	"syscall/js"
+
+	"github.com/twystd/midiasm/midi/encoding/midifile"
 )
+
+type SMF struct {
+	MThd Item `json:"MThd"`
+}
+
+type Item struct {
+	Bytes []byte `json:"bytes"`
+}
 
 func onDisassemble(this js.Value, inputs []js.Value) interface{} {
 	callback := inputs[0]
 	buffer := inputs[1]
 
 	go func() {
-		fmt.Printf(">> CALLBACK: %v\n", callback)
-		fmt.Printf(">> BUFFER: %v\n", buffer)
-		// sampleRate := buffer.Get("sampleRate").Float()
-		// length := buffer.Get("length").Int()
-		// duration := buffer.Get("duration").Float()
-		// channels := buffer.Get("numberOfChannels").Int()
-		// data := buffer.Call("getChannelData", 0)
-		// samples := float32ArrayToSlice(data.Get("buffer"))
+		bytes := arrayBufferToBytes(buffer)
 
-		// fmt.Printf(" sample rate: %v\n", sampleRate)
-		// fmt.Printf(" length:      %v\n", length)
-		// fmt.Printf(" duration:    %v\n", duration)
-		// fmt.Printf(" channels:    %v\n", channels)
-		// fmt.Printf(" samples:     %v\n", len(samples))
+		decoder := midifile.NewDecoder()
 
-		// wav = &audio{
-		//     sampleRate: sampleRate,
-		//     channels:   channels,
-		//     duration:   time.Duration(duration * float64(time.Second)),
-		//     length:     length,
-		//     samples:    samples,
-		// }
+		if smf, err := decoder.Decode(bytes); err != nil {
+			callback.Invoke(err.Error())
+		} else if smf == nil {
+			callback.Invoke("Unable to decode MIDI file")
+		} else if errors := smf.Validate(); len(errors) > 0 {
+			callback.Invoke(errors[0].Error())
+		} else {
+			object := SMF{
+				MThd: Item{
+					Bytes: []byte{},
+				},
+			}
 
-		// if err := redraw(); err != nil {
-		// callback.Invoke(err.Error())
-		// } else {
-		// callback.Invoke(js.Null())
-		// }
+			callback.Invoke(marshal(object), js.Null())
+		}
 	}()
 
 	return nil

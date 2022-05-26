@@ -1,9 +1,12 @@
 ## IN PROGRESS
 
-### W2P
+### midiasm
 
-- [x] Rebuild webapp with wav2png fixes
-- [x] Fix sample filenames
+- [ ] Optionally ignore (list ?) validation warnings
+- [ ] Export to txt,csv,json
+- [ ] Clear
+
+### W2P
 - [ ] Optimize draw/redraw
 
 ### T2B
