@@ -64,26 +64,37 @@
       <main>
         <div>
           <div id="container">
+            <div id="midi" class="panel" ondrop="onDrop(event)"  ondragover="onDragOver(event)">
               <!-- FILE PICKER -->
-              <div id="midifile" class="panel" ondrop="onDrop(event)"  ondragover="onDragOver(event)">
-                <div id="picker" class="picker">                  
-                  <input id="file" type="file" accept="audio/midi"  onchange="onPicked(event)" style="display: none;" />
-                  <img onclick="return onPick(event)" src="/images/midi.png" />
-                  <div id="message">&nbsp;</div>
-                </div>
-                <div>
-                  <img id="png" onclick="zoom(event)" />                
-                </div>
-                <div id="loading" class="overlay">
-                  <div id="windmill" class="overlay">
-                    <span class="windmill"></span>
-                  </div>
-                </div>
+              <div id="picker" class="picker">                  
+                <input id="file" type="file" accept="audio/midi"  onchange="onPicked(event)" style="display: none;" />
+                <img onclick="return onPick(event)" src="/images/midi.png" />
+                <div id="message">&nbsp;</div>
               </div>
 
+              <!-- WINDMILL -->
+              <div id="loading" class="overlay">
+                <div id="windmill" class="overlay">
+                  <span class="windmill"></span>
+                </div>
+              </div>
+            
+              <!-- MIDI -->
+              <div id="disassembly">
+                <table>
+                  <tr>
+                    <td class="bytes">4D 54 68 64 00 00 00 06 00 01 00 02 01 E0 </td>
+                    <td class="MThd">MThd length:6, format:1, tracks:2, metrical time:480 ppqn</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+
+            <!-- TOOLBOX -->
             <div id="right" class="panel">
             </div>
 
+            <!-- CONTROLS -->
             <div id="controls" class="panel">
             </div>
 

@@ -11,8 +11,8 @@ let loaded = false
 
 function load (name, blob) {
   const message = document.getElementById('message')
-  // const picker = document.getElementById('picker')
-  // const midi = document.getElementById('midi')
+  const picker = document.getElementById('picker')
+  const disassembly = document.getElementById('disassembly')
   // const save = document.getElementById('export')
   // const clear = document.getElementById('clear')
 
@@ -27,9 +27,9 @@ function load (name, blob) {
     .then(b => blob.arrayBuffer())
     .then(b => disassemble(b))
     .then(b => {
-      console.log(b)
       // midi.dataset.filename = name
-      // picker.style.visibility = 'hidden'
+      picker.style.display = 'none'
+      disassembly.style.display = 'block'
       //     save.disabled = false
       //     clear.disabled = false
       loading = false
