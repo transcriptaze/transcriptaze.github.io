@@ -1,6 +1,7 @@
-all: test      \
-     benchmark \
-     coverage
+all: build
+# all: test      \
+#      benchmark \
+#      coverage
 
 .PHONY: build
 .PHONY: build-all

@@ -1,6 +1,4 @@
-all: test      \
-	 benchmark \
-     coverage
+all: build
 
 clean:
 	go clean

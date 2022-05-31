@@ -27,13 +27,11 @@ function load (name, blob) {
     .then(b => blob.arrayBuffer())
     .then(b => disassemble(b))
     .then(b => {
-      // midi.dataset.filename = name
       picker.style.display = 'none'
       disassembly.style.display = 'block'
-      //     save.disabled = false
-      //     clear.disabled = false
       loading = false
       loaded = true
+      disassembled(b)
     })
     .catch((err) => {
       console.error(err)
@@ -46,14 +44,40 @@ function load (name, blob) {
 function disassemble (buffer) {
   return new Promise((resolve, reject) => {
     goDisassemble((obj, err) => {
-      console.log({ obj })
       if (err) {
         reject(err)
       } else {
-        resolve()
+        resolve(obj)
       }
     }, buffer)
   })
+}
+
+function disassembled (object) {
+  // midi.dataset.filename = name
+  //     save.disabled = false
+  //     clear.disabled = false
+
+  const tbody = document.querySelector('div#disassembly table tbody')
+  const tr = tbody.insertRow()
+
+  if (object && object.MThd) {
+    // TODO use template
+    const track = tr.insertCell()
+    const chunk = tr.insertCell()
+    const bytes = tr.insertCell()
+    const detail = tr.insertCell()
+
+    track.classList.add('track')
+    chunk.classList.add('chunk')
+    bytes.classList.add('bytes')
+    detail.classList.add('details')
+
+    track.appendChild(document.createTextNode('---'))
+    chunk.appendChild(document.createTextNode('MThd'))
+    bytes.appendChild(document.createTextNode(object.MThd.bytes))
+    detail.appendChild(document.createTextNode(object.MThd.detail))
+  }
 }
 
 function busy () {

@@ -29,15 +29,15 @@ func arrayBufferToBytes(buffer js.Value) []byte {
 	return bytes
 }
 
-func marshal(object any) js.Value {
+func marshal(object any) (js.Value, error) {
 	if object != nil {
 		bytes, err := json.Marshal(object)
 		if err != nil {
-			return js.Null()
+			return js.Null(), err
 		}
 
-		return js.Global().Get("JSON").Call("parse", string(bytes))
+		return js.Global().Get("JSON").Call("parse", string(bytes)), nil
 	}
 
-	return js.Null()
+	return js.Null(), nil
 }

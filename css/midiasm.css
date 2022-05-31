@@ -71,7 +71,8 @@ p#blurb a {
 
 div#midi {
   grid-area: midi;
-  width: 647px;
+  width: fit-content;
+  min-width: 647px;
   height: 394px;
   display: flex;
   justify-content: center;
@@ -159,30 +160,59 @@ div#disassembly {
   margin-bottom: 32px;
 }
 
+div#disassembly table {
+}
+
 div#disassembly tr {
   align: left;
   white-space:nowrap;
   overflow: hidden;
 }
 
-.bytes {
-  width: 320px;
-  display: inline-block;
+div#disassembly th {
+  padding-left:  4px;
+  padding-right:  4px;
+  font-family: sans-serif;
+  font-variant: small-caps;
+  font-variant-caps: all-small-caps;  
+}
+
+div#disassembly td {
+  padding-left:  4px;
+  padding-right:  4px;
+  text-align: left;
+}
+
+td.track {
+  font-family: sans-serif;
+  font-variant: small-caps;
+  font-variant-caps: all-small-caps;  
+}
+
+td.chunk {
+  font-family: sans-serif;
+  font-variant: small-caps;
+  font-variant-caps: all-small-caps;  
+  font-size: 1.1em;
+}
+
+td.bytes {
   font-family: sans-serif;
   font-variant: small-caps;
   font-variant-caps: all-small-caps;
-  font-size: 1.2em;
+  font-size: 1.1em;
   white-space:nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   vertical-align: baseline;
 }
 
-.MThd {
-  width: 320px;
-  display: inline-block;
+td.details {
   font-family: sans-serif;
-  font-size: 0.9em;
+  font-style: italic;
+  font-size: 1.1em;
+  font-variant: small-caps;
+  font-variant-caps: all-small-caps;
   white-space:nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
