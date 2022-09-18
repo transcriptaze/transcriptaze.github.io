@@ -1,11 +1,5 @@
 ## IN PROGRESS
 
-### midiasm
-
-- [ ] Optionally ignore (list ?) validation warnings
-- [ ] Export to txt,csv,json
-- [ ] Clear
-
 ### W2P
 - [ ] Optimize draw/redraw
 
