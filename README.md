@@ -1,4 +1,4 @@
-asdfas ### transcriptaze
+### transcriptaze
 
 `transcriptaze` is home to a set of experimental and somewhat _(?)_ oddball audio utilities that explore the interface between Go, WASM and WebAudio:
 
